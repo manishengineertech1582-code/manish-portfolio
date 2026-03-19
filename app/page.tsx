@@ -66,7 +66,6 @@ export default function Home() {
             <a href="#projects" style={{ color: '#64748B', textDecoration: 'none', fontWeight: 500 }}>Projects</a>
           </div>
 
-          {/* Social links in nav */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <a href="https://github.com/manishengineertech1582-code" target="_blank" rel="noopener noreferrer" style={{
               display: 'flex', alignItems: 'center', gap: '6px',
@@ -98,7 +97,6 @@ export default function Home() {
         <section style={{ maxWidth: '1120px', margin: '0 auto', padding: '72px 20px 80px' }}>
           <div className="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '64px', alignItems: 'center' }}>
 
-            {/* Left */}
             <div>
               <div style={{
                 display: 'inline-flex', alignItems: 'center', gap: '8px',
@@ -125,7 +123,6 @@ export default function Home() {
               </p>
 
               <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '48px' }}>
-                {/* ── CHANGED: points to deep dive ── */}
                 <a href="/finrag-deep-dive.html" style={{
                   background: '#7C3AED', color: '#fff', padding: '12px 24px',
                   borderRadius: '9px', textDecoration: 'none', fontWeight: 700, fontSize: '14px',
@@ -137,7 +134,6 @@ export default function Home() {
                 }}>View GitHub</a>
               </div>
 
-              {/* Inline social */}
               <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
                 <span style={{ fontSize: '13px', color: '#94A3B8' }}>Connect:</span>
                 {[
@@ -157,7 +153,6 @@ export default function Home() {
               background: '#fff', border: '1px solid #E2E8F0', borderRadius: '20px',
               padding: '32px', boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
             }}>
-              {/* Avatar */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid #F1F5F9' }}>
                 <div style={{
                   width: '60px', height: '60px', borderRadius: '16px',
@@ -172,7 +167,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Stats */}
               <div className="stats-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 {[
                   { num: '2,485', label: 'Chunks indexed', color: '#7C3AED' },
@@ -180,17 +174,13 @@ export default function Home() {
                   { num: '$0.000479', label: 'Cost / query', color: '#0EA5E9' },
                   { num: '4 PDFs', label: 'Knowledge base', color: '#10B981' },
                 ].map(({ num, label, color }) => (
-                  <div key={label} style={{
-                    background: '#F8FAFC', borderRadius: '10px', padding: '14px',
-                    border: '1px solid #F1F5F9',
-                  }}>
+                  <div key={label} style={{ background: '#F8FAFC', borderRadius: '10px', padding: '14px', border: '1px solid #F1F5F9' }}>
                     <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '16px', fontWeight: 700, color, marginBottom: '2px' }}>{num}</div>
                     <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 500 }}>{label}</div>
                   </div>
                 ))}
               </div>
 
-              {/* Tech stack */}
               <div style={{ marginTop: '20px' }}>
                 <div style={{ fontSize: '11px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>Core Stack</div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
@@ -216,7 +206,7 @@ export default function Home() {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '20px' }}>
 
-              {/* ── CHANGED: Featured card points to deep dive ── */}
+              {/* Featured — FinRAG */}
               <a href="/finrag-deep-dive.html" className="card-hover" style={{ textDecoration: 'none', gridColumn: 'span 2' }}>
                 <div style={{
                   background: 'linear-gradient(135deg, #FAF5FF 0%, #EEF2FF 100%)',
@@ -246,7 +236,28 @@ export default function Home() {
                 </div>
               </a>
 
-              {/* Second post */}
+              {/* AI Engineer Guide — NEW */}
+              <a href="/ai-engineer-guide.html" className="card-hover" style={{ textDecoration: 'none' }}>
+                <div style={{ background: '#fff', border: '1px solid #E2E8F0', borderRadius: '14px', padding: '28px', height: '100%', borderTop: '3px solid #10B981' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                    <span style={{ background: '#F0FDF4', color: '#16A34A', fontSize: '10px', fontWeight: 700, padding: '3px 9px', borderRadius: '100px', border: '1px solid #BBF7D0' }}>Reference Guide</span>
+                    <span style={{ fontSize: '12px', color: '#94A3B8', fontFamily: "'JetBrains Mono', monospace" }}>March 2026 · 25 min read</span>
+                  </div>
+                  <h3 style={{ fontSize: '17px', fontWeight: 700, color: '#0F172A', letterSpacing: '-0.2px', marginBottom: '8px' }}>
+                    The Complete AI Engineer Term Reference Guide
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748B', lineHeight: 1.7, marginBottom: '14px' }}>
+                    Every AI term, concept, tool, and architecture explained — LLMs, RAG, Agents, Prompt Engineering, Deployment, and the 6-month learning roadmap.
+                  </p>
+                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                    {[['LLMs', '#7C3AED', '#FAF5FF'], ['RAG', '#4F46E5', '#EEF2FF'], ['Agents', '#0EA5E9', '#F0F9FF'], ['Prompt Engineering', '#10B981', '#F0FDF4']].map(([label, color, bg]) => (
+                      <span key={label} style={{ background: bg, color, border: `1px solid ${color}33`, fontSize: '12px', padding: '3px 10px', borderRadius: '6px', fontWeight: 600 }}>{label}</span>
+                    ))}
+                  </div>
+                </div>
+              </a>
+
+              {/* Deep Learning post */}
               <Link href="/blog/ml-system-design" className="card-hover" style={{ textDecoration: 'none' }}>
                 <div style={{ background: '#fff', border: '1px solid #E2E8F0', borderRadius: '14px', padding: '28px', height: '100%' }}>
                   <div style={{ fontSize: '12px', color: '#94A3B8', fontFamily: "'JetBrains Mono', monospace", marginBottom: '10px' }}>2026 · 8 min read</div>
