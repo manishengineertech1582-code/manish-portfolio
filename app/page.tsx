@@ -125,11 +125,12 @@ export default function Home() {
               </p>
 
               <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '48px' }}>
-                <Link href="/blog/finrag-engine" style={{
+                {/* ── CHANGED: points to deep dive ── */}
+                <a href="/finrag-deep-dive.html" style={{
                   background: '#7C3AED', color: '#fff', padding: '12px 24px',
                   borderRadius: '9px', textDecoration: 'none', fontWeight: 700, fontSize: '14px',
                   boxShadow: '0 2px 12px rgba(124,58,237,0.3)',
-                }}>Read FinRAG Case Study →</Link>
+                }}>Read FinRAG Case Study →</a>
                 <a href="https://github.com/manishengineertech1582-code" target="_blank" rel="noopener noreferrer" style={{
                   background: '#fff', border: '1px solid #E2E8F0', color: '#374151',
                   padding: '12px 24px', borderRadius: '9px', textDecoration: 'none', fontWeight: 600, fontSize: '14px',
@@ -167,7 +168,7 @@ export default function Home() {
                 <div>
                   <div style={{ fontWeight: 700, fontSize: '16px', color: '#0F172A' }}>Manish Kumar</div>
                   <div style={{ fontSize: '13px', color: '#7C3AED', fontWeight: 600 }}>AI Engineer</div>
-                  <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '2px' }}>United States</div>
+                  <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '2px' }}>Available now</div>
                 </div>
               </div>
 
@@ -215,8 +216,8 @@ export default function Home() {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '20px' }}>
 
-              {/* Featured */}
-              <Link href="/blog/finrag-engine" className="card-hover" style={{ textDecoration: 'none', gridColumn: 'span 2' }}>
+              {/* ── CHANGED: Featured card points to deep dive ── */}
+              <a href="/finrag-deep-dive.html" className="card-hover" style={{ textDecoration: 'none', gridColumn: 'span 2' }}>
                 <div style={{
                   background: 'linear-gradient(135deg, #FAF5FF 0%, #EEF2FF 100%)',
                   border: '1px solid #DDD6FE', borderRadius: '16px', padding: '32px',
@@ -225,7 +226,7 @@ export default function Home() {
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
                       <span style={{ background: '#7C3AED', color: '#fff', fontSize: '10px', fontWeight: 800, padding: '3px 10px', borderRadius: '100px', letterSpacing: '0.06em' }}>★ FEATURED</span>
-                      <span style={{ fontSize: '12px', color: '#94A3B8', fontFamily: "'JetBrains Mono', monospace" }}>March 2026 · 15 min read</span>
+                      <span style={{ fontSize: '12px', color: '#94A3B8', fontFamily: "'JetBrains Mono', monospace" }}>March 2026 · 20 min read</span>
                     </div>
                     <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.3px', marginBottom: '10px' }}>
                       FinRAG Engine — Building a Production RAG System
@@ -243,7 +244,7 @@ export default function Home() {
                   </div>
                   <div style={{ background: '#7C3AED', color: '#fff', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', flexShrink: 0 }}>→</div>
                 </div>
-              </Link>
+              </a>
 
               {/* Second post */}
               <Link href="/blog/ml-system-design" className="card-hover" style={{ textDecoration: 'none' }}>
