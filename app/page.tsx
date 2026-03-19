@@ -1,65 +1,75 @@
-import Image from "next/image";
+import Link from 'next/link'
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="max-w-3xl mx-auto px-6 py-20">
+
+      {/* Header */}
+      <div className="mb-16">
+        <h1 className="text-4xl font-bold text-white mb-3">Manish Kumar</h1>
+        <p className="text-gray-400 text-lg mb-6">AI Engineer • Machine Learning • Deep Learning Systems</p>
+        <p className="text-gray-300 mb-8">
+          I build intelligent systems using deep learning, transformers, and scalable machine learning pipelines.
+        </p>
+        <div className="flex gap-4">
+          <a href="https://github.com/manishengineertech1582-code" target="_blank" className="text-blue-400 hover:text-blue-300">GitHub</a>
+          <a href="https://www.linkedin.com/in/manish-kumar-8652871/" target="_blank" className="text-blue-400 hover:text-blue-300">LinkedIn</a>
+          <a href="mailto:manish.engineer.tech.1582@gmail.com" className="text-blue-400 hover:text-blue-300">Email</a>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </div>
+
+      {/* Blog */}
+      <section className="mb-16">
+        <h2 className="text-2xl font-semibold text-white mb-6">Engineering Blog</h2>
+        <div className="space-y-4">
+
+          <Link href="/blog/finrag-engine" className="block p-5 bg-gray-900 border border-gray-800 rounded-xl hover:border-blue-500 transition-colors">
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="text-white font-medium mb-1">FinRAG Engine — Building a Production RAG System</h3>
+                <p className="text-gray-400 text-sm">LangChain 0.3+ · FAISS · OpenAI · FastAPI · 19 bugs fixed</p>
+              </div>
+              <span className="text-gray-500 text-sm ml-4 whitespace-nowrap">March 2026</span>
+            </div>
+          </Link>
+
+          <Link href="/blog/ml-system-design" className="block p-5 bg-gray-900 border border-gray-800 rounded-xl hover:border-blue-500 transition-colors">
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="text-white font-medium mb-1">Building a Production-Ready Deep Learning System</h3>
+                <p className="text-gray-400 text-sm">PyTorch · FastAPI · Docker · Model Deployment</p>
+              </div>
+              <span className="text-gray-500 text-sm ml-4 whitespace-nowrap">2026</span>
+            </div>
+          </Link>
+
         </div>
-      </main>
-    </div>
-  );
+      </section>
+
+      {/* Skills */}
+      <section className="mb-16">
+        <h2 className="text-2xl font-semibold text-white mb-6">Technical Skills</h2>
+        <div className="grid grid-cols-1 gap-4">
+          <div className="p-4 bg-gray-900 border border-gray-800 rounded-xl">
+            <h3 className="text-blue-400 font-medium mb-2">AI / Machine Learning</h3>
+            <p className="text-gray-300 text-sm">PyTorch · TensorFlow · Scikit-learn · Transformers · NLP · Computer Vision · RAG Systems</p>
+          </div>
+          <div className="p-4 bg-gray-900 border border-gray-800 rounded-xl">
+            <h3 className="text-blue-400 font-medium mb-2">Data Engineering</h3>
+            <p className="text-gray-300 text-sm">Python · Pandas · NumPy · SQL · Data Processing · FAISS · Vector Databases</p>
+          </div>
+          <div className="p-4 bg-gray-900 border border-gray-800 rounded-xl">
+            <h3 className="text-blue-400 font-medium mb-2">MLOps & Deployment</h3>
+            <p className="text-gray-300 text-sm">Docker · FastAPI · LangChain · OpenAI API · Model Deployment · ML Pipelines</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+        © 2026 Manish Kumar · AI Engineer
+      </footer>
+
+    </main>
+  )
 }
