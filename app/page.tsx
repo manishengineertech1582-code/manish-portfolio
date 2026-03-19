@@ -119,7 +119,7 @@ export default function Home() {
               </h1>
 
               <p style={{ fontSize: '17px', color: '#64748B', lineHeight: 1.8, marginBottom: '36px', maxWidth: '480px' }}>
-                I specialise in RAG pipelines, LLM applications, and scalable ML
+                Specialise in RAG pipelines, LLM applications, and scalable ML
                 infrastructure. Every system I build is documented end-to-end —
                 including every bug, decision, and trade-off.
               </p>
@@ -167,7 +167,7 @@ export default function Home() {
                 <div>
                   <div style={{ fontWeight: 700, fontSize: '16px', color: '#0F172A' }}>Manish Kumar</div>
                   <div style={{ fontSize: '13px', color: '#7C3AED', fontWeight: 600 }}>AI Engineer</div>
-                  <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '2px' }}>India · Available now</div>
+                  <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '2px' }}>United States</div>
                 </div>
               </div>
 
