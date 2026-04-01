@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinRAG Engine v2 — Building a Production RAG System | Manish Kumar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0b;--surface:#111113;--surface2:#18181c;--border:#222228;--border2:#2e2e38;
+    --text:#e8e8f0;--muted:#7a7a90;--accent:#6366f1;--accent2:#818cf8;--accent-dim:rgba(99,102,241,.12);
+    --green:#22c55e;--green-dim:rgba(34,197,94,.1);--amber:#f59e0b;--amber-dim:rgba(245,158,11,.1);
+    --red:#ef4444;--red-dim:rgba(239,68,68,.1);--cyan:#06b6d4;--cyan-dim:rgba(6,182,212,.1);
+    --pink:#f472b6;--pink-dim:rgba(244,114,182,.1);
+    --font-serif:'Instrument Serif',Georgia,serif;
+    --font-sans:'DM Sans',system-ui,sans-serif;
+    --font-mono:'JetBrains Mono',monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+  ::-webkit-scrollbar{width:4px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+  /* NAV */
+  nav.topnav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,11,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;height:52px;display:flex;align-items:center;justify-content:space-between}
+  .nav-brand{font-family:var(--font-mono);font-size:13px;color:var(--muted);letter-spacing:.05em;text-decoration:none;transition:color .2s}
+  .nav-brand:hover{color:var(--text)}
+  .nav-brand span{color:var(--accent2)}
+  .nav-links{display:flex;gap:1.5rem}
+  .nav-links a{font-size:12px;color:var(--muted);text-decoration:none;letter-spacing:.04em;transition:color .2s}
+  .nav-links a:hover{color:var(--text)}
+
+  /* LAYOUT */
+  .page{max-width:800px;margin:0 auto;padding:0 1.5rem}
+
+  /* HERO */
+  .hero{padding:116px 0 56px;border-bottom:1px solid var(--border)}
+  .hero-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem}
+  .hero-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--accent2)}
+  .hero h1{font-family:var(--font-serif);font-size:clamp(2.1rem,5vw,3.1rem);font-weight:400;line-height:1.15;letter-spacing:-.01em;margin-bottom:1rem}
+  .hero h1 em{font-style:italic;color:var(--accent2)}
+  .hero-sub{font-size:15px;color:var(--muted);line-height:1.75;max-width:600px;margin-bottom:2rem}
+  .tag-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2.5rem}
+  .tag{font-family:var(--font-mono);font-size:11px;padding:3px 10px;border-radius:4px;border:1px solid var(--border2);color:var(--muted);background:var(--surface);letter-spacing:.04em}
+  .tag.accent{border-color:rgba(99,102,241,.4);color:var(--accent2);background:var(--accent-dim)}
+  .tag.green{border-color:rgba(34,197,94,.4);color:var(--green);background:var(--green-dim)}
+
+  /* STAT ROW */
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:2.5rem}
+  .stat{background:var(--surface);padding:1rem 1.1rem;text-align:center}
+  .stat-num{font-family:var(--font-mono);font-size:1.4rem;font-weight:600;color:var(--accent2);display:block;line-height:1;margin-bottom:.3rem}
+  .stat-label{font-size:11px;color:var(--muted);letter-spacing:.05em}
+
+  /* AUTHOR */
+  .author-row{display:flex;align-items:center;gap:.875rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+  .avatar{width:36px;height:36px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:12px;font-weight:600;color:#fff;flex-shrink:0}
+  .author-meta{font-size:13px;color:var(--muted)}
+  .author-meta a{color:var(--muted);text-decoration:none;transition:color .2s}
+  .author-meta a:hover{color:var(--text)}
+  .author-meta strong{color:var(--text);font-weight:500}
+
+  /* TOC */
+  .toc{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin:3rem 0}
+  .toc-title{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:1rem}
+  .toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:.2rem .5rem}
+  .toc-link{display:flex;align-items:baseline;gap:.5rem;font-size:13px;color:var(--muted);text-decoration:none;padding:.25rem 0;transition:color .2s}
+  .toc-link:hover{color:var(--text)}
+  .toc-num{font-family:var(--font-mono);font-size:10px;color:var(--border2);width:1.4rem;flex-shrink:0}
+  .toc-link:hover .toc-num{color:var(--accent2)}
+
+  /* SECTION */
+  .content{padding:2rem 0 6rem}
+  .section{padding:3.25rem 0;border-bottom:1px solid var(--border)}
+  .section:last-child{border-bottom:none}
+  .section-anchor{scroll-margin-top:72px}
+  .section-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;color:var(--border2);text-transform:uppercase;margin-bottom:.75rem}
+  h2{font-family:var(--font-serif);font-size:1.7rem;font-weight:400;line-height:1.25;letter-spacing:-.01em;margin-bottom:1.25rem}
+  h3{font-family:var(--font-sans);font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--muted);margin:2rem 0 .75rem;text-transform:uppercase}
+  p{font-size:15px;line-height:1.8;color:#c8c8d8;margin-bottom:1rem}
+  a{color:var(--accent2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code{font-family:var(--font-mono);font-size:12.5px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;color:#c4b5fd}
+  strong{color:var(--text);font-weight:600}
+  ul,ol{padding-left:1.4rem;margin-bottom:1rem}
+  li{font-size:15px;line-height:1.8;color:#c8c8d8;margin-bottom:.2rem}
+  li code{font-size:12px}
+
+  /* CODE BLOCKS */
+  .codeblock{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:1.5rem 0;font-family:var(--font-mono);font-size:12.5px;line-height:1.65}
+  .codeblock-header{display:flex;align-items:center;justify-content:space-between;padding:.6rem 1rem;background:var(--surface2);border-bottom:1px solid var(--border)}
+  .codeblock-lang{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .codeblock-dots{display:flex;gap:.35rem}
+  .dot{width:8px;height:8px;border-radius:50%}
+  .dot-r{background:#ff5f57}.dot-y{background:#ffbc2e}.dot-g{background:#28c840}
+  .codeblock pre{padding:1.25rem;overflow-x:auto}
+  .codeblock pre,.codeblock code{background:none;border:none;padding:0;border-radius:0;color:#c8c8e0}
+  .cm{color:#6a6a8a}.ck{color:#c4b5fd}.cs{color:#86efac}.cn{color:#fb923c}.cf{color:#38bdf8}.co{color:#fbbf24}
+
+  /* CALLOUTS */
+  .callout{border-radius:8px;padding:1rem 1.25rem;margin:1.5rem 0;border-left:3px solid;font-size:14px;line-height:1.7}
+  .callout p{font-size:14px;margin:0;color:inherit}
+  .callout-title{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;font-weight:600}
+  .callout.info{background:var(--accent-dim);border-color:var(--accent);color:#c4c4f0}
+  .callout.info .callout-title{color:var(--accent2)}
+  .callout.success{background:var(--green-dim);border-color:var(--green);color:#b0e6c4}
+  .callout.success .callout-title{color:var(--green)}
+  .callout.warn{background:var(--amber-dim);border-color:var(--amber);color:#fde68a}
+  .callout.warn .callout-title{color:var(--amber)}
+  .callout.danger{background:var(--red-dim);border-color:var(--red);color:#fca5a5}
+  .callout.danger .callout-title{color:var(--red)}
+  .callout.cyan{background:var(--cyan-dim);border-color:var(--cyan);color:#a5f3fc}
+  .callout.cyan .callout-title{color:var(--cyan)}
+
+  /* TABLES */
+  .table-wrap{overflow-x:auto;margin:1.5rem 0;border-radius:8px;border:1px solid var(--border)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  thead tr{background:var(--surface2)}
+  th{padding:.65rem 1rem;text-align:left;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
+  td{padding:.6rem 1rem;color:#c8c8d8;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55}
+  tr:last-child td{border-bottom:none}
+  tbody tr:nth-child(even){background:rgba(255,255,255,.012)}
+  tbody tr:hover{background:rgba(255,255,255,.025)}
+  td code{font-size:11.5px}
+
+  /* PIPELINE FLOW */
+  .pipeline{display:flex;flex-direction:column;margin:1.5rem 0}
+  .pipe-step{display:flex;align-items:flex-start;gap:1rem;position:relative}
+  .pipe-step:not(:last-child)::after{content:'';position:absolute;left:15px;top:32px;bottom:-16px;width:1px;background:var(--border2)}
+  .pipe-num{width:31px;height:31px;border-radius:50%;background:var(--surface2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--accent2);flex-shrink:0;margin-top:2px}
+  .pipe-content{flex:1;padding-bottom:1.75rem}
+  .pipe-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:.2rem}
+  .pipe-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+  /* BUG CARDS */
+  .bug-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.1rem 1.25rem;margin-bottom:.75rem;display:flex;gap:1rem;align-items:flex-start}
+  .bug-id{font-family:var(--font-mono);font-size:11px;padding:2px 8px;border-radius:4px;flex-shrink:0;margin-top:1px;font-weight:600}
+  .bug-id.critical{background:var(--red-dim);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+  .bug-id.high{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
+  .bug-id.rag{background:var(--accent-dim);color:var(--accent2);border:1px solid rgba(99,102,241,.3)}
+  .bug-id.fixed{background:var(--green-dim);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+  .bug-body{flex:1}
+  .bug-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:.25rem}
+  .bug-desc{font-size:13px;color:var(--muted);line-height:1.55}
+  .bug-fix{font-size:12px;color:var(--green);margin-top:.4rem;font-family:var(--font-mono)}
+
+  /* METRICS */
+  .metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:1.5rem 0}
+  .metric-card{background:var(--surface);padding:1.25rem}
+  .metric-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+  .metric-value{font-family:var(--font-mono);font-size:1.5rem;font-weight:600;color:var(--text);line-height:1;margin-bottom:.25rem}
+  .metric-sub{font-size:12px;color:var(--muted)}
+  .metric-value.green{color:var(--green)}.metric-value.accent{color:var(--accent2)}.metric-value.amber{color:var(--amber)}.metric-value.cyan{color:var(--cyan)}
+
+  /* LAYER CARDS */
+  .layer-card{border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:.5rem;display:grid;grid-template-columns:80px 1fr;gap:1rem;align-items:start;background:var(--surface)}
+  .layer-badge{font-family:var(--font-mono);font-size:10px;font-weight:600;text-align:center;padding:4px 0;border-radius:4px;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+  .lb-sparse{background:var(--amber-dim);color:var(--amber)}.lb-dense{background:var(--cyan-dim);color:var(--cyan)}
+  .lb-ensemble{background:var(--accent-dim);color:var(--accent2)}.lb-rerank{background:var(--green-dim);color:var(--green)}
+  .lb-multi{background:var(--pink-dim);color:var(--pink)}.lb-guard{background:var(--red-dim);color:var(--red)}
+  .layer-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:.2rem}
+  .layer-desc{font-size:13px;color:var(--muted);line-height:1.55}
+
+  /* ARCH */
+  .arch-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin:1.5rem 0;font-family:var(--font-mono);font-size:12px;line-height:1.9;overflow-x:auto}
+  .arch-label{color:var(--accent2);font-weight:600}
+  .arch-note{color:var(--muted)}
+  .arch-flow{color:var(--green)}
+  .arch-sep{color:var(--border2)}
+
+  /* DEMO SCRIPT */
+  .demo-step{display:flex;align-items:flex-start;gap:.875rem;padding:.75rem 0;border-bottom:1px solid var(--border)}
+  .demo-step:last-child{border-bottom:none}
+  .demo-num{font-family:var(--font-mono);font-size:11px;color:var(--accent2);min-width:1.5rem;margin-top:2px}
+  .demo-text{font-size:14px;color:#c8c8d8;line-height:1.6}
+
+  /* BADGE */
+  .badge{display:inline-block;font-family:var(--font-mono);font-size:10px;padding:1px 7px;border-radius:3px;font-weight:600}
+  .badge-req{background:var(--red-dim);color:var(--red)}
+  .badge-opt{background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--border);padding:2.5rem 0;text-align:center;font-size:13px;color:var(--muted)}
+  footer a{color:var(--muted);text-decoration:none}
+  footer a:hover{color:var(--text)}
+
+  /* ANIMATIONS */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  .hero>*{animation:fadeUp .5s ease both}
+  .hero .hero-eyebrow{animation-delay:.05s}.hero h1{animation-delay:.1s}.hero .hero-sub{animation-delay:.15s}
+  .hero .tag-row{animation-delay:.2s}.hero .stat-row{animation-delay:.25s}.hero .author-row{animation-delay:.3s}
+
+  @media(max-width:600px){
+    .toc-grid,.stat-row,.metric-grid{grid-template-columns:1fr}
+    .layer-card{grid-template-columns:1fr}.layer-badge{width:fit-content}
+    nav.topnav{padding:0 1rem}.hero{padding:88px 0 48px}
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-brand" href="https://github.com/manishengineertech1582-code/manish-portfolio"><span>MK</span> · portfolio</a>
+  <div class="nav-links">
+    <a href="#s1">Overview</a>
+    <a href="#s4">Chunking</a>
+    <a href="#s8">Retrieval</a>
+    <a href="#s11">API</a>
+    <a href="#s14">Bugs</a>
+    <a href="https://github.com/manishengineertech1582-code/finrag-engine-old">GitHub ↗</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow">Case Study · AI Engineering · Production RAG · 2026</div>
+  <h1>FinRAG Engine v2 — <em>Grounded Document Q&amp;A in Production</em></h1>
+  <p class="hero-sub">
+    A complete engineering deep dive into a production-grade RAG platform for teams that need fast, explainable answers from uploaded business files — with full source citations, hybrid retrieval, and deterministic structured lookups. Covers 21 development phases, 9 test suites, and every architectural decision from tokenization to deployment.
+  </p>
+  <div class="tag-row">
+    <span class="tag accent">LangChain 0.3</span>
+    <span class="tag accent">FAISS + BM25</span>
+    <span class="tag accent">OpenAI gpt-4o-mini</span>
+    <span class="tag accent">FastAPI</span>
+    <span class="tag accent">MultiQueryRetriever</span>
+    <span class="tag green">React 19</span>
+    <span class="tag">Python 3.12</span>
+    <span class="tag">Docker</span>
+    <span class="tag">Supabase</span>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><span class="stat-num">21</span><span class="stat-label">Dev phases</span></div>
+    <div class="stat"><span class="stat-num">140</span><span class="stat-label">Tests passing</span></div>
+    <div class="stat"><span class="stat-num">5</span><span class="stat-label">File formats</span></div>
+    <div class="stat"><span class="stat-num">9</span><span class="stat-label">Test suites</span></div>
+  </div>
+  <div class="author-row">
+    <div class="avatar">MK</div>
+    <div class="author-meta">
+      <strong>Manish Kumar</strong> · AI Engineer ·
+      <a href="https://github.com/manishengineertech1582-code">github.com/manishengineertech1582-code</a>
+    </div>
+  </div>
+</header>
+
+<!-- TOC -->
+<nav class="toc" aria-label="Table of contents">
+  <div class="toc-title">Contents — 18 Sections</div>
+  <div class="toc-grid">
+    <a class="toc-link" href="#s1"><span class="toc-num">01</span>Project Overview</a>
+    <a class="toc-link" href="#s2"><span class="toc-num">02</span>Why This Project Matters</a>
+    <a class="toc-link" href="#s3"><span class="toc-num">03</span>Architecture &amp; Flows</a>
+    <a class="toc-link" href="#s4"><span class="toc-num">04</span>Chunking Strategy</a>
+    <a class="toc-link" href="#s5"><span class="toc-num">05</span>Embeddings &amp; Vector Store</a>
+    <a class="toc-link" href="#s6"><span class="toc-num">06</span>Hybrid Search Design</a>
+    <a class="toc-link" href="#s7"><span class="toc-num">07</span>FAISS vs Alternatives</a>
+    <a class="toc-link" href="#s8"><span class="toc-num">08</span>Retrieval Pipeline</a>
+    <a class="toc-link" href="#s9"><span class="toc-num">09</span>Generation &amp; Prompts</a>
+    <a class="toc-link" href="#s10"><span class="toc-num">10</span>Agentic Patterns</a>
+    <a class="toc-link" href="#s11"><span class="toc-num">11</span>API Reference</a>
+    <a class="toc-link" href="#s12"><span class="toc-num">12</span>Configuration</a>
+    <a class="toc-link" href="#s13"><span class="toc-num">13</span>Frontend &amp; UX</a>
+    <a class="toc-link" href="#s14"><span class="toc-num">14</span>Bug Register</a>
+    <a class="toc-link" href="#s15"><span class="toc-num">15</span>Testing &amp; Quality</a>
+    <a class="toc-link" href="#s16"><span class="toc-num">16</span>Demo Script</a>
+    <a class="toc-link" href="#s17"><span class="toc-num">17</span>Limitations &amp; Next Steps</a>
+    <a class="toc-link" href="#s18"><span class="toc-num">18</span>Key Lessons</a>
+  </div>
+</nav>
+
+<div class="content">
+
+<!-- S1 -->
+<section class="section section-anchor" id="s1">
+  <div class="section-label">01 · Project Overview</div>
+  <h2>What FinRAG Engine v2 is and who it's for</h2>
+  <p>FinRAG Engine v2 is a document-grounded question answering platform for teams that need fast, explainable answers from uploaded business files. It combines a FastAPI backend, a FAISS-based hybrid retrieval pipeline, and a React frontend for ingestion, monitoring, and query workflows.</p>
+  <p>The repository is suitable for:</p>
+  <ul>
+    <li>Product demos that need visible source citations</li>
+    <li>Internal knowledge assistants over PDFs, Word docs, spreadsheets, and text</li>
+    <li>Multi-tenant document workspaces scoped by <code>user_id</code></li>
+    <li>Structured CSV/XLSX lookups where exact row retrieval matters</li>
+  </ul>
+  <div class="metric-grid">
+    <div class="metric-card"><div class="metric-label">LLM model</div><div class="metric-value accent" style="font-size:1.1rem">gpt-4o-mini</div><div class="metric-sub">OpenAI · tenacity retry · 45s timeout</div></div>
+    <div class="metric-card"><div class="metric-label">Embedding model</div><div class="metric-value accent" style="font-size:1.1rem">text-embedding-3-small</div><div class="metric-sub">1536 dims · indexing + reranking</div></div>
+    <div class="metric-card"><div class="metric-label">Vector store</div><div class="metric-value cyan" style="font-size:1.1rem">FAISS</div><div class="metric-sub">faiss-cpu · persisted to disk · FileLock writes</div></div>
+    <div class="metric-card"><div class="metric-label">API framework</div><div class="metric-value green" style="font-size:1.1rem">FastAPI 0.111</div><div class="metric-sub">Async · Pydantic v2 · Swagger in dev</div></div>
+  </div>
+  <h3>Supported Document Formats</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Format</th><th>Extension</th><th>Chunk size / overlap</th><th>Loader behaviour</th></tr></thead>
+      <tbody>
+        <tr><td><strong>PDF</strong></td><td><code>.pdf</code></td><td>1200 / 200</td><td>Native text extraction; Tesseract OCR fallback for low-text pages when Poppler and Tesseract are available</td></tr>
+        <tr><td><strong>Word</strong></td><td><code>.docx</code></td><td>800 / 150</td><td>Section-aware extraction with resilient paragraph handling</td></tr>
+        <tr><td><strong>Excel</strong></td><td><code>.xlsx</code></td><td>1500 / 0</td><td>Multi-sheet loading with row-oriented serialisation</td></tr>
+        <tr><td><strong>CSV</strong></td><td><code>.csv</code></td><td>1500 / 0</td><td>Row-based serialisation for retrieval and structured lookup</td></tr>
+        <tr><td><strong>Plain text</strong></td><td><code>.txt</code></td><td>1000 / 150</td><td>Encoding fallback chain (UTF-8 → Latin-1 → Win-1252); paragraph splitting</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- S2 -->
+<section class="section section-anchor" id="s2">
+  <div class="section-label">02 · Why This Project Matters</div>
+  <h2>The problem with most chat interfaces in demos</h2>
+  <p>Most chat interfaces fail in demos because they answer confidently without showing evidence. FinRAG Engine v2 is built around the opposite behaviour:</p>
+  <div class="layer-card">
+    <div class="layer-badge lb-rerank">Grounded</div>
+    <div><div class="layer-title">Answers stay grounded in uploaded documents</div><div class="layer-desc">The LLM is instructed to answer only from retrieved context. If the answer isn't in the documents, it says so — it does not hallucinate.</div></div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-badge lb-dense">Citations</div>
+    <div><div class="layer-title">Every factual answer is backed by citations</div><div class="layer-desc">Responses include <code>[source: filename.pdf, page_4]</code> inline. The frontend shows expandable source cards with content snippets and chunk IDs.</div></div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-badge lb-multi">Immediate</div>
+    <div><div class="layer-title">New uploads can be queried without retraining</div><div class="layer-desc">Ingestion runs in the background and indexes immediately. No model retraining — the vector store is updated and the pipeline cache is invalidated on completion.</div></div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-badge lb-ensemble">Transparent</div>
+    <div><div class="layer-title">UI exposes confidence, latency, and source chunks</div><div class="layer-desc">The query workspace shows staged loading, confidence score, retrieval metadata (queries generated, candidates before/after rerank, latency_ms, request_id), and expandable source cards.</div></div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-badge lb-sparse">Deterministic</div>
+    <div><div class="layer-title">Structured table queries use deterministic row matching</div><div class="layer-desc">Patient-style CSV/XLSX queries bypass semantic retrieval entirely and use exact row filtering — zero hallucination risk for tabular lookups.</div></div>
+  </div>
+  <div class="callout success">
+    <div class="callout-title">Why this matters for demos</div>
+    <p>This makes the project useful both as an engineering foundation and as a demo artifact that explains itself clearly to customers, operators, and investors. The UI's transparency — showing exactly which documents were used and with what confidence — is the product signal that distinguishes it from generic chat interfaces.</p>
+  </div>
+</section>
+
+<!-- S3 -->
+<section class="section section-anchor" id="s3">
+  <div class="section-label">03 · Architecture &amp; Request Flows</div>
+  <h2>Product architecture and the two core pipelines</h2>
+  <div class="arch-box">
+<span class="arch-label">User / React Frontend (Auth · Dashboard · Ingestion · Query)</span>
+    │  HTTP (axios · auth header · AbortController)
+    ▼
+<span class="arch-label">FastAPI Backend (:8000)</span>
+    ├── SupabaseAuthMiddleware → CORS → Routes
+    │
+    ├── <span class="arch-label">POST /api/ingest</span>
+    │     <span class="arch-flow">validate ext → stream 64KB chunks → SHA256 dedup → save UUID-prefixed file</span>
+    │     <span class="arch-flow">→ register job_id → return 202 immediately</span>
+    │     <span class="arch-flow">→ asyncio.to_thread(_run_ingestion)</span>
+    │          <span class="arch-flow">load [format-specific] → chunk [format-aware] → enrich metadata</span>
+    │          <span class="arch-flow">→ embed + FAISS write [FileLock] → register hash → clear caches</span>
+    │
+    └── <span class="arch-label">POST /api/ask</span>
+          <span class="arch-flow">injection guard → normalize → check cache → patient lookup?</span>
+          <span class="arch-flow">→ complex/compound? → build/load pipeline</span>
+          <span class="arch-flow">→ SafeWrapper → MultiQuery → Reranker → Hybrid(BM25+FAISS/MMR)</span>
+          <span class="arch-flow">→ grounded generation [gpt-4o-mini + citations] → cache → return</span>
+
+<span class="arch-sep">─────────────────────────────────────────────────────────────</span>
+<span class="arch-label">Storage</span>
+  data/raw/                <span class="arch-note">uploaded files (UUID-prefixed, namespaced by user_id)</span>
+  vector_store/
+    index.faiss            <span class="arch-note">actual vectors</span>
+    index.pkl              <span class="arch-note">docstore (text + metadata)</span>
+    ingested_files.json    <span class="arch-note">SHA256 dedup registry: {user_id}:{hash} → metadata</span>
+    .write.lock            <span class="arch-note">FileLock for concurrent writes</span></div>
+
+  <h3>Repository structure</h3>
+  <div class="codeblock">
+    <div class="codeblock-header"><div class="codeblock-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codeblock-lang">text · repository map</span></div>
+    <pre><code>finrag-engine-old/
+├── app/                    FastAPI app, routes, middleware, services
+│   ├── main.py             App factory, CORS, middleware, router wiring, static mount
+│   ├── state.py            In-memory caches + ingestion job registry
+│   ├── middleware/auth.py  Supabase JWT middleware; no-op when secret is absent
+│   ├── routes/
+│   │   ├── health.py       Health check with vector count and OCR reporting
+│   │   ├── ingest.py       Upload endpoint, job polling, document listing
+│   │   └── query.py        Query normalization, caching, retrieval orchestration
+│   └── services/
+│       └── patient_lookup.py  Deterministic CSV/XLSX row lookup
+├── src/                    Core ingestion, retrieval, and generation logic
+│   ├── chunking.py         Format-aware chunk sizing and splitting
+│   ├── embeddings.py       OpenAI embeddings, FAISS persistence, dedup registry
+│   ├── generator.py        Grounded QA chain and compound-answer generation
+│   ├── metadata.py         Metadata enrichment for every chunk
+│   ├── pipeline.py         Pipeline assembly for full QA or retriever-only flows
+│   ├── retriever.py        Hybrid retrieval, reranking, MultiQuery, safety wrappers
+│   └── ingestion/          factory.py + pdf/docx/excel/txt loaders
+├── config/settings.py      Pydantic settings model and singleton loader
+├── models/                 request.py (injection guard) + response.py (all types)
+├── frontend/               React 19 + Vite 8 + TypeScript + Tailwind v4
+├── tests/                  9 pytest suites — 140 tests passing
+├── create_index.py         CLI bootstrap for indexing a local document directory
+├── Dockerfile              Backend container image
+└── docker-compose.yml      Local container orchestration</code></pre>
+  </div>
+</section>
+
+<!-- S4 -->
+<section class="section section-anchor" id="s4">
+  <div class="section-label">04 · Chunking Strategy</div>
+  <h2>Why chunking is the most underestimated decision in RAG</h2>
+  <p>Chunking directly determines retrieval quality. Chunks too large lose precision — the right answer is buried in noise. Chunks too small lose context — a sentence without its surrounding paragraph is meaningless. The optimal size is also format-dependent: a dense financial PDF needs larger windows than a structured CSV row.</p>
+  <div class="callout info">
+    <div class="callout-title">Format-aware automatic inference</div>
+    <p>Chunk size is inferred from <code>documents[0].metadata["doc_type"]</code> automatically. Callers pass documents and get correctly-chunked output without specifying sizes. Overrides are available for advanced tuning.</p>
+  </div>
+  <div class="codeblock">
+    <div class="codeblock-header"><div class="codeblock-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codeblock-lang">python · src/chunking.py</span></div>
+    <pre><code><span class="cm"># Per-format defaults: (chunk_size, chunk_overlap)</span>
+_FORMAT_DEFAULTS = {
+    <span class="cs">"pdf"</span>:   (<span class="cn">1200</span>, <span class="cn">200</span>),  <span class="cm"># dense financial text, larger context window</span>
+    <span class="cs">"txt"</span>:   (<span class="cn">1000</span>, <span class="cn">150</span>),  <span class="cm"># paragraphs pre-split by loader</span>
+    <span class="cs">"docx"</span>:  (<span class="cn">800</span>,  <span class="cn">150</span>),  <span class="cm"># section-grouped; keep sections coherent</span>
+    <span class="cs">"csv"</span>:   (<span class="cn">1500</span>, <span class="cn">0</span>),    <span class="cm"># rows are independent; no overlap needed</span>
+    <span class="cs">"excel"</span>: (<span class="cn">1500</span>, <span class="cn">0</span>),    <span class="cm"># same as csv</span>
+}</code></pre>
+  </div>
+  <h3>Metadata injected into every chunk</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Value example</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>source</code></td><td><code>report.pdf</code></td><td>Original filename for citation</td></tr>
+        <tr><td><code>page_or_sheet</code></td><td><code>page_4</code> / <code>section_2</code> / <code>sheet_Revenue_rows_1_50</code></td><td>Location within document for citation</td></tr>
+        <tr><td><code>doc_type</code></td><td><code>pdf</code> / <code>docx</code> / <code>csv</code></td><td>Format label for filtering</td></tr>
+        <tr><td><code>chunk_id</code></td><td><code>xK3mP9abc...</code></td><td>shortuuid — globally unique, used for dedup queries</td></tr>
+        <tr><td><code>ingested_at</code></td><td><code>2025-01-01T12:00:00Z</code></td><td>ISO 8601 UTC — enables time-based filtering</td></tr>
+        <tr><td><code>file_hash</code></td><td><code>sha256:abc...</code></td><td>SHA256 of source file — dedup + audit trail</td></tr>
+        <tr><td><code>user_id</code></td><td><code>demo_user</code></td><td>Tenant isolation at retrieval time</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- S5 -->
+<section class="section section-anchor" id="s5">
+  <div class="section-label">05 · Embeddings &amp; Vector Store</div>
+  <h2>Converting text to vectors and storing them safely</h2>
+  <p>Each chunk is converted to a 1536-dimensional vector by <code>text-embedding-3-small</code>. Similar meanings produce similar vectors, enabling semantic similarity search. The embedding model used at indexing time must be identical at query time — swapping models requires full re-indexing.</p>
+  <div class="codeblock">
+    <div class="codeblock-header"><div class="codeblock-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codeblock-lang">python · src/embeddings.py</span></div>
+    <pre><code>EMBED_BATCH_SIZE = <span class="cn">200</span>   <span class="cm"># safe batch — under OpenAI's 300k token/req limit</span>
+_LOCK_TIMEOUT    = <span class="cn">60</span>    <span class="cm"># seconds to wait for FileLock before raising</span>
+
+<span class="ck">with</span> filelock.FileLock(lock_path, timeout=_LOCK_TIMEOUT):
+    <span class="ck">for</span> idx, batch <span class="ck">in</span> <span class="cf">enumerate</span>(batches, start=<span class="cn">1</span>):
+        <span class="ck">if</span> vectorstore <span class="ck">is</span> <span class="ck">None</span>:
+            vectorstore = FAISS.from_documents(batch, embeddings)
+        <span class="ck">else</span>:
+            vectorstore.add_documents(batch)
+        vectorstore.save_local(persist_path)  <span class="cm"># checkpoint after every batch</span></code></pre>
+  </div>
+  <p>The index is checkpointed after every 200-chunk batch. If the process is interrupted mid-ingestion, the next run resumes safely. The write lock prevents index corruption when multiple concurrent ingestion jobs run simultaneously.</p>
+  <div class="callout danger">
+    <div class="callout-title">C2 — Race condition fix</div>
+    <p>Multiple concurrent uploads writing to the same FAISS index files caused corruption. <code>threading.Lock</code> only protects within one process. Fix: <code>filelock.FileLock</code> at the OS level — protects against concurrent processes and separate Docker containers sharing a volume.</p>
+  </div>
+  <h3>SHA256 deduplication</h3>
+  <p>Before saving any uploaded file, its SHA256 hash is computed and checked against <code>vector_store/ingested_files.json</code>. Duplicate uploads within the same user namespace return <code>status: "skipped"</code> immediately — no disk write, no embedding cost, no duplicate chunks in the index.</p>
+</section>
+
+<!-- S6 -->
+<section class="section section-anchor" id="s6">
+  <div class="section-label">06 · Hybrid Search Design</div>
+  <h2>Why dense-only retrieval isn't enough for business corpora</h2>
+  <p>Dense vector search (FAISS) captures semantic similarity — finding conceptually related chunks even without keyword overlap. But it struggles with exact matches: specific entity names, ticker symbols, patient IDs, and technical codes. BM25 handles exact matches but misses semantic variation. The hybrid ensemble captures both.</p>
+  <div class="callout info">
+    <div class="callout-title">Key decision</div>
+    <p>Hybrid retrieval is a better fit for mixed business corpora than vector-only retrieval because users ask both semantic questions ("what are the risks?") and exact-match questions ("what is clause 4.2?"). A single retrieval strategy cannot handle both well.</p>
+  </div>
+  <div class="codeblock">
+    <div class="codeblock-header"><div class="codeblock-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codeblock-lang">python · src/retriever.py</span></div>
+    <pre><code><span class="cm"># BM25 built from FAISS docstore — same documents, different scoring</span>
+all_docs  = _extract_docs_from_faiss(vectorstore)
+bm25_docs = _filter_docs(all_docs, filter_kwargs)  <span class="cm"># tenant isolation</span>
+bm25_retriever = BM25Retriever.from_documents(bm25_docs)
+bm25_retriever.k = top_k
+
+ensemble = EnsembleRetriever(
+    retrievers=[bm25_retriever, faiss_retriever],
+    weights=[<span class="cn">0.3</span>, <span class="cn">0.7</span>],  <span class="cm"># BM25 / FAISS via Reciprocal Rank Fusion</span>
+)</code></pre>
+  </div>
+  <p>Multi-tenancy is enforced at both legs: FAISS uses native <code>filter_kwargs={"user_id": uid}</code> metadata filtering; BM25 docs are pre-filtered by <code>user_id</code> before the BM25 index is constructed. Neither leg ever returns another tenant's documents.</p>
+</section>
+
+<!-- S7 -->
+<section class="section section-anchor" id="s7">
+  <div class="section-label">07 · FAISS vs Alternatives</div>
+  <h2>Why FAISS, and when to migrate away</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Option</th><th>Latency</th><th>Infrastructure</th><th>Scale</th><th>Best for</th></tr></thead>
+      <tbody>
+        <tr><td><strong>FAISS</strong> ✓</td><td>~1–5ms</td><td>Zero (in-process)</td><td>~5M/node</td><td>Single-server, local demos, &lt;1M docs</td></tr>
+        <tr><td>Pinecone</td><td>~10–30ms</td><td>Fully managed SaaS</td><td>Unlimited</td><td>Horizontal scale, no ops</td></tr>
+        <tr><td>Weaviate</td><td>~5–15ms</td><td>Self-hosted or cloud</td><td>Unlimited</td><td>Hybrid search built-in</td></tr>
+        <tr><td>Chroma</td><td>~2–10ms</td><td>Embedded or server</td><td>~1M vecs</td><td>Prototyping, local dev</td></tr>
+        <tr><td>Qdrant</td><td>~5–15ms</td><td>Self-hosted or cloud</td><td>Unlimited</td><td>Production, Rust performance</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>FAISS was chosen because it runs in-process with zero additional infrastructure. For the target scale (single-node, thousands of documents), FAISS is faster than any managed alternative. Migrating means replacing <code>src/embeddings.py</code> — the rest of the pipeline is vector-store-agnostic through LangChain's abstraction layer.</p>
+  <div class="callout warn">
+    <div class="callout-title">File-based persistence note</div>
+    <p>The current implementation persists FAISS artifacts in <code>vector_store/</code>, uploaded files in <code>data/raw/</code>, and write coordination in <code>vector_store/.write.lock</code>. This keeps the stack easy to run locally and easy to demo without adding external infrastructure — but it is not horizontally distributed.</p>
+  </div>
+</section>
+
+<!-- S8 -->
+<section class="section section-anchor" id="s8">
+  <div class="section-label">08 · Retrieval Pipeline</div>
+  <h2>Five layers applied in order on every query</h2>
+  <div class="pipeline">
+    <div class="pipe-step">
+      <div class="pipe-num">1</div>
+      <div class="pipe-content">
+        <div class="pipe-title">BM25 + FAISS/MMR via EnsembleRetriever</div>
+        <div class="pipe-desc">Sparse keyword retrieval (BM25 weight=0.3) + dense semantic retrieval (FAISS/MMR weight=0.7). Results merged via Reciprocal Rank Fusion. MMR uses <code>lambda_mult=0.6</code> for relevance-diversity balance — prevents 8 near-identical chunks dominating.</div>
+      </div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">2</div>
+      <div class="pipe-content">
+        <div class="pipe-title">_SafeEmbeddingsFilter — re-ranking with safety net</div>
+        <div class="pipe-desc">Recomputes cosine similarity between the query embedding and every candidate chunk. Drops chunks below <code>RERANK_THRESHOLD=0.30</code>. Safety net: if ALL candidates would be dropped, top-1 is always returned — the pipeline never delivers empty context to the LLM.</div>
+      </div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">3</div>
+      <div class="pipe-content">
+        <div class="pipe-title">MultiQueryRetriever — optional query expansion</div>
+        <div class="pipe-desc">Generates <code>MULTI_QUERY_NUM_QUERIES=2</code> alternative phrasings using a cached <code>gpt-4o-mini</code> singleton. Retrieves for all variants and returns the union. Adaptively disabled for short queries (≤4 words, &lt;30 chars). Disable entirely via <code>USE_MULTI_QUERY=false</code>.</div>
+      </div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">4</div>
+      <div class="pipe-content">
+        <div class="pipe-title">SafeQueryWrapper — system boundary input guard</div>
+        <div class="pipe-desc">Outermost BaseRetriever. LangChain's <code>create_retrieval_chain</code> may pass <code>{"input": str}</code> instead of a plain string. This wrapper normalises all input — making all inner components immune to LangChain API changes (RCA-5).</div>
+      </div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">5</div>
+      <div class="pipe-content">
+        <div class="pipe-title">Compound Query Orchestration</div>
+        <div class="pipe-desc">Multi-part questions are split into focused clauses. Each clause retrieves independently using <code>COMPOUND_QUERY_TOP_K=4</code> chunks. All clause contexts feed one LLM call with a structured <code>COMPOUND_PROMPT</code>, answering each clause in its own <code>### Heading</code>.</div>
+      </div>
+    </div>
+  </div>
+  <div class="callout danger">
+    <div class="callout-title">RCA-9 — The threshold bug that killed all retrieval</div>
+    <p>The original <code>RERANK_THRESHOLD=0.75</code> dropped every chunk for <code>text-embedding-3-small</code>. This model produces cosine similarities of 0.30–0.65 for relevant content — never approaching 0.75. Every query returned "This information is not available." Fix: lower to 0.30 + safety-net fallback returning top-1 when all candidates fall below threshold.</p>
+  </div>
+</section>
+
+<!-- S9 -->
+<section class="section section-anchor" id="s9">
+  <div class="section-label">09 · Generation &amp; Prompts</div>
+  <h2>Building grounded answers from retrieved context</h2>
+  <div class="codeblock">
+    <div class="codeblock-header"><div class="codeblock-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codeblock-lang">python · src/generator.py — system prompt</span></div>
+    <pre><code>SYSTEM_PROMPT = <span class="cs">"""You are FinRAG, an expert document assistant.
+
+Answer the user's question using ONLY the provided context passages.
+Each passage starts with a [File: X | Location: Y] label for citations.
+
+Rules:
+1. Be concise and direct.
+2. Use only supported facts from the context.
+3. Cite every factual claim as [source: &lt;filename&gt;, &lt;location&gt;].
+4. If the context does not contain the answer, say exactly:
+   This information is not available in the provided documents.
+5. Preserve exact figures, names, and terminology from the source.
+
+Context passages:
+{context}"""</span></code></pre>
+  </div>
+  <p>Rule 4 is the hallucination guard. The <code>DOCUMENT_PROMPT</code> template embeds <code>[File: X | Location: Y]</code> into every passage before it reaches the LLM, so citations always reference real metadata — never hallucinated filenames. For compound queries, a separate <code>COMPOUND_PROMPT</code> instructs the LLM to answer each clause in its own <code>### heading</code> using only the context attached to that specific clause.</p>
+  <h3>Reliability</h3>
+  <p>All LLM calls use tenacity: 4 attempts, exponential backoff (2s min, 30s max), retrying on any exception. Timeout is 45 seconds. The <code>_get_chat_llm</code> function is cached with <code>@lru_cache</code> to avoid per-call model instantiation. <code>max_tokens</code> is capped at 700 (single Q) or 900 (compound) to control cost and latency.</p>
+</section>
+
+<!-- S10 -->
+<section class="section section-anchor" id="s10">
+  <div class="section-label">10 · Agentic Patterns</div>
+  <h2>Where the system makes intelligent routing decisions</h2>
+  <div class="layer-card">
+    <div class="layer-badge lb-multi">Adaptive</div>
+    <div><div class="layer-title">Adaptive MultiQuery activation</div><div class="layer-desc">Detects query complexity before invoking MultiQueryRetriever. Short queries (≤4 words, &lt;30 chars) skip it. Complex queries use 2 LLM-generated variants. Controlled by <code>_is_complex_query()</code> in query.py.</div></div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-badge lb-rerank">Compound</div>
+    <div><div class="layer-title">Multi-intent clause splitting</div><div class="layer-desc">Queries with 2+ intent starters ("What... and also how...") are split into focused clauses. Each clause retrieves independently — prevents blended retrieval across unrelated topics (RCA-12).</div></div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-badge lb-dense">Structured</div>
+    <div><div class="layer-title">Deterministic patient table lookup</div><div class="layer-desc">Structured patient queries ("list all female patients from Chennai") bypass vector retrieval and scan CSV/XLSX rows directly using <code>PatientQueryFilters</code>. Exact row matches; zero hallucination risk for tabular data.</div></div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-badge lb-guard">Failsafe</div>
+    <div><div class="layer-title">Injection guard + graceful failsafe</div><div class="layer-desc">Prompt injection patterns are blocked at the <code>QueryRequest</code> validation layer before any retrieval occurs. If retrieval returns no context, the system returns "No relevant context found" — never hallucinating from empty context.</div></div>
+  </div>
+</section>
+
+<!-- S11 -->
+<section class="section section-anchor" id="s11">
+  <div class="section-label">11 · API Reference</div>
+  <h2>Five endpoints that cover the complete workflow</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Endpoint</th><th>Method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>/api/ingest</code></td><td>POST</td><td>Upload a document. Returns job_id immediately (HTTP 202).</td></tr>
+        <tr><td><code>/api/jobs/{job_id}</code></td><td>GET</td><td>Poll ingestion status: pending → processing → completed | failed</td></tr>
+        <tr><td><code>/api/documents</code></td><td>GET</td><td>List all ingested documents. Optional <code>?user_id=</code> filter.</td></tr>
+        <tr><td><code>/api/ask</code></td><td>POST</td><td>Answer a question using the full RAG pipeline.</td></tr>
+        <tr><td><code>/health</code></td><td>GET</td><td>Service health: vector count + OCR dependency visibility.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>POST /api/ask — full request/response</h3>
+  <div class="codeblock">
+    <div class="codeblock-header"><div class="codeblock-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codeblock-lang">json · request</span></div>
+    <pre><code>{
+  <span class="cs">"question"</span>: <span class="cs">"What are the key risks in the uploaded report?"</span>,
+  <span class="cs">"user_id"</span>: <span class="cs">"demo_user"</span>,
+  <span class="cs">"doc_type_filter"</span>: <span class="cs">"pdf"</span>,
+  <span class="cs">"source_filter"</span>: <span class="cs">"report.pdf"</span>,  <span class="cm">// optional — restrict to one file</span>
+  <span class="cs">"top_k"</span>: <span class="cn">8</span>
+}</code></pre>
+  </div>
+  <div class="codeblock">
+    <div class="codeblock-header"><div class="codeblock-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codeblock-lang">json · response</span></div>
+    <pre><code>{
+  <span class="cs">"answer"</span>: <span class="cs">"The report highlights market volatility [source: report.pdf, page_4]."</span>,
+  <span class="cs">"sources"</span>: [{
+    <span class="cs">"source"</span>: <span class="cs">"report.pdf"</span>,
+    <span class="cs">"page_or_sheet"</span>: <span class="cs">"page_4"</span>,
+    <span class="cs">"doc_type"</span>: <span class="cs">"pdf"</span>,
+    <span class="cs">"chunk_id"</span>: <span class="cs">"abc123"</span>,
+    <span class="cs">"user_id"</span>: <span class="cs">"demo_user"</span>,
+    <span class="cs">"snippet"</span>: <span class="cs">"Market volatility remains the primary concern..."</span>
+  }],
+  <span class="cs">"total_chunks_retrieved"</span>: <span class="cn">1</span>,
+  <span class="cs">"confidence_score"</span>: <span class="cn">0.95</span>,  <span class="cm">// chunks_retrieved / top_k</span>
+  <span class="cs">"retrieval_meta"</span>: {
+    <span class="cs">"queries_generated"</span>: <span class="cn">1</span>,
+    <span class="cs">"candidates_before_rerank"</span>: <span class="cn">12</span>,
+    <span class="cs">"candidates_after_rerank"</span>: <span class="cn">1</span>,
+    <span class="cs">"hybrid_search"</span>: <span class="ck">true</span>,
+    <span class="cs">"multi_query"</span>: <span class="ck">false</span>,
+    <span class="cs">"latency_ms"</span>: <span class="cn">284.6</span>,
+    <span class="cs">"multi_intent_detected"</span>: <span class="ck">false</span>,
+    <span class="cs">"compound_clause_count"</span>: <span class="cn">1</span>
+  },
+  <span class="cs">"request_id"</span>: <span class="cs">"9b84b6396f2c44bd9b0a22d032642f44"</span>
+}</code></pre>
+  </div>
+  <h3>GET /health — response example</h3>
+  <div class="codeblock">
+    <div class="codeblock-header"><div class="codeblock-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codeblock-lang">json</span></div>
+    <pre><code>{
+  <span class="cs">"status"</span>: <span class="cs">"ok"</span>,
+  <span class="cs">"vectorstore_loaded"</span>: <span class="ck">true</span>,
+  <span class="cs">"indexed_vectors"</span>: <span class="cn">1847</span>,
+  <span class="cs">"environment"</span>: <span class="cs">"development"</span>,
+  <span class="cs">"ocr"</span>: { <span class="cs">"poppler"</span>: <span class="ck">true</span>, <span class="cs">"tesseract"</span>: <span class="ck">true</span> }
+}</code></pre>
+  </div>
+  <div class="callout warn">
+    <div class="callout-title">Health check integrity</div>
+    <p><code>vectorstore_loaded</code> is <code>true</code> only when both <code>index.faiss</code> and <code>index.pkl</code> exist <em>and</em> <code>faiss.read_index().ntotal > 0</code>. An empty directory returns <code>false</code>. This was a bug fix (H4) — the original check only tested directory existence.</p>
+  </div>
+</section>
+
+<!-- S12 -->
+<section class="section section-anchor" id="s12">
+  <div class="section-label">12 · Configuration</div>
+  <h2>All environment variables — backend and frontend</h2>
+  <h3>Backend</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Variable</th><th>Default</th><th>Status</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>OPENAI_API_KEY</code></td><td>—</td><td><span class="badge badge-req">required</span></td><td>OpenAI API key for embeddings + generation</td></tr>
+        <tr><td><code>OPENAI_MODEL</code></td><td>gpt-4o-mini</td><td><span class="badge badge-opt">optional</span></td><td>Chat/generation model</td></tr>
+        <tr><td><code>EMBEDDING_MODEL</code></td><td>text-embedding-3-small</td><td><span class="badge badge-opt">optional</span></td><td>Must match at index and query time</td></tr>
+        <tr><td><code>VECTORSTORE_PATH</code></td><td>vector_store</td><td><span class="badge badge-opt">optional</span></td><td>FAISS persistence directory</td></tr>
+        <tr><td><code>UPLOAD_DIR</code></td><td>data/raw</td><td><span class="badge badge-opt">optional</span></td><td>Uploaded file storage root</td></tr>
+        <tr><td><code>MAX_FILE_SIZE_MB</code></td><td>50</td><td><span class="badge badge-opt">optional</span></td><td>Maximum accepted upload size</td></tr>
+        <tr><td><code>TOP_K</code></td><td>8</td><td><span class="badge badge-opt">optional</span></td><td>Default retrieval depth (1–20)</td></tr>
+        <tr><td><code>USE_HYBRID_SEARCH</code></td><td>true</td><td><span class="badge badge-opt">optional</span></td><td>Enable BM25 + FAISS ensemble</td></tr>
+        <tr><td><code>HYBRID_BM25_WEIGHT</code></td><td>0.3</td><td><span class="badge badge-opt">optional</span></td><td>BM25 weight; FAISS gets 1 − this</td></tr>
+        <tr><td><code>RERANK_THRESHOLD</code></td><td>0.30</td><td><span class="badge badge-opt">optional</span></td><td>Cosine similarity cutoff (was 0.75 — bug)</td></tr>
+        <tr><td><code>USE_MULTI_QUERY</code></td><td>true</td><td><span class="badge badge-opt">optional</span></td><td>Enable MultiQueryRetriever expansion</td></tr>
+        <tr><td><code>MULTI_QUERY_NUM_QUERIES</code></td><td>2</td><td><span class="badge badge-opt">optional</span></td><td>Alternate phrasings for complex queries</td></tr>
+        <tr><td><code>COMPOUND_QUERY_TOP_K</code></td><td>4</td><td><span class="badge badge-opt">optional</span></td><td>Retrieval depth per clause for split queries</td></tr>
+        <tr><td><code>ANSWER_MAX_TOKENS</code></td><td>700</td><td><span class="badge badge-opt">optional</span></td><td>Max tokens for single-question answers</td></tr>
+        <tr><td><code>COMPOUND_ANSWER_MAX_TOKENS</code></td><td>900</td><td><span class="badge badge-opt">optional</span></td><td>Max tokens for compound answers</td></tr>
+        <tr><td><code>QUERY_CACHE_TTL_SECONDS</code></td><td>300</td><td><span class="badge badge-opt">optional</span></td><td>Query result cache TTL (0 = disabled)</td></tr>
+        <tr><td><code>APP_ENV</code></td><td>development</td><td><span class="badge badge-opt">optional</span></td><td>development = Swagger on; production = off</td></tr>
+        <tr><td><code>LOG_LEVEL</code></td><td>INFO</td><td><span class="badge badge-opt">optional</span></td><td>Python logging level</td></tr>
+        <tr><td><code>CORS_ORIGINS</code></td><td>—</td><td><span class="badge badge-opt">optional</span></td><td>Comma-separated production origins</td></tr>
+        <tr><td><code>LANGCHAIN_TRACING_V2</code></td><td>false</td><td><span class="badge badge-opt">optional</span></td><td>Enable LangSmith request tracing</td></tr>
+        <tr><td><code>LANGCHAIN_API_KEY</code></td><td>—</td><td><span class="badge badge-opt">optional</span></td><td>LangSmith API key</td></tr>
+        <tr><td><code>LANGCHAIN_PROJECT</code></td><td>finrag-engine</td><td><span class="badge badge-opt">optional</span></td><td>LangSmith project name</td></tr>
+        <tr><td><code>SUPABASE_URL</code></td><td>—</td><td><span class="badge badge-opt">optional</span></td><td>Supabase project URL</td></tr>
+        <tr><td><code>SUPABASE_ANON_KEY</code></td><td>—</td><td><span class="badge badge-opt">optional</span></td><td>Supabase public key</td></tr>
+        <tr><td><code>SUPABASE_JWT_SECRET</code></td><td>—</td><td><span class="badge badge-opt">optional</span></td><td>Backend JWT verification (no-op if absent)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>Frontend</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Variable</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>VITE_SUPABASE_URL</code></td><td>Optional Supabase project URL. If absent, UI enables guest mode for demos.</td></tr>
+        <tr><td><code>VITE_SUPABASE_ANON_KEY</code></td><td>Optional Supabase public key. Required alongside VITE_SUPABASE_URL to enable auth.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>Quick start</h3>
+  <div class="codeblock">
+    <div class="codeblock-header"><div class="codeblock-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codeblock-lang">bash</span></div>
+    <pre><code><span class="cm"># Backend (Python 3.12)</span>
+python -m venv .venv
+<span class="cm"># Windows:  .venv\Scripts\activate</span>
+<span class="cm"># macOS/Linux: source .venv/bin/activate</span>
+pip install -r requirements.txt
+cp .env.example .env
+<span class="cm"># Set OPENAI_API_KEY in .env</span>
+uvicorn app.main:app --reload --host 127.0.0.1 --port <span class="cn">8000</span>
+
+<span class="cm"># Frontend</span>
+cd frontend && npm install && npm run dev
+<span class="cm"># Open http://127.0.0.1:5173</span>
+
+<span class="cm"># Docker</span>
+docker compose up --build
+
+<span class="cm"># CLI indexing (without upload API)</span>
+python create_index.py --dir data/raw
+python create_index.py --dir data/raw --user-id demo_user</code></pre>
+  </div>
+</section>
+
+<!-- S13 -->
+<section class="section section-anchor" id="s13">
+  <div class="section-label">13 · Frontend &amp; UX</div>
+  <h2>React 19 + Vite 8 — built for demo clarity</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Route</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>/auth</code></td><td>Supabase sign-in/sign-up or guest mode (if Supabase not configured)</td></tr>
+        <tr><td><code>/</code></td><td>Dashboard — readiness, document stats, recent answers, latency posture</td></tr>
+        <tr><td><code>/ingest</code></td><td>Upload flow, OCR readiness indicator, file list, live job status</td></tr>
+        <tr><td><code>/query</code></td><td>Query workspace — suggested prompts, staged loading, answers, source inspection</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>What users can do in the UI</h3>
+  <ul>
+    <li>Upload files with drag-and-drop</li>
+    <li>Monitor job status live (pending → processing → completed / failed)</li>
+    <li>Browse ingested documents from the persistent registry</li>
+    <li>Ask natural-language questions with tunable <code>top_k</code> and <code>doc_type_filter</code></li>
+    <li>Inspect source cards with snippets, chunk IDs, and page/sheet locations</li>
+    <li>Review retrieval metadata, request IDs, confidence estimates, and latency</li>
+  </ul>
+  <h3>Tech stack</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Library</th><th>Version</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td>React + TypeScript</td><td>19 + 5.9</td><td>UI framework + full type safety</td></tr>
+        <tr><td>Vite</td><td>8</td><td>Build tool; dev proxy /api → :8000; lazy-loaded routes</td></tr>
+        <tr><td>Tailwind CSS</td><td>v4</td><td>Utility-first styling</td></tr>
+        <tr><td>Radix UI / shadcn</td><td>—</td><td>Accessible UI primitives</td></tr>
+        <tr><td>@tanstack/react-query</td><td>5</td><td>Server state: health polling, document listing, job polling</td></tr>
+        <tr><td>Zustand</td><td>5</td><td>Client state: uploads, last 5 queries (persisted), auth token</td></tr>
+        <tr><td>Axios</td><td>1.14</td><td>HTTP client with auth header injection + AbortController</td></tr>
+        <tr><td>Supabase JS</td><td>2</td><td>Email auth; graceful no-op when unconfigured</td></tr>
+        <tr><td>react-dropzone</td><td>15</td><td>Drag-and-drop file upload</td></tr>
+        <tr><td>Framer Motion</td><td>12</td><td>Animations</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- S14 -->
+<section class="section section-anchor" id="s14">
+  <div class="section-label">14 · Bug Register</div>
+  <h2>Critical issues found and fixed across 21 phases</h2>
+  <h3>Critical — production correctness</h3>
+  <div class="bug-card">
+    <div class="bug-id critical">C1</div>
+    <div class="bug-body">
+      <div class="bug-title">Blocking I/O in async route handlers</div>
+      <div class="bug-desc">CPU-bound ingestion (load, chunk, embed, FAISS write) ran synchronously inside <code>async def</code> handlers, blocking the event loop. All concurrent requests queued behind one slow upload.</div>
+      <div class="bug-fix">→ Fix: asyncio.to_thread() for all blocking ops in _run_ingestion()</div>
+    </div>
+  </div>
+  <div class="bug-card">
+    <div class="bug-id critical">C2</div>
+    <div class="bug-body">
+      <div class="bug-title">FAISS race condition — concurrent ingestion corrupted the index</div>
+      <div class="bug-desc">Multiple uploads writing to the same FAISS files simultaneously caused corruption. threading.Lock only protects within one process — not between uvicorn workers or separate containers.</div>
+      <div class="bug-fix">→ Fix: filelock.FileLock at OS level on vector_store/.write.lock (60s timeout)</div>
+    </div>
+  </div>
+  <div class="bug-card">
+    <div class="bug-id critical">C3</div>
+    <div class="bug-body">
+      <div class="bug-title">Cache key missing top_k — wrong pipeline served silently</div>
+      <div class="bug-desc">A query with top_k=4 would load the pipeline built for top_k=8. Wrong chunk count, wrong results — silently, every time.</div>
+      <div class="bug-fix">→ Fix: cache key = f"topk={top_k}|filters={...}|mq={use_multi_query}"</div>
+    </div>
+  </div>
+  <div class="bug-card">
+    <div class="bug-id critical">C4</div>
+    <div class="bug-body">
+      <div class="bug-title">Filename collision — second upload overwrote the first</div>
+      <div class="bug-desc">Two users uploading <code>report.pdf</code> resulted in the second overwriting the first on disk.</div>
+      <div class="bug-fix">→ Fix: UUID-prefixed filenames: {uuid4().hex[:8]}_{original_filename}</div>
+    </div>
+  </div>
+  <div class="bug-card">
+    <div class="bug-id critical">C6</div>
+    <div class="bug-body">
+      <div class="bug-title">File size check after full file read — OOM risk</div>
+      <div class="bug-desc">The size guard ran after the entire file was buffered. A 500MB upload would exhaust RAM before rejection triggered.</div>
+      <div class="bug-fix">→ Fix: 64KB streaming chunks with early reject before buffering completes</div>
+    </div>
+  </div>
+  <h3>RAG pipeline — retrieval correctness</h3>
+  <div class="bug-card">
+    <div class="bug-id rag">RCA-4</div>
+    <div class="bug-body">
+      <div class="bug-title">_SafeEmbeddingsFilter was a plain class — reranking bypassed entirely</div>
+      <div class="bug-desc">LangChain's MultiQueryRetriever calls <code>.invoke()</code> on the wrapped retriever. A plain class has no <code>invoke</code> method — <code>__getattr__</code> delegation skipped the reranking logic. Every query got unranked results.</div>
+      <div class="bug-fix">→ Fix: converted to proper BaseRetriever subclass — .invoke() now routes through _get_relevant_documents()</div>
+    </div>
+  </div>
+  <div class="bug-card">
+    <div class="bug-id rag">RCA-5</div>
+    <div class="bug-body">
+      <div class="bug-title">Missing SafeQueryWrapper — dict input crashed inner retrievers</div>
+      <div class="bug-desc">LangChain's <code>create_retrieval_chain</code> passes <code>{"input": str}</code> in some code paths. BM25, FAISS expect plain <code>str</code> — TypeErrors at retrieval time.</div>
+      <div class="bug-fix">→ Fix: SafeQueryWrapper(BaseRetriever) as mandatory outermost layer; normalises dict → str</div>
+    </div>
+  </div>
+  <div class="bug-card">
+    <div class="bug-id rag">RCA-7</div>
+    <div class="bug-body">
+      <div class="bug-title">MultiQueryRetriever num_queries silently ignored — always used 3</div>
+      <div class="bug-desc">Setting <code>retriever.num_queries = 2</code> post-construction raises ValueError in Pydantic v2. Assignment was silently dropped. All queries used 3 variants regardless of settings.</div>
+      <div class="bug-fix">→ Fix: custom PromptTemplate passed to from_llm(prompt=...) embedding count in template text</div>
+    </div>
+  </div>
+  <div class="bug-card">
+    <div class="bug-id rag">RCA-9</div>
+    <div class="bug-body">
+      <div class="bug-title">Rerank threshold 0.75 dropped ALL chunks — empty context on every query</div>
+      <div class="bug-desc"><code>text-embedding-3-small</code> produces cosine similarities of 0.30–0.65 for relevant content. The 0.75 threshold was above the model's maximum. Every query returned "This information is not available."</div>
+      <div class="bug-fix">→ Fix: threshold lowered to 0.30 + safety-net returning top-1 when all candidates fall below</div>
+    </div>
+  </div>
+  <div class="bug-card">
+    <div class="bug-id rag">RCA-12</div>
+    <div class="bug-body">
+      <div class="bug-title">Mixed-intent queries retrieved blended context — both topics answered poorly</div>
+      <div class="bug-desc">A compound query ("What is X? And also Y?") caused single retrieval over both topics. Top-k chunks mixed content from both, diluting both answers.</div>
+      <div class="bug-fix">→ Fix: clause splitting → independent retrieval per clause → single compound generation pass</div>
+    </div>
+  </div>
+  <div class="bug-card">
+    <div class="bug-id fixed">H4</div>
+    <div class="bug-body">
+      <div class="bug-title">Misleading health check — healthy on empty or corrupt index</div>
+      <div class="bug-desc"><code>GET /health</code> checked directory existence only. Empty <code>vector_store/</code> returned <code>vectorstore_loaded: true</code>.</div>
+      <div class="bug-fix">→ Fix: faiss.read_index().ntotal — true only when ntotal &gt; 0</div>
+    </div>
+  </div>
+</section>
+
+<!-- S15 -->
+<section class="section section-anchor" id="s15">
+  <div class="section-label">15 · Testing &amp; Quality</div>
+  <h2>9 test suites, 140 tests, focused on behaviour not coverage</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Test file</th><th>Coverage focus</th></tr></thead>
+      <tbody>
+        <tr><td><code>test_api.py</code></td><td>HTTP contract (503 no vectorstore, 415 bad format, 202 valid upload, job polling, injection blocked)</td></tr>
+        <tr><td><code>test_ingestion.py</code></td><td>Loader behaviour, chunking, metadata enrichment, SHA256 dedup registry</td></tr>
+        <tr><td><code>test_ingestion_resilience.py</code></td><td>DOCX bad style names, corrupted paragraphs, PDF OCR dependency detection</td></tr>
+        <tr><td><code>test_document_listing.py</code></td><td>Persistent registry listing, user_id filter, SafeEmbeddingsFilter contract</td></tr>
+        <tr><td><code>test_retrieval_pipeline.py</code></td><td>SafeQueryWrapper (dict/str/whitespace/empty/invalid), reranker safety net, exception fallback</td></tr>
+        <tr><td><code>test_latency_hardening.py</code></td><td>TTL cache hit/miss/expiry, request_id, latency_ms, MultiQuery custom prompt</td></tr>
+        <tr><td><code>test_adaptive_multiquery_history.py</code></td><td>_is_complex_query boundaries, _build_pipeline passthrough, cache key differentiation</td></tr>
+        <tr><td><code>test_multiquery_multiintent.py</code></td><td>Compound clause splitting, patient query routing, normalisation, structured confidence</td></tr>
+        <tr><td><code>test_response_schema.py</code></td><td>Schema regression for all response model fields</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="codeblock">
+    <div class="codeblock-header"><div class="codeblock-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codeblock-lang">bash</span></div>
+    <pre><code>pytest                                        <span class="cm"># all 140 tests, &lt;3 seconds</span>
+pytest tests/test_api.py                      <span class="cm"># API contract tests only</span>
+pytest tests/test_retrieval_pipeline.py       <span class="cm"># retriever unit tests</span>
+pytest -k <span class="cs">"test_prompt_injection"</span>              <span class="cm"># single test by name</span></code></pre>
+  </div>
+  <div class="callout info">
+    <div class="callout-title">Frontend testing note</div>
+    <p>There are currently no frontend automated tests in this repository. Frontend quality is enforced through the typed API contract in <code>lib/api.ts</code>, TypeScript compilation, Vite build tooling, and manual workflow validation. Adding frontend integration or end-to-end tests is a recommended next step.</p>
+  </div>
+</section>
+
+<!-- S16 -->
+<section class="section section-anchor" id="s16">
+  <div class="section-label">16 · Demo Script</div>
+  <h2>A clean walkthrough for customers, operators, and investors</h2>
+  <p>Suggested demo prompts that exercise all pipeline paths:</p>
+  <div class="callout success">
+    <div class="callout-title">Suggested queries</div>
+    <p><code>Summarize the most important facts in my uploaded documents</code><br>
+    <code>List the highest-risk items and show the evidence for each one</code><br>
+    <code>What changed across the uploaded files?</code><br>
+    <code>List female patients from Chennai</code></p>
+  </div>
+  <div class="demo-step"><div class="demo-num">01</div><div class="demo-text">Start backend (<code>uvicorn app.main:app --reload</code>) and frontend (<code>npm run dev</code>). Open <code>http://127.0.0.1:5173</code>.</div></div>
+  <div class="demo-step"><div class="demo-num">02</div><div class="demo-text">Enter as guest if Supabase is not configured — the UI exposes a guest mode for demos without auth setup.</div></div>
+  <div class="demo-step"><div class="demo-num">03</div><div class="demo-text">Upload a PDF and a spreadsheet from the Documents page. Watch the job status badges update live: pending → processing → completed.</div></div>
+  <div class="demo-step"><div class="demo-num">04</div><div class="demo-text">Show the Dashboard — vector count and document list update automatically. The header shows live vector count from <code>GET /health</code> (polled every 30s).</div></div>
+  <div class="demo-step"><div class="demo-num">05</div><div class="demo-text">Ask a normal semantic question to demonstrate hybrid retrieval and citations. Show the staged loading indicator: Retrieving → Re-ranking → Generating.</div></div>
+  <div class="demo-step"><div class="demo-num">06</div><div class="demo-text">Ask a compound question ("What is X? And also what are Y?") to demonstrate focused clause handling. Show the compound_clause_count in retrieval metadata.</div></div>
+  <div class="demo-step"><div class="demo-num">07</div><div class="demo-text">Ask a structured patient-style question over CSV/XLSX to demonstrate deterministic row lookup — bypassing semantic retrieval entirely.</div></div>
+  <div class="demo-step"><div class="demo-num">08</div><div class="demo-text">Expand source cards and retrieval details — show chunk snippets, page/sheet references, confidence score, latency, and request_id.</div></div>
+</section>
+
+<!-- S17 -->
+<section class="section section-anchor" id="s17">
+  <div class="section-label">17 · Limitations &amp; Next Steps</div>
+  <h2>Honest assessment of current limits and the path to scale</h2>
+  <h3>Current limitations</h3>
+  <ul>
+    <li><code>pipeline_cache</code>, <code>query_result_cache</code>, and <code>job_registry</code> are in-memory and not shared across multiple backend workers. Running <code>--workers 4</code> gives 4 independent caches.</li>
+    <li>FAISS is stored on local disk and is not horizontally distributed — cannot scale across multiple nodes.</li>
+    <li>OCR requires Poppler and Tesseract on the host machine or in the container (included in Dockerfile; manual install for local dev).</li>
+    <li>Query result caching is per-process and resets on restart.</li>
+    <li>The frontend does not yet have dedicated automated tests.</li>
+    <li>Static frontend serving depends on manually copying built assets from <code>frontend/dist/</code> into <code>static/</code>.</li>
+  </ul>
+  <h3>Recommended next production steps</h3>
+  <div class="layer-card">
+    <div class="layer-badge lb-guard">Redis</div>
+    <div><div class="layer-title">Replace in-memory caches with Redis</div><div class="layer-desc"><code>pipeline_cache</code>, <code>query_result_cache</code>, and <code>job_registry</code> are already imported from a single <code>app/state.py</code> module — making the migration to Redis straightforward without touching route logic.</div></div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-badge lb-dense">Queue</div>
+    <div><div class="layer-title">Dedicated ingestion queue</div><div class="layer-desc">Move background ingestion to Celery or a similar queue if throughput grows. The current asyncio.to_thread() approach works well for moderate concurrency but has limits at high ingestion volume.</div></div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-badge lb-ensemble">Vector DB</div>
+    <div><div class="layer-title">Managed vector store for multi-node scale</div><div class="layer-desc">Replacing <code>src/embeddings.py</code> with Pinecone, Weaviate, or Qdrant enables horizontal distribution. The rest of the pipeline is vector-store-agnostic through LangChain's abstraction.</div></div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-badge lb-multi">Tests</div>
+    <div><div class="layer-title">Frontend integration and E2E tests</div><div class="layer-desc">Playwright or Cypress end-to-end tests covering the upload → ingest → query → citation workflow. Add a repository license file before wider public distribution.</div></div>
+  </div>
+</section>
+
+<!-- S18 -->
+<section class="section section-anchor" id="s18">
+  <div class="section-label">18 · Key Lessons</div>
+  <h2>What I learned building this in production</h2>
+  <div class="callout success">
+    <div class="callout-title">1. Retrieval quality is the system — not the LLM</div>
+    <p>The rerank threshold bug (RCA-9) proved this dramatically: gpt-4o-mini returned "information not available" for every query because the retriever dropped all chunks. A world-class LLM cannot produce a correct answer from empty context. Fix retrieval before tuning the generator.</p>
+  </div>
+  <div class="callout info">
+    <div class="callout-title">2. Hybrid retrieval is worth the complexity for business corpora</div>
+    <p>Users ask both semantic questions ("what are the risks?") and exact-match questions ("what is clause 4.2?"). Dense-only retrieval handles the first; BM25 handles the second. The ensemble at 0.3/0.7 weights handles both — and the added complexity is contained entirely in <code>_build_hybrid_retriever()</code>.</p>
+  </div>
+  <div class="callout warn">
+    <div class="callout-title">3. LangChain 0.3 API contracts require a boundary guard</div>
+    <p><code>create_retrieval_chain</code> passes a dict in some code paths and a string in others, depending on chain composition. SafeQueryWrapper at the system boundary — once — is far better than adding <code>isinstance</code> checks in every inner retriever. The wrapper is a BaseRetriever, so LangChain's own dispatch logic handles extraction correctly.</p>
+  </div>
+  <div class="callout cyan">
+    <div class="callout-title">4. Agentic routing belongs at the route layer, not inside retrieval</div>
+    <p>Compound splitting, adaptive MultiQuery, patient lookup routing, and injection guarding all live in <code>app/routes/query.py</code> — before retrieval begins. This keeps retrieval components simple and testable while routing logic evolves independently.</p>
+  </div>
+  <div class="callout danger">
+    <div class="callout-title">5. Deterministic structured lookup is not optional for tabular data</div>
+    <p>Semantic retrieval over row-chunked CSV data produces approximate matches. For patient-style queries ("list all female patients from Chennai"), exact row filtering via <code>patient_lookup.py</code> is the correct solution. The agentic routing layer detects the intent and bypasses vector retrieval entirely — zero hallucination risk for tabular lookups.</p>
+  </div>
+</section>
+
+</div><!-- /content -->
+</div><!-- /page -->
+
+<footer>
+  <div class="page">
+    <p>
+      <strong>Manish Kumar</strong> · AI Engineer ·
+      <a href="https://github.com/manishengineertech1582-code">GitHub</a> ·
+      <a href="https://github.com/manishengineertech1582-code/finrag-engine-old">FinRAG Engine repo ↗</a> ·
+      <a href="https://github.com/manishengineertech1582-code/manish-portfolio">Portfolio ↗</a>
+    </p>
+    <p style="margin-top:.5rem;font-size:12px;">Built with FastAPI · LangChain 0.3 · FAISS · React 19 · OpenAI · Python 3.12</p>
+  </div>
+</footer>
+
+</body>
+</html>
