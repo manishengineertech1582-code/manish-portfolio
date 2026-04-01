@@ -20,6 +20,7 @@ export default function Home() {
         .tag { display: inline-block; background: #F1F5F9; color: #475569; font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 6px; }
         @media (max-width: 640px) {
           .hero-grid { grid-template-columns: 1fr !important; }
+          .showcase-grid { grid-template-columns: 1fr !important; }
           .stats-row { grid-template-columns: 1fr 1fr !important; }
           .hide-mobile { display: none !important; }
           .hero-name { font-size: 28px !important; }
@@ -61,6 +62,7 @@ export default function Home() {
           </div>
 
           <div className="hide-mobile" style={{ display: 'flex', gap: '32px', fontSize: '14px', alignItems: 'center' }}>
+            <a href="#finrag-showcase" style={{ color: '#64748B', textDecoration: 'none', fontWeight: 500 }}>FinRAG</a>
             <a href="#blog" style={{ color: '#64748B', textDecoration: 'none', fontWeight: 500 }}>Blog</a>
             <a href="#skills" style={{ color: '#64748B', textDecoration: 'none', fontWeight: 500 }}>Skills</a>
             <a href="#projects" style={{ color: '#64748B', textDecoration: 'none', fontWeight: 500 }}>Projects</a>
@@ -123,11 +125,11 @@ export default function Home() {
               </p>
 
               <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '48px' }}>
-                <a href="/finrag-deep-dive.html" style={{
+                <Link href="/finrag/index.html" style={{
                   background: '#7C3AED', color: '#fff', padding: '12px 24px',
                   borderRadius: '9px', textDecoration: 'none', fontWeight: 700, fontSize: '14px',
                   boxShadow: '0 2px 12px rgba(124,58,237,0.3)',
-                }}>Read FinRAG Case Study →</a>
+                }}>Read FinRAG Case Study {'->'}</Link>
                 <a href="https://github.com/manishengineertech1582-code" target="_blank" rel="noopener noreferrer" style={{
                   background: '#fff', border: '1px solid #E2E8F0', color: '#374151',
                   padding: '12px 24px', borderRadius: '9px', textDecoration: 'none', fontWeight: 600, fontSize: '14px',
@@ -194,6 +196,76 @@ export default function Home() {
         </section>
 
         {/* ── BLOG ─────────────────────────────────── */}
+        <section id="finrag-showcase" style={{ padding: '0 20px 80px' }}>
+          <div style={{ maxWidth: '1120px', margin: '0 auto' }}>
+            <div style={{
+              background: 'linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%)',
+              borderRadius: '24px',
+              padding: '36px',
+              border: '1px solid #1E293B',
+              boxShadow: '0 24px 64px rgba(15,23,42,0.18)',
+            }}>
+              <div className="showcase-grid" style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: '28px', alignItems: 'center' }}>
+                <div>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(59,130,246,0.12)', border: '1px solid rgba(96,165,250,0.35)', borderRadius: '999px', padding: '6px 12px', marginBottom: '18px' }}>
+                    <span style={{ width: '8px', height: '8px', background: '#22C55E', borderRadius: '50%' }} />
+                    <span style={{ fontSize: '12px', color: '#BFDBFE', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Live FinRAG Page</span>
+                  </div>
+                  <h2 style={{ fontSize: '32px', fontWeight: 800, color: '#F8FAFC', letterSpacing: '-0.8px', marginBottom: '14px', lineHeight: 1.15 }}>
+                    Open the full FinRAG case study directly from the portfolio
+                  </h2>
+                  <p style={{ fontSize: '15px', color: '#CBD5E1', lineHeight: 1.8, maxWidth: '620px', marginBottom: '24px' }}>
+                    The static showcase page at <span style={{ color: '#93C5FD', fontFamily: "'JetBrains Mono', monospace" }}>/finrag/index.html</span> is now surfaced on the homepage as a first-class route with the full product walkthrough, UI screens, architecture notes, and implementation details.
+                  </p>
+                  <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                    <Link href="/finrag/index.html" style={{
+                      background: '#3B82F6',
+                      color: '#fff',
+                      textDecoration: 'none',
+                      padding: '12px 22px',
+                      borderRadius: '10px',
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      boxShadow: '0 12px 24px rgba(59,130,246,0.28)',
+                    }}>Open FinRAG Page</Link>
+                    <a href="https://manish-portfolio-fawn.vercel.app/finrag/index.html" style={{
+                      background: 'rgba(255,255,255,0.04)',
+                      color: '#E2E8F0',
+                      textDecoration: 'none',
+                      padding: '12px 22px',
+                      borderRadius: '10px',
+                      fontSize: '14px',
+                      fontWeight: 600,
+                      border: '1px solid rgba(148,163,184,0.32)',
+                    }}>Direct URL</a>
+                  </div>
+                </div>
+
+                <div style={{
+                  background: 'rgba(15,23,42,0.58)',
+                  border: '1px solid rgba(148,163,184,0.22)',
+                  borderRadius: '20px',
+                  padding: '24px',
+                }}>
+                  <div style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '14px' }}>Deployment Path</div>
+                  <div style={{ display: 'grid', gap: '12px' }}>
+                    {[
+                      ['Source file', 'public/finrag/index.html'],
+                      ['Live route', '/finrag/index.html'],
+                      ['Deployment', 'manish-portfolio-fawn.vercel.app'],
+                    ].map(([label, value]) => (
+                      <div key={label} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(148,163,184,0.14)', borderRadius: '14px', padding: '14px 16px' }}>
+                        <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>{label}</div>
+                        <div style={{ fontSize: '14px', color: '#F8FAFC', fontWeight: 600, fontFamily: "'JetBrains Mono', monospace" }}>{value}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section id="blog" style={{ background: '#fff', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', padding: '80px 20px' }}>
           <div style={{ maxWidth: '1120px', margin: '0 auto' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
@@ -207,7 +279,7 @@ export default function Home() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '20px' }}>
 
               {/* Featured — FinRAG */}
-              <a href="/finrag-deep-dive.html" className="card-hover" style={{ textDecoration: 'none', gridColumn: 'span 2' }}>
+              <Link href="/finrag/index.html" className="card-hover" style={{ textDecoration: 'none', gridColumn: 'span 2' }}>
                 <div style={{
                   background: 'linear-gradient(135deg, #FAF5FF 0%, #EEF2FF 100%)',
                   border: '1px solid #DDD6FE', borderRadius: '16px', padding: '32px',
@@ -234,7 +306,7 @@ export default function Home() {
                   </div>
                   <div style={{ background: '#7C3AED', color: '#fff', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', flexShrink: 0 }}>→</div>
                 </div>
-              </a>
+              </Link>
 
               {/* AI Engineer Guide — NEW */}
               <a href="/ai-engineer-guide.html" className="card-hover" style={{ textDecoration: 'none' }}>
@@ -320,10 +392,10 @@ export default function Home() {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
               {[
-                { name: 'FinRAG Engine', desc: 'Production RAG system for intelligent PDF Q&A with a Claude-style dark chat UI, Hit@K/MRR evaluation, MultiQueryRetriever, and 19 documented production bugs fixed.', tags: ['Python', 'LangChain', 'FAISS', 'FastAPI', 'OpenAI'], url: 'https://github.com/manishengineertech1582-code/finrag-engine', badge: 'Production', accent: '#7C3AED' },
-                { name: 'Network Log Analyzer', desc: 'LLM-powered network log analysis using LangChain and Ollama. Parses and interprets complex network logs using local language models without cloud API calls.', tags: ['Python', 'LangChain', 'Ollama'], url: 'https://github.com/manishengineertech1582-code/network-log-analyzer', badge: 'Open Source', accent: '#4F46E5' },
-              ].map(({ name, desc, tags, url, badge, accent }) => (
-                <a key={name} href={url} target="_blank" rel="noopener noreferrer" className="card-hover" style={{ textDecoration: 'none' }}>
+                { name: 'FinRAG Engine', desc: 'Production RAG system for intelligent PDF Q&A with a Claude-style dark chat UI, Hit@K/MRR evaluation, MultiQueryRetriever, and 19 documented production bugs fixed.', tags: ['Python', 'LangChain', 'FAISS', 'FastAPI', 'OpenAI'], url: '/finrag/index.html', badge: 'Production', accent: '#7C3AED', external: false },
+                { name: 'Network Log Analyzer', desc: 'LLM-powered network log analysis using LangChain and Ollama. Parses and interprets complex network logs using local language models without cloud API calls.', tags: ['Python', 'LangChain', 'Ollama'], url: 'https://github.com/manishengineertech1582-code/network-log-analyzer', badge: 'Open Source', accent: '#4F46E5', external: true },
+              ].map(({ name, desc, tags, url, badge, accent, external }) => {
+                const card = (
                   <div style={{
                     background: '#FAFAFA', border: '1px solid #E2E8F0', borderRadius: '14px',
                     padding: '28px', height: '100%', borderTop: `3px solid ${accent}`,
@@ -338,8 +410,18 @@ export default function Home() {
                       {tags.map(t => <span key={t} className="tag">{t}</span>)}
                     </div>
                   </div>
-                </a>
-              ))}
+                )
+
+                return external ? (
+                  <a key={name} href={url} target="_blank" rel="noopener noreferrer" className="card-hover" style={{ textDecoration: 'none' }}>
+                    {card}
+                  </a>
+                ) : (
+                  <Link key={name} href={url} className="card-hover" style={{ textDecoration: 'none' }}>
+                    {card}
+                  </Link>
+                )
+              })}
             </div>
           </div>
         </section>
