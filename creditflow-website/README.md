@@ -36,6 +36,7 @@ This directory contains a self-contained website artifact for the inspected `cre
 - Live responsive validation passed on desktop and mobile screenshots.
 - Section 10 · Deployment Notes removed.
 - Portfolio repository button wired to correct GitHub URL.
+- Live analyst workspace dashboard screenshot added to section `06 · Analyst Workspace`.
 
 ## Important Note
 The website was intentionally created only inside `C:\aManish\manish-portfolio\creditflow-website\` to satisfy the isolation rule. No existing FinRAG files, CreditFlow files, or portfolio application files were modified.

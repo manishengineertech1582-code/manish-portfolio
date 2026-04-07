@@ -43,3 +43,16 @@
 - The live published static assets for `index.html` and `styles.css` also returned `200`.
 - Live responsive screenshots passed on desktop and mobile widths.
 - Existing portfolio pages, the FinRAG reference page, and the external CreditFlow source repository were not modified.
+
+## CreditFlow Screenshot Addition Plan - 2026-04-06
+- Source page updated: `C:\aManish\manish-portfolio\creditflow-website\index.html`
+- Live-served copy synced: `C:\aManish\manish-portfolio\public\creditflow-website\index.html`
+- Style source updated: `C:\aManish\manish-portfolio\creditflow-website\assets\styles.css`
+- Live-served style copy synced: `C:\aManish\manish-portfolio\public\creditflow-website\assets\styles.css`
+- New screenshot assets created:
+  - `C:\aManish\manish-portfolio\creditflow-website\assets\creditflow-dashboard-live.png`
+  - `C:\aManish\manish-portfolio\public\creditflow-website\assets\creditflow-dashboard-live.png`
+- Placement completed:
+  - screenshot added in section `06 · Analyst Workspace`
+  - inserted after the explanatory callouts and before the existing feature-grid summary
+  - caption frames it as a live workspace capture from the local dashboard
