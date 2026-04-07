@@ -34,6 +34,8 @@ This directory contains a self-contained website artifact for the inspected `cre
   - `https://manish-portfolio-fawn.vercel.app/creditflow-website/index.html`
   - `https://manish-portfolio-fawn.vercel.app/creditflow-website/assets/styles.css`
 - Live responsive validation passed on desktop and mobile screenshots.
+- Section 10 · Deployment Notes removed.
+- Portfolio repository button wired to correct GitHub URL.
 
 ## Important Note
 The website was intentionally created only inside `C:\aManish\manish-portfolio\creditflow-website\` to satisfy the isolation rule. No existing FinRAG files, CreditFlow files, or portfolio application files were modified.
