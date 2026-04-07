@@ -27,8 +27,13 @@ This directory contains a self-contained website artifact for the inspected `cre
 - Public copy used for live serving:
   - `C:\aManish\manish-portfolio\public\creditflow-website\index.html`
   - `C:\aManish\manish-portfolio\public\creditflow-website\assets\styles.css`
-- Intended live URL:
+- Live URL:
   - `https://manish-portfolio-fawn.vercel.app/creditflow`
+- Verified live responses:
+  - `https://manish-portfolio-fawn.vercel.app/creditflow`
+  - `https://manish-portfolio-fawn.vercel.app/creditflow-website/index.html`
+  - `https://manish-portfolio-fawn.vercel.app/creditflow-website/assets/styles.css`
+- Live responsive validation passed on desktop and mobile screenshots.
 
 ## Important Note
 The website was intentionally created only inside `C:\aManish\manish-portfolio\creditflow-website\` to satisfy the isolation rule. No existing FinRAG files, CreditFlow files, or portfolio application files were modified.

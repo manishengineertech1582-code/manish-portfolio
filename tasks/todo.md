@@ -39,4 +39,7 @@
 - Next.js 16 App Router build passed and generated a static `/creditflow` route.
 - Local route validation passed on desktop and mobile screenshots.
 - The following local endpoints returned `200`: `/creditflow`, `/creditflow-website/index.html`, `/creditflow-website/assets/styles.css`.
+- The live Vercel route `https://manish-portfolio-fawn.vercel.app/creditflow` returned `200`.
+- The live published static assets for `index.html` and `styles.css` also returned `200`.
+- Live responsive screenshots passed on desktop and mobile widths.
 - Existing portfolio pages, the FinRAG reference page, and the external CreditFlow source repository were not modified.
