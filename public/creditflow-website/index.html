@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreditFlow Intelligence Platform | Implementation Website</title>
+  <meta name="description" content="Implementation website for the CreditFlow Intelligence Platform covering architecture, workflows, file structure, validation surfaces, and production boundaries.">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="https://manish-portfolio-fawn.vercel.app/">
+        <span class="brand-mark">CF</span>
+        <span class="brand-copy">
+          <span class="brand-title">CreditFlow Intelligence Platform</span>
+          <span class="brand-subtitle">Implementation website for the audited underwriting platform</span>
+        </span>
+      </a>
+      <nav class="topnav">
+        <a href="#overview">Overview</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#structure">Structure</a>
+        <a href="#validation">Validation</a>
+        <a href="#boundaries">Boundaries</a>
+        <a class="cta" href="https://manish-portfolio-fawn.vercel.app/">Portfolio</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="eyebrow-tag">Implementation Document</span>
+            <span class="eyebrow-meta">Commercial credit underwriting · FastAPI · React · Multi-tenant runtime</span>
+          </div>
+          <h1>CreditFlow turns commercial credit review into a typed, evidence-backed workflow.</h1>
+          <p>
+            This website documents the inspected <strong>creditflow-intelligence-platform</strong> repository as it exists today:
+            deterministic ingestion and retrieval, modular underwriting agents, a multi-tenant backend, and an analyst-facing
+            workspace for upload, memo review, and persisted underwriting actions.
+          </p>
+          <div class="tag-strip">
+            <span class="tag">FastAPI runtime</span>
+            <span class="tag">Typed contracts in <code>backend/schemas</code></span>
+            <span class="tag">Deterministic agent graph</span>
+            <span class="tag">Citation-backed memo review</span>
+            <span class="tag">RBAC + tenant binding</span>
+            <span class="tag">React + Tailwind analyst UI</span>
+          </div>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#workflow">Explore runtime flow</a>
+            <a class="button button-secondary" href="#structure">See repository structure</a>
+          </div>
+        </div>
+
+        <div class="hero-side">
+          <section class="scoreboard" aria-label="Platform summary">
+            <div class="score">
+              <div class="score-label">Backend</div>
+              <div class="score-value">FastAPI + services</div>
+            </div>
+            <div class="score">
+              <div class="score-label">Ingestion</div>
+              <div class="score-value">PDF extraction + provenance</div>
+            </div>
+            <div class="score">
+              <div class="score-label">Agents</div>
+              <div class="score-value">Financial, covenant, industry, critic</div>
+            </div>
+            <div class="score">
+              <div class="score-label">Frontend</div>
+              <div class="score-value">Analyst workspace + memo review</div>
+            </div>
+          </section>
+
+          <section class="signal-card">
+            <h2>What this project is</h2>
+            <p>
+              A staged commercial credit underwriting system with explicit boundaries. The repository is honest about
+              what is locally validated today and what is still a production boundary for future managed infrastructure.
+            </p>
+            <ul class="signal-list">
+              <li>Real multipart upload path and document registration</li>
+              <li>Real memo retrieval and analyst action persistence</li>
+              <li>Real local retrieval with citation diagnostics surfaced into review</li>
+            </ul>
+          </section>
+
+          <section class="note-card">
+            <h2>Reality check</h2>
+            <p>
+              CreditFlow is not presented as fully live cloud underwriting policy. It is a production-shaped platform with
+              real local runtime surfaces, explicit evidence handling, and clear deferred boundaries for cloud-scale components.
+            </p>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <p class="sidebar-title">Contents</p>
+          <nav class="toc">
+            <a href="#overview">01 · Platform overview</a>
+            <a href="#surfaces">02 · Implemented surfaces</a>
+            <a href="#workflow">03 · End-to-end workflow</a>
+            <a href="#architecture">04 · Layered architecture</a>
+            <a href="#structure">05 · Repository structure</a>
+            <a href="#workspace">06 · Analyst workspace</a>
+            <a href="#validation">07 · Validation and operations</a>
+            <a href="#boundaries">08 · Real vs boundary-only</a>
+            <a href="#demo">09 · Demo walkthrough</a>
+            <a href="#closeout">10 · Deployment notes</a>
+          </nav>
+        </div>
+      </aside>
+
+      <article class="content">
+        <section class="section-card section-anchor" id="overview">
+          <p class="section-label">01 · Platform Overview</p>
+          <div class="section-heading">
+            <div>
+              <h2>Purpose and operating model</h2>
+              <p>CreditFlow automates commercial credit underwriting through typed contracts, deterministic evidence handling, modular agents, and an analyst review workspace.</p>
+            </div>
+          </div>
+          <p class="lede">
+            The repository centers on a simple principle: every underwriting artifact should move through explicit contracts and
+            named layers. Backend schemas, document ingestion, retrieval, memo assembly, and analyst actions are separated into
+            concrete modules so the runtime can stay inspectable and evolvable.
+          </p>
+          <div class="two-col">
+            <div class="callout callout-strong">
+              <h3>Platform identity</h3>
+              <p>
+                The codebase is named <code>creditflow-intelligence-platform</code>. It provides a local and pilot-ready underwriting
+                runtime with multi-tenant storage models, deterministic agent orchestration, and a dense analyst workspace.
+              </p>
+            </div>
+            <div class="callout">
+              <h3>Primary user journey</h3>
+              <p>
+                A user creates a deal, uploads supporting documents, runs underwriting, retrieves a credit memo, and records
+                analyst review actions. Memo values and review context are designed to surface source evidence directly in the UI.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card section-anchor" id="surfaces">
+          <p class="section-label">02 · Implemented Surfaces</p>
+          <div class="section-heading">
+            <div>
+              <h2>What the inspected repository implements today</h2>
+              <p>The site content below is derived from the inspected README, architecture document, and repository structure.</p>
+            </div>
+          </div>
+          <div class="feature-grid">
+            <div class="feature">
+              <h3>Contract and config layer</h3>
+              <p>Canonical Pydantic contracts live under <code>backend/schemas</code>, while shared primitives and validated runtime configuration live under <code>backend/common</code> and <code>backend/config</code>.</p>
+              <ul>
+                <li>Typed backend, transport, and tool contracts</li>
+                <li>Validated YAML plus environment override flow</li>
+                <li>Shared tracing, auth, and tenancy primitives</li>
+              </ul>
+            </div>
+            <div class="feature">
+              <h3>Evidence pipeline</h3>
+              <p>Ingestion normalizes uploaded documents, persists uploaded objects, and records extraction provenance for PDF handling and optional OCR paths.</p>
+              <ul>
+                <li>Multipart upload handling</li>
+                <li>Multi-strategy PDF extraction</li>
+                <li>Per-page extraction metadata and diagnostics</li>
+              </ul>
+            </div>
+            <div class="feature">
+              <h3>Retrieval and memo runtime</h3>
+              <p>Local retrieval produces citation-ready evidence, and memo services assemble structured review payloads for the frontend.</p>
+              <ul>
+                <li>Metadata filtering and retrieval diagnostics</li>
+                <li>Tenant-aware memo retrieval</li>
+                <li>Persistent analyst action history</li>
+              </ul>
+            </div>
+            <div class="feature">
+              <h3>Analyst-facing interface</h3>
+              <p>The React workspace includes dashboard, portfolio, borrowers, runs, documents, alerts, upload-and-run, memo review, and persisted review state.</p>
+              <ul>
+                <li>Enterprise sidebar and top bar shell</li>
+                <li>Memo evidence and critic panels</li>
+                <li>Local workspace continuity where list endpoints are not yet exposed</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card section-anchor" id="workflow">
+          <p class="section-label">03 · End-to-End Workflow</p>
+          <div class="section-heading">
+            <div>
+              <h2>Upload to memo review, with named boundaries</h2>
+              <p>The architecture document exposes the runtime flow as four linked journeys: deal intake, upload, underwriting execution, and memo review.</p>
+            </div>
+          </div>
+          <div class="pipeline">
+            <div class="step">
+              <div class="step-index">01</div>
+              <div>
+                <h3>Deal intake</h3>
+                <p><strong><code>POST /api/v1/deals</code></strong> binds request, trace, actor, and tenant context in middleware. <strong>DealIntakeService</strong> persists the deal under the active tenant and can register structured source documents.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-index">02</div>
+              <div>
+                <h3>Document upload and normalization</h3>
+                <p><strong><code>POST /api/v1/deals/{deal_id}/documents/uploads</code></strong> stores uploaded bytes through the configured object-store boundary. <strong>DocumentIngestionService</strong> then normalizes the file into a document record and links it back to the deal.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-index">03</div>
+              <div>
+                <h3>Underwriting run</h3>
+                <p><strong><code>POST /api/v1/underwriting/runs</code></strong> verifies the tenant-scoped deal, creates workflow identity, executes the deterministic agent graph, and persists memo plus critic outputs through the storage boundary.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-index">04</div>
+              <div>
+                <h3>Memo retrieval and analyst action</h3>
+                <p><strong><code>GET /api/v1/memos/{memo_id}</code></strong> returns the memo, critic assessment, and persisted analyst actions. <strong><code>POST /api/v1/memos/{memo_id}/analyst-actions</code></strong> records the decision under the authenticated actor and tenant scope.</p>
+              </div>
+            </div>
+          </div>
+          <div class="callout">
+            <h3>Key operating principle</h3>
+            <p>
+              Routes do not own normalization, persistence, retrieval, or underwriting logic. Services coordinate the flow; storage adapters and retrieval adapters own backend-specific concerns.
+            </p>
+          </div>
+        </section>
+
+        <section class="section-card section-anchor" id="architecture">
+          <p class="section-label">04 · Layered Architecture</p>
+          <div class="section-heading">
+            <div>
+              <h2>Eight explicit layers keep the platform inspectable</h2>
+              <p>CreditFlow separates contracts, ingestion, retrieval, agents, runtime services, frontend, evaluation, and infrastructure scaffold.</p>
+            </div>
+          </div>
+          <div class="architecture-map">
+            <div class="layer">
+              <div class="layer-head">
+                <h3>Contract layer</h3>
+                <span class="chip chip-live">Implemented</span>
+              </div>
+              <p>This layer contains the source-of-truth schemas and tool contracts for backend, agent, and transport surfaces.</p>
+              <code>backend/schemas · backend/common · backend/config · agents/base · agents/tools/base</code>
+            </div>
+            <div class="layer">
+              <div class="layer-head">
+                <h3>Ingestion layer</h3>
+                <span class="chip chip-live">Implemented</span>
+              </div>
+              <p>Structured normalization, multipart handling, local upload persistence, multi-strategy PDF extraction, and explicit OCR diagnostics live here.</p>
+              <code>backend/ingestion/models.py · pipeline.py · service.py · upload_store.py</code>
+            </div>
+            <div class="layer">
+              <div class="layer-head">
+                <h3>Retrieval layer</h3>
+                <span class="chip chip-live">Implemented</span>
+              </div>
+              <p>Local retrieval supports citation-ready evidence and metadata filtering, while vector-provider retrieval remains a scalable boundary.</p>
+              <code>backend/retrieval/models.py · service.py · local_adapter.py · provider_adapter.py · vector_adapter.py</code>
+            </div>
+            <div class="layer">
+              <div class="layer-head">
+                <h3>Agent layer</h3>
+                <span class="chip chip-live">Implemented</span>
+              </div>
+              <p>Financial analyst, covenant compliance, industry risk, critic QA, and the orchestrator remain deterministic and local rather than a claim of live autonomous underwriting.</p>
+              <code>agents/orchestrator · agents/financial_analyst · agents/covenant_compliance · agents/industry_risk · agents/critic_qa</code>
+            </div>
+            <div class="layer">
+              <div class="layer-head">
+                <h3>Runtime backend layer</h3>
+                <span class="chip chip-live">Implemented</span>
+              </div>
+              <p>FastAPI transport, services, request guards, RBAC, tenant-aware persistence, and relational adapter boundaries sit under the backend runtime.</p>
+              <code>backend/api · backend/services · backend/storage</code>
+            </div>
+            <div class="layer">
+              <div class="layer-head">
+                <h3>Frontend layer</h3>
+                <span class="chip chip-live">Implemented</span>
+              </div>
+              <p>The UI is an enterprise analyst shell with memo evidence drill-through, retrieval diagnostics, and seeded portfolio lists overlaid with live runtime artifacts.</p>
+              <code>ui/src/layouts · ui/src/services · ui/src/components · ui/src/features</code>
+            </div>
+            <div class="layer">
+              <div class="layer-head">
+                <h3>Evaluation layer</h3>
+                <span class="chip chip-live">Implemented</span>
+              </div>
+              <p>Local deterministic datasets, metrics, and runners validate the release surface and underwriting workflow quality in non-production settings.</p>
+              <code>evals/datasets · evals/metrics · evals/runners</code>
+            </div>
+            <div class="layer">
+              <div class="layer-head">
+                <h3>Infrastructure scaffold</h3>
+                <span class="chip chip-boundary">Boundary</span>
+              </div>
+              <p>Terraform and cloud-run scaffolds document the production stack shape, but they are not claimed here as apply-validated live deployment infrastructure.</p>
+              <code>infra/terraform · infra/cloud_run</code>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card section-anchor" id="structure">
+          <p class="section-label">05 · Repository Structure</p>
+          <div class="section-heading">
+            <div>
+              <h2>How the implementation is organized on disk</h2>
+              <p>The repository tree below reflects the ownership model described in the inspected architecture document.</p>
+            </div>
+          </div>
+          <div class="tree-panel">
+            <h3>Top-level project map</h3>
+            <pre>creditflow-intelligence-platform/
+|-- backend/
+|   |-- api/         FastAPI routes, auth, request guards, dependency container
+|   |-- common/      Shared auth, tenancy, tracing, logging, runtime primitives
+|   |-- config/      Validated application configuration
+|   |-- ingestion/   Upload persistence, normalization, PDF extraction
+|   |-- retrieval/   Local retrieval and provider/vector boundaries
+|   |-- schemas/     Canonical typed contracts
+|   |-- services/    Deal intake, orchestration, memo assembly, analyst actions
+|   |-- storage/     Adapter contracts and persistence implementations
+|   `-- main.py
+|-- agents/          Deterministic underwriting and QA agents
+|-- evals/           Local evaluation datasets, metrics, and runners
+|-- infra/           Deployment scaffold only
+|-- scripts/         Runbooks and validation wrappers
+|-- tests/           Unit, integration, smoke, and frontend wrappers
+`-- ui/              Analyst-facing React workspace</pre>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-block">
+              <h3>Backend modules</h3>
+              <p><code>api</code>, <code>common</code>, <code>config</code>, <code>ingestion</code>, <code>retrieval</code>, <code>schemas</code>, <code>services</code>, <code>storage</code></p>
+            </div>
+            <div class="stat-block">
+              <h3>UI feature groups</h3>
+              <p><code>dashboard</code>, <code>borrower</code>, <code>memo</code>, and <code>underwriting</code> under <code>ui/src/features</code></p>
+            </div>
+            <div class="stat-block">
+              <h3>Agent packages</h3>
+              <p>Financial analyst, covenant compliance, industry risk, critic QA, orchestrator, plus tool packages under <code>agents/tools</code></p>
+            </div>
+            <div class="stat-block">
+              <h3>Operational surfaces</h3>
+              <p><code>scripts/run_smoke_tests.ps1</code>, <code>scripts/run_production_readiness.ps1</code>, pilot and rollback runbooks, local eval runners</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card section-anchor" id="workspace">
+          <p class="section-label">06 · Analyst Workspace</p>
+          <div class="section-heading">
+            <div>
+              <h2>Frontend shape and analyst experience</h2>
+              <p>The inspected frontend is a dense enterprise workspace rather than a marketing demo shell.</p>
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="callout">
+              <h3>Navigation surfaces</h3>
+              <ul>
+                <li>Dashboard with seeded borrower watchlist and live workflow overlays</li>
+                <li>Dedicated portfolio, borrowers, runs, documents, and alerts views</li>
+                <li>Borrower detail workspace for contextual review</li>
+              </ul>
+            </div>
+            <div class="callout">
+              <h3>Execution surfaces</h3>
+              <ul>
+                <li>Upload-and-run page backed by real multipart upload and underwriting endpoints</li>
+                <li>Memo review workspace with evidence drill-through and critic findings</li>
+                <li>Persisted analyst actions wired to memo routes</li>
+              </ul>
+            </div>
+          </div>
+          <div class="feature-grid">
+            <div class="feature">
+              <h3>What is live</h3>
+              <p>Memo retrieval, uploads, underwriting runs, and analyst actions are backed by backend endpoints rather than static mock pages.</p>
+            </div>
+            <div class="feature">
+              <h3>What is seeded locally</h3>
+              <p>Portfolio and borrower lists remain seeded in the frontend and are overlaid with live workflow artifacts where backend list endpoints are not yet exposed.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card section-anchor" id="validation">
+          <p class="section-label">07 · Validation And Operations</p>
+          <div class="section-heading">
+            <div>
+              <h2>How the repository validates itself</h2>
+              <p>CreditFlow documents runtime checks, local readiness scripts, backend tests, frontend tests, and evaluation runners as part of its operating surface.</p>
+            </div>
+          </div>
+          <div class="validation-grid">
+            <div class="validation">
+              <h3>Backend runtime commands</h3>
+              <ul>
+                <li><code>python -m uvicorn backend.main:app --reload</code></li>
+                <li><code>GET /api/v1/health</code></li>
+                <li><code>GET /api/v1/version</code></li>
+              </ul>
+            </div>
+            <div class="validation">
+              <h3>Frontend runtime commands</h3>
+              <ul>
+                <li><code>cd ui</code></li>
+                <li><code>npm install</code></li>
+                <li><code>npm run dev</code></li>
+              </ul>
+            </div>
+            <div class="validation">
+              <h3>Project validation scripts</h3>
+              <ul>
+                <li><code>.\scripts\run_smoke_tests.ps1</code></li>
+                <li><code>.\scripts\run_production_readiness.ps1</code></li>
+                <li>Local deterministic evals under <code>evals/</code></li>
+              </ul>
+            </div>
+            <div class="validation">
+              <h3>Multi-tenant review path</h3>
+              <ul>
+                <li>Create tenant-scoped deal</li>
+                <li>Upload supporting document</li>
+                <li>Run underwriting and fetch memo</li>
+                <li>Persist analyst decision and verify tenant isolation</li>
+              </ul>
+            </div>
+          </div>
+          <div class="timeline">
+            <h3>Operational checkpoints</h3>
+            <ul>
+              <li>Request, trace, actor, and tenant context are bound at the API layer</li>
+              <li>Routes defer orchestration and persistence concerns to services</li>
+              <li>Retrieval diagnostics are surfaced into memo review for analyst context</li>
+              <li>Local and production-readiness scripts act as release gates for the staged platform</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section-card section-anchor" id="boundaries">
+          <p class="section-label">08 · Real Versus Boundary-Only</p>
+          <div class="section-heading">
+            <div>
+              <h2>What is real today, and what is still deferred</h2>
+              <p>The repository is explicit about cloud boundaries, live integrations, and production policy claims that remain outside the locally validated surface.</p>
+            </div>
+          </div>
+          <div class="boundary-grid">
+            <div class="boundary">
+              <h3>Real today</h3>
+              <ul>
+                <li>Local and pilot runtime</li>
+                <li>Tenant-aware persistence and retrieval boundaries</li>
+                <li>Signed session manager and RBAC boundary</li>
+                <li>Multipart upload path and PDF extraction provenance</li>
+                <li>Persistent analyst actions and memo review evidence drill-through</li>
+                <li>Full backend regression surface and local evaluation runners</li>
+              </ul>
+            </div>
+            <div class="boundary">
+              <h3>Boundary-only or deferred</h3>
+              <ul>
+                <li>Live identity provider integration</li>
+                <li>Live PostgreSQL deployment validation</li>
+                <li>Live provider-backed upload storage</li>
+                <li>Live vector database or hybrid managed search backend</li>
+                <li>Guaranteed managed OCR runtime</li>
+                <li>Governed production underwriting policy logic</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout">
+            <h3>Why this distinction matters</h3>
+            <p>
+              The codebase does not blur local validation into unsupported production claims. That makes it a stronger engineering artifact: the runtime surface is real, but the repository still documents where cloud guarantees and governed policy logic have not been fully validated.
+            </p>
+          </div>
+        </section>
+
+        <section class="section-card section-anchor" id="demo">
+          <p class="section-label">09 · Demo Walkthrough</p>
+          <div class="section-heading">
+            <div>
+              <h2>How to present the platform in a live walkthrough</h2>
+              <p>The strongest walkthrough follows the natural deal-to-memo flow exposed by the inspected runtime.</p>
+            </div>
+          </div>
+          <div class="pipeline">
+            <div class="step">
+              <div class="step-index">A</div>
+              <div>
+                <h3>Start with the analyst shell</h3>
+                <p>Show the dashboard, portfolio, borrowers, runs, documents, and alerts surfaces to frame CreditFlow as a workspace rather than a single-screen prototype.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-index">B</div>
+              <div>
+                <h3>Move to upload and run</h3>
+                <p>Demonstrate the multipart upload flow and explain how a document becomes a normalized record under a deal before underwriting is allowed to execute.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-index">C</div>
+              <div>
+                <h3>Open the memo review workspace</h3>
+                <p>Highlight evidence panels, retrieval diagnostics, critic findings, and persisted analyst actions. This is where the platform shifts from automation into human review and decision support.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-index">D</div>
+              <div>
+                <h3>Close with governance and boundaries</h3>
+                <p>Show the validation scripts, tenant-aware routing model, and the explicit real-versus-boundary-only distinctions. That keeps the story grounded in implementation truth.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card section-anchor" id="closeout">
+          <p class="section-label">10 · Deployment Notes</p>
+          <div class="section-heading">
+            <div>
+              <h2>What this website artifact contains</h2>
+              <p>This implementation website is a self-contained documentation surface created in a dedicated directory without modifying the existing FinRAG reference page or the CreditFlow project itself.</p>
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="callout">
+              <h3>Created here</h3>
+              <ul>
+                <li><code>creditflow-website/index.html</code></li>
+                <li><code>creditflow-website/assets/styles.css</code></li>
+                <li><code>creditflow-website/tasks/todo.md</code></li>
+              </ul>
+            </div>
+            <div class="callout">
+              <h3>Read-only references</h3>
+              <ul>
+                <li>Existing FinRAG reference page for structure and style cues</li>
+                <li>CreditFlow repository README and architecture document for factual content</li>
+                <li>CreditFlow directory layout for workflow and file-structure sections</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="shell">
+      <div class="footer-panel">
+        <h2>CreditFlow website artifact</h2>
+        <p>
+          This page was built as a new isolated website for the CreditFlow Intelligence Platform implementation and uses the
+          inspected repository as its factual source. No existing FinRAG or CreditFlow source files were changed to create it.
+        </p>
+        <div class="footer-links">
+          <a class="button button-secondary" href="#overview">Back to top</a>
+          <a class="button button-secondary" href="https://manish-portfolio-fawn.vercel.app/">Portfolio home</a>
+          <a class="button button-primary" href="https://github.com/manishengineertech1582-code/manish-portfolio">Portfolio repository</a>
+        </div>
+        <p class="footer-note">Prepared from inspected source material in the local CreditFlow repository and the existing portfolio site reference page.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
