@@ -299,7 +299,7 @@ export default function Home() {
                       fontWeight: 700,
                       boxShadow: '0 12px 24px rgba(59,130,246,0.28)',
                     }}>Open CreditFlow Page</a>
-                    <a href="https://manish-portfolio-fawn.vercel.app/creditflow/index.html" target="_blank" rel="noopener noreferrer" style={{
+                    <a href="https://github.com/manishengineertech1582-code/creditflow" target="_blank" rel="noopener noreferrer" style={{
                       background: 'rgba(255,255,255,0.04)',
                       color: '#E2E8F0',
                       textDecoration: 'none',
@@ -308,7 +308,7 @@ export default function Home() {
                       fontSize: '14px',
                       fontWeight: 600,
                       border: '1px solid rgba(148,163,184,0.32)',
-                    }}>Direct URL</a>
+                    }}>GitHub URL</a>
                   </div>
                 </div>
 
