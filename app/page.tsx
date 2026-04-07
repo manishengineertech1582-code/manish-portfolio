@@ -266,6 +266,77 @@ export default function Home() {
           </div>
         </section>
 
+        {/* ── CREDITFLOW SHOWCASE ──────────────────── */}
+        <section id="creditflow-showcase" style={{ padding: '0 20px 80px' }}>
+          <div style={{ maxWidth: '1120px', margin: '0 auto' }}>
+            <div style={{
+              background: 'linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%)',
+              borderRadius: '24px',
+              padding: '36px',
+              border: '1px solid #1E293B',
+              boxShadow: '0 24px 64px rgba(15,23,42,0.18)',
+            }}>
+              <div className="showcase-grid" style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: '28px', alignItems: 'center' }}>
+                <div>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(59,130,246,0.12)', border: '1px solid rgba(96,165,250,0.35)', borderRadius: '999px', padding: '6px 12px', marginBottom: '18px' }}>
+                    <span style={{ width: '8px', height: '8px', background: '#22C55E', borderRadius: '50%' }} />
+                    <span style={{ fontSize: '12px', color: '#BFDBFE', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Live CreditFlow Page</span>
+                  </div>
+                  <h2 style={{ fontSize: '32px', fontWeight: 800, color: '#F8FAFC', letterSpacing: '-0.8px', marginBottom: '14px', lineHeight: 1.15 }}>
+                    Open the full CreditFlow case study directly from the portfolio
+                  </h2>
+                  <p style={{ fontSize: '15px', color: '#CBD5E1', lineHeight: 1.8, maxWidth: '620px', marginBottom: '24px' }}>
+                    The production-grade underwriting platform at <span style={{ color: '#93C5FD', fontFamily: "'JetBrains Mono', monospace" }}>/creditflow/index.html</span> is now surfaced on the homepage as a first-class route with the full analyst workspace, evidence-backed memo generation, document ingestion pipeline, and implementation details.
+                  </p>
+                  <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                    <a href="https://manish-portfolio-fawn.vercel.app/creditflow" target="_blank" rel="noopener noreferrer" style={{
+                      background: '#3B82F6',
+                      color: '#fff',
+                      textDecoration: 'none',
+                      padding: '12px 22px',
+                      borderRadius: '10px',
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      boxShadow: '0 12px 24px rgba(59,130,246,0.28)',
+                    }}>Open CreditFlow Page</a>
+                    <a href="https://manish-portfolio-fawn.vercel.app/creditflow/index.html" target="_blank" rel="noopener noreferrer" style={{
+                      background: 'rgba(255,255,255,0.04)',
+                      color: '#E2E8F0',
+                      textDecoration: 'none',
+                      padding: '12px 22px',
+                      borderRadius: '10px',
+                      fontSize: '14px',
+                      fontWeight: 600,
+                      border: '1px solid rgba(148,163,184,0.32)',
+                    }}>Direct URL</a>
+                  </div>
+                </div>
+
+                <div style={{
+                  background: 'rgba(15,23,42,0.58)',
+                  border: '1px solid rgba(148,163,184,0.22)',
+                  borderRadius: '20px',
+                  padding: '24px',
+                }}>
+                  <div style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '14px' }}>Deployment Path</div>
+                  <div style={{ display: 'grid', gap: '12px' }}>
+                    {[
+                      ['Source file', 'public/creditflow/index.html'],
+                      ['Live route', '/creditflow/index.html'],
+                      ['Deployment', 'manish-portfolio-fawn.vercel.app'],
+                    ].map(([label, value]) => (
+                      <div key={label} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(148,163,184,0.14)', borderRadius: '14px', padding: '14px 16px' }}>
+                        <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>{label}</div>
+                        <div style={{ fontSize: '14px', color: '#F8FAFC', fontWeight: 600, fontFamily: "'JetBrains Mono', monospace" }}>{value}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section id="blog" style={{ background: '#fff', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', padding: '80px 20px' }}>
           <div style={{ maxWidth: '1120px', margin: '0 auto' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
