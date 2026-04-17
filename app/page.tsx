@@ -288,10 +288,10 @@ export default function Home() {
                     <span style={{ fontSize: '12px', color: '#BAE6FD', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Live RDK-B Page</span>
                   </div>
                   <h2 style={{ fontSize: '32px', fontWeight: 800, color: '#F8FAFC', letterSpacing: '-0.8px', marginBottom: '14px', lineHeight: 1.15 }}>
-                    Open the RDK-B broadband validation platform directly from the portfolio
+                    Review the AI-powered RDK-B validation platform built for broadband engineering teams
                   </h2>
                   <p style={{ fontSize: '15px', color: '#CBD5E1', lineHeight: 1.8, maxWidth: '620px', marginBottom: '24px' }}>
-                    The broadband validation page at <span style={{ color: '#93C5FD', fontFamily: "'JetBrains Mono', monospace" }}>/rdkb-broadband-validation/index.html</span> is now surfaced on the homepage with its architecture overview, correlated broadband signals, standards alignment, and root-cause workflow.
+                    The RDK-B broadband validation page at <span style={{ color: '#93C5FD', fontFamily: "'JetBrains Mono', monospace" }}>/rdkb-broadband-validation/index.html</span> brings together WiFi, hostapd, dnsmasq, SelfHeal, Harvester telemetry, and WebPA or TR-181 or SNMP correlation into one standards-grounded walkthrough. It explains how the platform detects steering loops, reconnect churn, DHCP instability, poor client experience, and cross-interface mismatches using a hybrid deterministic plus AI root-cause pipeline.
                   </p>
                   <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                     <Link href="/rdkb-broadband-validation/index.html" style={{
