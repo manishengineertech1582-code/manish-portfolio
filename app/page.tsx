@@ -272,6 +272,75 @@ export default function Home() {
         </section>
 
         {/* ── CREDITFLOW SHOWCASE ──────────────────── */}
+        <section id="rdkb-showcase" style={{ padding: '0 20px 80px' }}>
+          <div style={{ maxWidth: '1120px', margin: '0 auto' }}>
+            <div style={{
+              background: 'linear-gradient(135deg, #0B1220 0%, #172554 100%)',
+              borderRadius: '24px',
+              padding: '36px',
+              border: '1px solid #1E3A5F',
+              boxShadow: '0 24px 64px rgba(15,23,42,0.18)',
+            }}>
+              <div className="showcase-grid" style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: '28px', alignItems: 'center' }}>
+                <div>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(14,165,233,0.12)', border: '1px solid rgba(56,189,248,0.35)', borderRadius: '999px', padding: '6px 12px', marginBottom: '18px' }}>
+                    <span style={{ width: '8px', height: '8px', background: '#22C55E', borderRadius: '50%' }} />
+                    <span style={{ fontSize: '12px', color: '#BAE6FD', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Live RDK-B Page</span>
+                  </div>
+                  <h2 style={{ fontSize: '32px', fontWeight: 800, color: '#F8FAFC', letterSpacing: '-0.8px', marginBottom: '14px', lineHeight: 1.15 }}>
+                    Open the RDK-B broadband validation platform directly from the portfolio
+                  </h2>
+                  <p style={{ fontSize: '15px', color: '#CBD5E1', lineHeight: 1.8, maxWidth: '620px', marginBottom: '24px' }}>
+                    The broadband validation page at <span style={{ color: '#93C5FD', fontFamily: "'JetBrains Mono', monospace" }}>/rdkb-broadband-validation/index.html</span> is now surfaced on the homepage with its architecture overview, correlated broadband signals, standards alignment, and root-cause workflow.
+                  </p>
+                  <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                    <Link href="/rdkb-broadband-validation/index.html" style={{
+                      background: '#0EA5E9',
+                      color: '#fff',
+                      textDecoration: 'none',
+                      padding: '12px 22px',
+                      borderRadius: '10px',
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      boxShadow: '0 12px 24px rgba(14,165,233,0.28)',
+                    }}>Open RDK-B Page</Link>
+                    <a href="https://manish-portfolio-fawn.vercel.app/rdkb-broadband-validation/index.html" style={{
+                      background: 'rgba(255,255,255,0.04)',
+                      color: '#E2E8F0',
+                      textDecoration: 'none',
+                      padding: '12px 22px',
+                      borderRadius: '10px',
+                      fontSize: '14px',
+                      fontWeight: 600,
+                      border: '1px solid rgba(148,163,184,0.32)',
+                    }}>Direct URL</a>
+                  </div>
+                </div>
+
+                <div style={{
+                  background: 'rgba(15,23,42,0.58)',
+                  border: '1px solid rgba(148,163,184,0.22)',
+                  borderRadius: '20px',
+                  padding: '24px',
+                }}>
+                  <div style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '14px' }}>Deployment Path</div>
+                  <div style={{ display: 'grid', gap: '12px' }}>
+                    {[
+                      ['Source file', 'public/rdkb-broadband-validation/index.html'],
+                      ['Live route', '/rdkb-broadband-validation/index.html'],
+                      ['Deployment', 'manish-portfolio-fawn.vercel.app'],
+                    ].map(([label, value]) => (
+                      <div key={label} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(148,163,184,0.14)', borderRadius: '14px', padding: '14px 16px' }}>
+                        <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>{label}</div>
+                        <div style={{ fontSize: '14px', color: '#F8FAFC', fontWeight: 600, fontFamily: "'JetBrains Mono', monospace" }}>{value}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
         <section id="creditflow-showcase" style={{ padding: '0 20px 80px' }}>
           <div style={{ maxWidth: '1120px', margin: '0 auto' }}>
             <div style={{
@@ -546,5 +615,6 @@ export default function Home() {
     </>
   )
 }
+
 
 
