@@ -130,6 +130,11 @@ export default function Home() {
                   borderRadius: '9px', textDecoration: 'none', fontWeight: 700, fontSize: '14px',
                   boxShadow: '0 2px 12px rgba(124,58,237,0.3)',
                 }}>Read FinRAG Case Study {'->'}</Link>
+                <Link href="/rdkb-broadband-validation/index.html" style={{
+                  background: '#0F172A', color: '#E0F2FE', padding: '12px 24px',
+                  borderRadius: '9px', textDecoration: 'none', fontWeight: 700, fontSize: '14px',
+                  boxShadow: '0 2px 12px rgba(15,23,42,0.18)', border: '1px solid #0F172A',
+                }}>Open RDK-B Platform</Link>
                 <a href="https://github.com/manishengineertech1582-code" target="_blank" rel="noopener noreferrer" style={{
                   background: '#fff', border: '1px solid #E2E8F0', color: '#374151',
                   padding: '12px 24px', borderRadius: '9px', textDecoration: 'none', fontWeight: 600, fontSize: '14px',
@@ -464,6 +469,7 @@ export default function Home() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
               {[
                 { name: 'FinRAG Engine', desc: 'Production RAG system for intelligent PDF Q&A with a Claude-style dark chat UI, Hit@K/MRR evaluation, MultiQueryRetriever, and 19 documented production bugs fixed.', tags: ['Python', 'LangChain', 'FAISS', 'FastAPI', 'OpenAI'], url: '/finrag/index.html', badge: 'Production', accent: '#7C3AED', external: false },
+                { name: 'RDK-B Broadband Validation Platform', desc: 'AI-powered RDK-B validation and diagnostics website covering telemetry correlation, standards-grounded root cause analysis, and cross-system validation workflows for broadband engineering teams.', tags: ['RDK-B', 'Telemetry', 'Diagnostics', 'IEEE', 'TR-181'], url: '/rdkb-broadband-validation/index.html', badge: 'Architecture', accent: '#0EA5E9', external: false },
                 { name: 'Network Log Analyzer', desc: 'LLM-powered network log analysis using LangChain and Ollama. Parses and interprets complex network logs using local language models without cloud API calls.', tags: ['Python', 'LangChain', 'Ollama'], url: 'https://github.com/manishengineertech1582-code/network-log-analyzer', badge: 'Open Source', accent: '#4F46E5', external: true },
               ].map(({ name, desc, tags, url, badge, accent, external }) => {
                 const card = (
@@ -540,4 +546,5 @@ export default function Home() {
     </>
   )
 }
+
 

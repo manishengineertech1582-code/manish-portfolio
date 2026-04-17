@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RDK-B Broadband Validation Platform</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --sidebar-bg: #0f172a;
+      --sidebar-card: #1e293b;
+      --sidebar-border: #334155;
+      --sidebar-muted: #64748b;
+      --accent: #38bdf8;
+      --accent-soft: #e0f2fe;
+      --page-bg: #f0f4f8;
+      --card-bg: #ffffff;
+      --card-border: #dbe4ee;
+      --text: #0f172a;
+      --muted: #475569;
+      --success: #22c55e;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: var(--page-bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .shell {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 300px;
+      background: var(--sidebar-bg);
+      color: #e2e8f0;
+      padding: 26px 22px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .brand h1 {
+      font-size: 1.35rem;
+      line-height: 1.2;
+      color: var(--accent);
+      letter-spacing: -0.03em;
+    }
+
+    .brand p {
+      margin-top: 8px;
+      color: #94a3b8;
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sidebar-muted);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav-list a {
+      text-decoration: none;
+      color: #cbd5e1;
+      background: rgba(30, 41, 59, 0.72);
+      border: 1px solid rgba(51, 65, 85, 0.75);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 0.86rem;
+      line-height: 1.35;
+      transition: 0.2s ease;
+    }
+
+    .nav-list a:hover {
+      border-color: rgba(56, 189, 248, 0.55);
+      color: #f8fafc;
+      transform: translateY(-1px);
+    }
+
+    .sidebar-card {
+      background: var(--sidebar-card);
+      border: 1px solid var(--sidebar-border);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .stats {
+      display: grid;
+      gap: 10px;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      color: #cbd5e1;
+    }
+
+    .stat-row strong {
+      color: var(--accent);
+      font-size: 0.9rem;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: #e0f2fe;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.74rem;
+      line-height: 1.2;
+    }
+
+    .sidebar-note {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      line-height: 1.55;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .topbar {
+      background: #ffffff;
+      border-bottom: 1px solid #dbe4ee;
+      padding: 16px 28px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .topbar-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+      flex-shrink: 0;
+    }
+
+    .topbar h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .topbar span {
+      margin-left: auto;
+      color: #64748b;
+      font-size: 0.82rem;
+      text-align: right;
+    }
+
+    .content {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fbff 55%, #eef6ff 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-soft);
+      border: 1px solid #bae6fd;
+      color: #0369a1;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .hero h3 {
+      margin-top: 18px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      max-width: 900px;
+    }
+
+    .hero p.lead {
+      margin-top: 16px;
+      max-width: 880px;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .summary-panel,
+    .signal-panel {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .panel-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 12px;
+    }
+
+    .bullet-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    .bullet-list li {
+      list-style: none;
+      position: relative;
+      padding-left: 16px;
+    }
+
+    .bullet-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.65em;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.05);
+    }
+
+    .section-card h4 {
+      font-size: 1.2rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .section-card p {
+      margin-top: 12px;
+      color: var(--muted);
+      line-height: 1.72;
+      font-size: 0.95rem;
+    }
+
+    .grid-2,
+    .grid-3 {
+      display: grid;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .mini-card {
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    }
+
+    .mini-card h5 {
+      font-size: 0.96rem;
+      line-height: 1.35;
+      margin-bottom: 10px;
+    }
+
+    .mini-card p,
+    .mini-card ul {
+      margin-top: 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .mini-card ul {
+      padding-left: 18px;
+    }
+
+    .mini-card li + li {
+      margin-top: 6px;
+    }
+
+    .architecture-flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .flow-step {
+      border: 1px solid var(--card-border);
+      background: #f8fbff;
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 142px;
+    }
+
+    .flow-step span {
+      display: inline-flex;
+      width: 28px;
+      height: 28px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #0f172a;
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .flow-step h5 {
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .flow-step p {
+      font-size: 0.83rem;
+      margin-top: 0;
+    }
+
+    .precedence {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .precedence .level {
+      flex: 1 1 180px;
+      border-radius: 14px;
+      border: 1px solid var(--card-border);
+      padding: 14px 15px;
+      background: #f8fbff;
+    }
+
+    .level strong {
+      display: block;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #0369a1;
+      margin-bottom: 8px;
+    }
+
+    .level div {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .walkthrough {
+      margin-top: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .walk-step {
+      border-left: 4px solid var(--accent);
+      background: #f8fbff;
+      border-radius: 0 14px 14px 0;
+      padding: 16px 18px;
+    }
+
+    .walk-step h5 {
+      font-size: 0.94rem;
+      margin-bottom: 8px;
+    }
+
+    .walk-step p {
+      margin-top: 0;
+      font-size: 0.88rem;
+    }
+
+    .signal-table {
+      margin-top: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      background: #ffffff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 14px 16px;
+      border-bottom: 1px solid #e5edf5;
+      vertical-align: top;
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+
+    th {
+      background: #f8fbff;
+      color: #475569;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .output-strip {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .output-card {
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--card-border);
+      background: #f8fbff;
+    }
+
+    .output-card strong {
+      display: block;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    .output-card div {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .footer {
+      padding: 0 28px 28px;
+      color: #64748b;
+      font-size: 0.82rem;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 1180px) {
+      .hero-grid,
+      .grid-3,
+      .architecture-flow,
+      .output-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .shell {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+
+      .topbar {
+        position: relative;
+        padding: 14px 18px;
+      }
+
+      .content {
+        padding: 18px;
+      }
+
+      .hero {
+        padding: 22px;
+      }
+
+      .hero-grid,
+      .grid-3,
+      .architecture-flow,
+      .output-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <h1>RDK-B Broadband Validation</h1>
+        <p>AI-powered RDK-B broadband validation platform for logs, telemetry, standards-grounded reasoning, and cross-system root-cause analysis.</p>
+      </div>
+
+      <div>
+        <div class="section-label">Navigate</div>
+        <nav class="nav-list">
+          <a href="#overview">Executive Summary</a>
+          <a href="#problem">Problem Statement</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#signals">Data Sources</a>
+          <a href="#intelligence">AI and Validation</a>
+          <a href="#standards">Standards and Compliance</a>
+          <a href="#use-cases">Use Cases</a>
+          <a href="#walkthrough">Example Walkthrough</a>
+          <a href="#roadmap">Roadmap</a>
+        </nav>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="section-label">Project Snapshot</div>
+        <div class="stats">
+          <div class="stat-row"><span>Target domain</span><strong>RDK-B</strong></div>
+          <div class="stat-row"><span>Core signals</span><strong>Logs + APIs</strong></div>
+          <div class="stat-row"><span>Reasoning model</span><strong>Hybrid</strong></div>
+          <div class="stat-row"><span>Primary output</span><strong>Root cause</strong></div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="section-label">Evidence Inputs</div>
+        <div class="pill-list">
+          <span class="pill">WiFilog.txt</span>
+          <span class="pill">hostapd</span>
+          <span class="pill">dnsmasq</span>
+          <span class="pill">SelfHeal</span>
+          <span class="pill">Harvester</span>
+          <span class="pill">WebPA</span>
+          <span class="pill">TR-181</span>
+          <span class="pill">SNMP</span>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="section-label">Validation Priorities</div>
+        <p class="sidebar-note">
+          Detect steering loops, disconnect and reconnect churn, DHCP instability, poor Wi-Fi quality, Ethernet flaps, and cross-interface mismatches before they become release or field issues.
+        </p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-dot"></div>
+        <h2>RDK-B Platform Overview</h2>
+        <span>Prepared for engineering, architecture, product, and industry review</span>
+      </header>
+
+      <div class="content">
+        <section class="hero" id="overview">
+          <div class="eyebrow">RDK-B validation and diagnostics platform</div>
+          <h3>Built to turn scattered broadband evidence into standards-grounded root-cause decisions.</h3>
+          <p class="lead">
+            This platform ingests Wi-Fi, network, self-heal, telemetry, and management-plane data, correlates signals across RDK-B subsystems, and produces actionable findings with confidence, evidence lineage, and recommended fixes. It is designed for engineering validation, release certification, field triage, and cross-team operational review.
+          </p>
+
+          <div class="hero-grid">
+            <div class="summary-panel">
+              <div class="panel-title">What the system does</div>
+              <ul class="bullet-list">
+                <li>Analyzes RDK-B logs including Wi-Fi, hostapd, dnsmasq, SelfHeal, and telemetry streams.</li>
+                <li>Correlates those signals with WebPA, SNMP, and TR-181 state rather than diagnosing each interface in isolation.</li>
+                <li>Detects steering loops, reconnect churn, DHCP instability, poor client experience, and wired link problems.</li>
+                <li>Produces root cause, validation state, confidence, and a concrete remediation path for each incident window.</li>
+              </ul>
+            </div>
+
+            <div class="signal-panel">
+              <div class="panel-title">Why it matters</div>
+              <ul class="bullet-list">
+                <li>Manual debugging across broadband subsystems is slow and error-prone.</li>
+                <li>Pure rule engines overfire on symptoms and miss cross-layer causes.</li>
+                <li>Field and lab teams need findings they can trace back to logs and standards.</li>
+                <li>Product leaders need faster release confidence with fewer hidden regressions.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card" id="problem">
+          <h4>Problem Statement</h4>
+          <p>
+            RDK-B validation rarely fails cleanly in one place. A customer experience issue might start as unstable RSSI, surface as repeated disassociation in hostapd, later appear as DHCP churn in dnsmasq, and finally trigger recovery behavior in SelfHeal. Teams that review only one subsystem often fix the symptom, not the cause. The platform addresses this by grounding every diagnosis in correlated evidence across logs, telemetry, and device-management views.
+          </p>
+          <div class="grid-3">
+            <div class="mini-card">
+              <h5>Manual validation gaps</h5>
+              <ul>
+                <li>Time spent stitching timestamps and device states by hand</li>
+                <li>Inconsistent interpretation across test teams</li>
+                <li>No durable evidence chain for leadership review</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h5>Rule-only limitations</h5>
+              <ul>
+                <li>Threshold alerts that do not explain sequence or causality</li>
+                <li>Poor handling of silent or partial failures</li>
+                <li>Weak cross-interface reasoning across TR-181, WebPA, and logs</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h5>Platform objective</h5>
+              <ul>
+                <li>Surface the highest-confidence root cause first</li>
+                <li>Preserve source attribution and standards grounding</li>
+                <li>Turn validation output into action, not just alert volume</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card" id="architecture">
+          <h4>System Overview and Detailed Architecture</h4>
+          <p>
+            The platform follows a layered architecture so that evidence collection, feature derivation, deterministic validation, and AI reasoning stay independently auditable. This keeps the system explainable and helps ensure that generated narrative never outranks actual device evidence.
+          </p>
+          <div class="architecture-flow">
+            <div class="flow-step">
+              <span>1</span>
+              <h5>Ingest</h5>
+              <p>Collect Wi-Fi, hostapd, dnsmasq, SelfHeal, telemetry, WebPA, TR-181, and SNMP inputs for the test window.</p>
+            </div>
+            <div class="flow-step">
+              <span>2</span>
+              <h5>Normalize</h5>
+              <p>Standardize timestamps, device identifiers, client MAC references, and subsystem event structure.</p>
+            </div>
+            <div class="flow-step">
+              <span>3</span>
+              <h5>Correlate</h5>
+              <p>Group related events into incident windows and link management-plane state with runtime evidence.</p>
+            </div>
+            <div class="flow-step">
+              <span>4</span>
+              <h5>Validate</h5>
+              <p>Apply deterministic checks for known failure patterns, standards alignment, and cross-source consistency.</p>
+            </div>
+            <div class="flow-step">
+              <span>5</span>
+              <h5>Explain</h5>
+              <p>Generate grounded diagnosis, confidence, and remediation only from the validated evidence set.</p>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="mini-card">
+              <h5>Data layer</h5>
+              <p>Responsible for ingestion, parsing, normalization, time alignment, and structured feature staging across RDK-B, telemetry, and control-plane sources.</p>
+            </div>
+            <div class="mini-card">
+              <h5>Intelligence layer</h5>
+              <p>Handles correlation, event sequencing, deterministic rules, evidence ranking, and grounded AI reasoning over the validated incident context.</p>
+            </div>
+            <div class="mini-card">
+              <h5>Validation layer</h5>
+              <p>Produces PASS, FAIL, or PARTIAL state, root-cause narrative, citations, confidence, and recommended next actions for lab and field workflows.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card" id="signals">
+          <h4>Data Sources and Correlation Surfaces</h4>
+          <p>
+            Each source contributes a distinct view of device behavior. The platform is designed so that no single log becomes the source of truth for all broadband failures. Instead, it builds confidence through corroboration.
+          </p>
+
+          <div class="signal-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Source</th>
+                  <th>Primary value</th>
+                  <th>Failure classes supported</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>/rdklogs/logs/WiFilog.txt</strong></td>
+                  <td>Client activity, RSSI trends, retries, steering behavior, radio state</td>
+                  <td>Steering loops, poor signal, reconnect churn, interference, roaming quality</td>
+                </tr>
+                <tr>
+                  <td><strong>hostapd logs</strong></td>
+                  <td>Association, deauthentication, authentication failures, BSS transition behavior</td>
+                  <td>Security mismatch, roaming rejection, sticky client behavior, band steering issues</td>
+                </tr>
+                <tr>
+                  <td><strong>dnsmasq logs</strong></td>
+                  <td>DHCP and DNS exchanges, client address churn, lease instability</td>
+                  <td>DHCP failure, IP churn, network symptoms that follow Wi-Fi instability</td>
+                </tr>
+                <tr>
+                  <td><strong>SelfHeal.txt</strong></td>
+                  <td>Recovery actions, Wi-Fi restarts, connectivity remediation triggers</td>
+                  <td>Silent failures, automated recovery cycles, persistent service degradation</td>
+                </tr>
+                <tr>
+                  <td><strong>Harvesterlog.txt</strong></td>
+                  <td>Telemetry counters, experience indicators, performance aggregates</td>
+                  <td>QoE degradation, repeated disconnects, trend-based validation gaps</td>
+                </tr>
+                <tr>
+                  <td><strong>WebPA / TR-181 / SNMP</strong></td>
+                  <td>Configuration truth, management-plane state, counters, control-plane validation</td>
+                  <td>Cross-interface mismatch, misconfiguration, feature enablement drift</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section-card" id="intelligence">
+          <h4>AI and Validation Approach</h4>
+          <p>
+            The platform is intentionally hybrid. Deterministic checks establish whether a known failure signature exists. AI reasoning then explains what happened, why the evidence points to that conclusion, and what should be done next. This preserves explainability while still giving teams natural-language insight and cross-system summarization.
+          </p>
+          <div class="grid-2">
+            <div class="mini-card">
+              <h5>Deterministic validation first</h5>
+              <ul>
+                <li>Rules identify explicit failure signatures such as RSSI steering loops, repeated deauth, DHCP churn, and Ethernet flaps.</li>
+                <li>Cross-source checks decide whether a symptom is primary or downstream of another event chain.</li>
+                <li>Evidence from logs and management state forms the gating input to reasoning.</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h5>Grounded AI reasoning second</h5>
+              <ul>
+                <li>Explains findings in engineer-readable language without inventing unsupported causes.</li>
+                <li>Uses prompt engineering to rank evidence, preserve uncertainty, and keep standards citations visible.</li>
+                <li>Supports zero-shot reasoning for explanation and few-shot shaping only where response structure needs consistency.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="mini-card">
+              <h5>Training in this system</h5>
+              <p>Training means prompt tuning, domain knowledge injection, labeled failure pattern refinement, and ongoing pattern library expansion rather than unconstrained model guessing.</p>
+            </div>
+            <div class="mini-card">
+              <h5>No-hallucination posture</h5>
+              <p>Missing evidence stays missing. Confidence drops when corroboration is weak. The narrative must point back to actual logs, telemetry, or standards references.</p>
+            </div>
+            <div class="mini-card">
+              <h5>Failure detection intelligence</h5>
+              <p>The engine explicitly looks for silent failures, partial failures, and configuration-state mismatches that do not show up as a single hard outage.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card" id="standards">
+          <h4>Standards and Compliance Alignment</h4>
+          <p>
+            The validation model is tied to broadband and device-management standards so that test verdicts and recommended fixes remain defensible across engineering, certification, and partner review.
+          </p>
+
+          <div class="precedence">
+            <div class="level">
+              <strong>Precedence 1</strong>
+              <div>IEEE standards for Wi-Fi, Ethernet, PHY, MAC, and radio behavior.</div>
+            </div>
+            <div class="level">
+              <strong>Precedence 2</strong>
+              <div>RDK-B specifications, component behavior, log semantics, and platform implementation rules.</div>
+            </div>
+            <div class="level">
+              <strong>Precedence 3</strong>
+              <div>TR-181, TR-069, TR-369, SNMP RFC guidance, DOCSIS context, and established industry best practices.</div>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="mini-card">
+              <h5>Wi-Fi and Ethernet</h5>
+              <p>IEEE 802.11 and Ethernet standards anchor PHY, MAC, steering, roaming, link quality, and wired fault interpretation.</p>
+            </div>
+            <div class="mini-card">
+              <h5>Device management</h5>
+              <p>TR-181 and TR-069 or TR-369 guide object-level truth, remote configuration, and control-plane state comparison.</p>
+            </div>
+            <div class="mini-card">
+              <h5>Operational validation</h5>
+              <p>SNMP and DOCSIS references help correlate counters, WAN behavior, and fleet-facing operations with device logs.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card" id="use-cases">
+          <h4>Key Use Cases</h4>
+          <p>
+            The platform is built for validation teams, broadband architects, and support operations that need more than an alarm list. It prioritizes repeatable scenarios that directly affect customer experience and release confidence.
+          </p>
+
+          <div class="grid-3">
+            <div class="mini-card">
+              <h5>Wi-Fi steering and roaming</h5>
+              <p>Diagnose RSSI-triggered steering loops, sticky-client behavior, failed BSS transitions, and client roaming degradation.</p>
+            </div>
+            <div class="mini-card">
+              <h5>Service instability</h5>
+              <p>Separate DHCP and DNS symptoms from upstream Wi-Fi or management-plane causes before they become misclassified defects.</p>
+            </div>
+            <div class="mini-card">
+              <h5>Performance and release validation</h5>
+              <p>Use telemetry and logs together to validate firmware behavior, QoE trends, security posture, and operational regressions.</p>
+            </div>
+          </div>
+        </section>
+        <section class="section-card" id="walkthrough">
+          <h4>Representative Incident Walkthrough</h4>
+          <p>
+            A typical scenario starts with poor signal and unstable steering behavior, then expands into reconnect churn and DHCP noise. The system treats those events as a chain, not as unrelated alerts.
+          </p>
+
+          <div class="walkthrough">
+            <div class="walk-step">
+              <h5>Detection</h5>
+              <p>Wi-Fi logs show repeated low-RSSI steering decisions and elevated retry behavior for the same client device.</p>
+            </div>
+            <div class="walk-step">
+              <h5>Correlation</h5>
+              <p>hostapd shows repeated association or deauthentication churn, while telemetry records rising disconnect count in the same incident window.</p>
+            </div>
+            <div class="walk-step">
+              <h5>Cross-system validation</h5>
+              <p>dnsmasq records address renegotiation attempts, but management-plane checks confirm the DHCP subsystem itself is configured and reachable.</p>
+            </div>
+            <div class="walk-step">
+              <h5>Root cause decision</h5>
+              <p>The platform ranks Wi-Fi instability as the primary cause and DHCP churn as the downstream symptom, then recommends steering threshold and channel policy review.</p>
+            </div>
+          </div>
+
+          <div class="output-strip">
+            <div class="output-card">
+              <strong>Verdict</strong>
+              <div>FAIL or PARTIAL based on evidence continuity</div>
+            </div>
+            <div class="output-card">
+              <strong>Root cause</strong>
+              <div>RSSI-based instability or steering loop</div>
+            </div>
+            <div class="output-card">
+              <strong>Fix output</strong>
+              <div>Actionable tuning and validation steps</div>
+            </div>
+            <div class="output-card">
+              <strong>Confidence</strong>
+              <div>Evidence-backed score with source traceability</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card" id="roadmap">
+          <h4>Advantages, Limitations, and Forward Roadmap</h4>
+          <p>
+            Compared with manual debugging, the system cuts triage time and preserves evidence lineage. Compared with threshold-only rule engines, it provides cross-layer diagnosis and grounded narrative. Its current limitation is simple: it can only be as strong as the evidence available. Missing logs, time skew, vendor-specific format drift, or weak control-plane visibility reduce confidence and must remain explicit in the output.
+          </p>
+
+          <div class="grid-3">
+            <div class="mini-card">
+              <h5>Why it is better</h5>
+              <ul>
+                <li>Faster root-cause isolation</li>
+                <li>Cross-source validation</li>
+                <li>Engineer-readable findings tied to standards</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h5>Current limitations</h5>
+              <ul>
+                <li>Dependent on source coverage and timestamp quality</li>
+                <li>Needs continued expansion for new vendor log variants</li>
+                <li>Confidence must drop when evidence is incomplete</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h5>Future enhancements</h5>
+              <ul>
+                <li>Autonomous remediation with approval gates</li>
+                <li>Closed-loop revalidation after corrective actions</li>
+                <li>ML-based anomaly detection for emerging patterns</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="footer">
+        This page uses the same visual language as the reference FinRAG page while adapting the content to broadband system validation, standards alignment, and root-cause analysis workflows.
+      </div>
+    </main>
+  </div>
+</body>
+</html>
