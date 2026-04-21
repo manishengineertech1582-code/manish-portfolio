@@ -178,14 +178,21 @@
     }
 
     .topbar span {
-      margin-left: auto;
       color: #64748b;
       font-size: 0.82rem;
       text-align: right;
     }
 
-    .topbar-link {
+    .topbar-actions {
       margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .topbar-link {
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -204,6 +211,18 @@
       border-color: #38bdf8;
       color: #0369a1;
       transform: translateY(-1px);
+    }
+
+    .topbar-link.accent {
+      background: var(--accent-soft);
+      border-color: #bae6fd;
+      color: #0369a1;
+    }
+
+    .topbar-link.accent:hover {
+      border-color: #38bdf8;
+      background: #dbeafe;
+      color: #075985;
     }
 
     .content {
@@ -518,6 +537,45 @@
       line-height: 1.35;
     }
 
+    .showcase-copy {
+      max-width: 880px;
+    }
+
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      gap: 18px;
+      margin-top: 18px;
+      align-items: start;
+    }
+
+    .showcase-frame {
+      display: block;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+    }
+
+    .showcase-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .showcase-caption {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-top: 1px solid #e5edf5;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
     .footer {
       padding: 0 28px 28px;
       color: #64748b;
@@ -527,6 +585,7 @@
 
     @media (max-width: 1180px) {
       .hero-grid,
+      .showcase-grid,
       .grid-3,
       .architecture-flow,
       .output-strip {
@@ -552,6 +611,7 @@
       .topbar {
         position: relative;
         padding: 14px 18px;
+        flex-wrap: wrap;
       }
 
       .content {
@@ -563,10 +623,17 @@
       }
 
       .hero-grid,
+      .showcase-grid,
       .grid-3,
       .architecture-flow,
       .output-strip {
         grid-template-columns: 1fr;
+      }
+
+      .topbar-actions {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-start;
       }
     }
   </style>
@@ -583,6 +650,7 @@
         <div class="section-label">Navigate</div>
         <nav class="nav-list">
           <a href="#overview">Executive Summary</a>
+          <a href="#frontend-ui">Frontend UI</a>
           <a href="#problem">Problem Statement</a>
           <a href="#architecture">Architecture</a>
           <a href="#signals">Data Sources</a>
@@ -630,6 +698,9 @@
       <header class="topbar">
         <div class="topbar-dot"></div>
         <h2>RDK-B Platform Overview</h2>
+        <a class="topbar-link accent" style="margin-left: auto;" href="#frontend-ui">
+          <span>Frontend UI</span>
+        </a>
         <a class="topbar-link" href="https://manish-portfolio-fawn.vercel.app/">
           <span aria-hidden="true">←</span>
           <span>Manish Kumar Portfolio</span>
@@ -664,6 +735,40 @@
                 <li>Product leaders need faster release confidence with fewer hidden regressions.</li>
               </ul>
             </div>
+          </div>
+        </section>
+
+        <section class="section-card" id="frontend-ui">
+          <h4>Frontend UI</h4>
+          <p class="showcase-copy">
+            This screenshot captures the diagnostics workflow that sits on top of the RDK-B validation engine: multi-log upload, typed source selection, defect rollup, client-level observations, correlated event timeline, root-cause summary, and operator export actions. It shows how the platform turns raw broadband evidence into a review-ready RCA surface for engineering and NOC teams.
+          </p>
+          <div class="showcase-grid">
+            <div class="grid-2" style="margin-top: 0;">
+              <div class="mini-card">
+                <h5>What the UI surfaces</h5>
+                <ul>
+                  <li>Uploaded RDK-B logs with explicit source typing for hostapd, dnsmasq, SelfHeal, telemetry, and Wi-Fi traces</li>
+                  <li>Incident KPIs such as disconnect count, RSSI, steering failure rate, retry behavior, and client experience state</li>
+                  <li>Correlated error tables, timeline sequencing, root-cause rollup, and action-oriented remediation output</li>
+                </ul>
+              </div>
+              <div class="mini-card">
+                <h5>Why it matters</h5>
+                <ul>
+                  <li>Lets reviewers see the same grounded evidence chain the engine used for diagnosis</li>
+                  <li>Bridges low-level logs and operator-readable incident summaries in one workflow</li>
+                  <li>Supports engineering triage, validation sign-off, and customer-impact review without leaving the page</li>
+                </ul>
+              </div>
+            </div>
+            <a class="showcase-frame" href="./frontend-ui.png" target="_blank" rel="noreferrer">
+              <img src="./frontend-ui.png" alt="Frontend UI screenshot for the RDK-B Broadband Validation Platform" />
+              <div class="showcase-caption">
+                <span>Open the full-size diagnostics screenshot</span>
+                <span>PNG</span>
+              </div>
+            </a>
           </div>
         </section>
 
