@@ -474,6 +474,26 @@ export default function Home() {
                 </div>
               </a>
 
+              <Link href="/blog/rdkb-broadband-diagnostics" className="card-hover" style={{ textDecoration: 'none' }}>
+                <div style={{ background: '#fff', border: '1px solid #E2E8F0', borderRadius: '14px', padding: '28px', height: '100%', borderTop: '3px solid #0EA5E9' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                    <span style={{ background: '#F0F9FF', color: '#0369A1', fontSize: '10px', fontWeight: 700, padding: '3px 9px', borderRadius: '100px', border: '1px solid #BAE6FD' }}>New Architecture Blog</span>
+                    <span style={{ fontSize: '12px', color: '#94A3B8', fontFamily: "'JetBrains Mono', monospace" }}>April 2026 · 10 min read</span>
+                  </div>
+                  <h3 style={{ fontSize: '17px', fontWeight: 700, color: '#0F172A', letterSpacing: '-0.2px', marginBottom: '8px' }}>
+                    AI Platform for RDK-B Broadband Diagnostics
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748B', lineHeight: 1.7, marginBottom: '14px' }}>
+                    A deterministic-first architecture walkthrough for an RDK-B diagnostics platform built around telemetry correlation, evidence-backed reasoning, and frontend-led investigation.
+                  </p>
+                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                    {[['RDK-B', '#0EA5E9', '#F0F9FF'], ['Diagnostics', '#2563EB', '#EFF6FF'], ['Telemetry', '#10B981', '#F0FDF4'], ['Architecture', '#7C3AED', '#FAF5FF']].map(([label, color, bg]) => (
+                      <span key={label} style={{ background: bg, color, border: `1px solid ${color}33`, fontSize: '12px', padding: '3px 10px', borderRadius: '6px', fontWeight: 600 }}>{label}</span>
+                    ))}
+                  </div>
+                </div>
+              </Link>
+
               {/* Deep Learning post */}
               <Link href="/blog/ml-system-design" className="card-hover" style={{ textDecoration: 'none' }}>
                 <div style={{ background: '#fff', border: '1px solid #E2E8F0', borderRadius: '14px', padding: '28px', height: '100%' }}>
