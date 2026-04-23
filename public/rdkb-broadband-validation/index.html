@@ -3,31 +3,55 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RDK-B Broadband Validation Platform</title>
-  <!-- Restored known-good static portfolio implementation -->
+  <title>RDK-B Broadband Intelligence Platform</title>
+  <meta
+    name="description"
+    content="Portfolio case study for the April 2026 RDK-B Broadband Intelligence Platform report, covering deterministic diagnostics, AI-assisted explanation, enterprise hardening, and frontend-led validation."
+  />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --sidebar-bg: #0f172a;
-      --sidebar-card: #1e293b;
-      --sidebar-border: #334155;
-      --sidebar-muted: #64748b;
-      --accent: #38bdf8;
-      --accent-soft: #e0f2fe;
-      --page-bg: #f0f4f8;
-      --card-bg: #ffffff;
-      --card-border: #dbe4ee;
-      --text: #0f172a;
-      --muted: #475569;
-      --success: #22c55e;
+    @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap");
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    html { scroll-behavior: smooth; }
+    :root {
+      --bg: #e9eff5;
+      --bg-deep: #d8e3f0;
+      --shell: #0f172a;
+      --shell-soft: #172036;
+      --panel: rgba(255, 255, 255, 0.92);
+      --panel-strong: #ffffff;
+      --panel-border: #d4dfeb;
+      --ink: #122033;
+      --muted: #526275;
+      --accent: #0ea5e9;
+      --accent-strong: #0369a1;
+      --accent-soft: #e0f2fe;
+      --signal: #f59e0b;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --shadow: 0 18px 48px rgba(15, 23, 42, 0.12);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: "Segoe UI", system-ui, sans-serif;
-      background: var(--page-bg);
-      color: var(--text);
       min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(14, 165, 233, 0.12), transparent 30%),
+        radial-gradient(circle at top right, rgba(245, 158, 11, 0.1), transparent 25%),
+        linear-gradient(180deg, var(--bg) 0%, #f5f8fb 100%);
+      color: var(--ink);
+      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+    }
+
+    a {
+      color: inherit;
     }
 
     .shell {
@@ -36,262 +60,358 @@
     }
 
     .sidebar {
-      width: 300px;
-      background: var(--sidebar-bg);
-      color: #e2e8f0;
-      padding: 26px 22px 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
+      width: 320px;
+      padding: 28px 24px 32px;
+      background:
+        linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(20, 31, 53, 0.98) 100%),
+        var(--shell);
+      color: #dbe7f3;
       position: sticky;
       top: 0;
       height: 100vh;
       overflow-y: auto;
+      border-right: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    .brand {
+      padding: 18px;
+      border-radius: 24px;
+      background: linear-gradient(160deg, rgba(14, 165, 233, 0.12), rgba(245, 158, 11, 0.08));
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+
+    .brand-label,
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #7dd3fc;
     }
 
     .brand h1 {
-      font-size: 1.35rem;
-      line-height: 1.2;
-      color: var(--accent);
-      letter-spacing: -0.03em;
+      margin-top: 14px;
+      font-family: "Space Grotesk", "Segoe UI", sans-serif;
+      font-size: 1.7rem;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      color: #f8fbff;
     }
 
     .brand p {
-      margin-top: 8px;
-      color: #94a3b8;
-      font-size: 0.82rem;
-      line-height: 1.5;
+      margin-top: 14px;
+      color: #b4c3d4;
+      line-height: 1.68;
+      font-size: 0.95rem;
     }
 
-    .section-label {
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--sidebar-muted);
-      margin-bottom: 10px;
-      font-weight: 700;
+    .sidebar-block {
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(22, 33, 57, 0.86);
+      border: 1px solid rgba(148, 163, 184, 0.16);
     }
 
     .nav-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
+      margin-top: 14px;
     }
 
     .nav-list a {
+      display: block;
       text-decoration: none;
-      color: #cbd5e1;
-      background: rgba(30, 41, 59, 0.72);
-      border: 1px solid rgba(51, 65, 85, 0.75);
-      border-radius: 12px;
-      padding: 10px 12px;
-      font-size: 0.86rem;
-      line-height: 1.35;
-      transition: 0.2s ease;
+      color: #d8e4ef;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 14px;
+      padding: 11px 12px;
+      background: rgba(255, 255, 255, 0.03);
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
     }
 
     .nav-list a:hover {
-      border-color: rgba(56, 189, 248, 0.55);
-      color: #f8fafc;
       transform: translateY(-1px);
-    }
-
-    .sidebar-card {
-      background: var(--sidebar-card);
-      border: 1px solid var(--sidebar-border);
-      border-radius: 14px;
-      padding: 14px;
+      border-color: rgba(14, 165, 233, 0.52);
+      background: rgba(14, 165, 233, 0.08);
     }
 
     .stats {
       display: grid;
       gap: 10px;
+      margin-top: 14px;
     }
 
     .stat-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.82rem;
-      color: #cbd5e1;
+      gap: 12px;
+      font-size: 0.88rem;
+      color: #c8d5e2;
     }
 
     .stat-row strong {
-      color: var(--accent);
-      font-size: 0.9rem;
+      color: #f8fbff;
+      font-weight: 700;
     }
 
     .pill-list {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
+      margin-top: 14px;
     }
 
     .pill {
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      color: #e0f2fe;
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 10px;
       border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 0.74rem;
-      line-height: 1.2;
+      font-size: 0.78rem;
+      color: #f0f8ff;
+      border: 1px solid rgba(125, 211, 252, 0.22);
+      background: rgba(14, 165, 233, 0.12);
     }
 
     .sidebar-note {
-      font-size: 0.78rem;
-      color: #94a3b8;
+      margin-top: 14px;
+      color: #b5c4d4;
+      line-height: 1.68;
+      font-size: 0.9rem;
+    }
+
+    .gate-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .gate-item {
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      color: #d5e3ef;
+      font-size: 0.86rem;
       line-height: 1.55;
     }
 
     .main {
       flex: 1;
+      min-width: 0;
       display: flex;
       flex-direction: column;
-      min-width: 0;
     }
 
     .topbar {
-      background: #ffffff;
-      border-bottom: 1px solid #dbe4ee;
-      padding: 16px 28px;
-      display: flex;
-      gap: 12px;
-      align-items: center;
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 18px;
+      padding: 18px 28px;
+      backdrop-filter: blur(18px);
+      background: rgba(245, 248, 251, 0.88);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.22);
     }
 
-    .topbar-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--success);
-      box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
-      flex-shrink: 0;
-    }
-
-    .topbar h2 {
-      font-size: 1rem;
+    .topbar-left span {
+      display: block;
+      font-size: 0.74rem;
       font-weight: 700;
-      color: var(--text);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-strong);
     }
 
-    .topbar span {
-      color: #64748b;
-      font-size: 0.82rem;
-      text-align: right;
+    .topbar-left h2 {
+      margin-top: 6px;
+      font-family: "Space Grotesk", "Segoe UI", sans-serif;
+      font-size: 1.18rem;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
     }
 
-    .topbar-actions {
-      margin-left: auto;
+    .topbar-center {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 12px;
       flex-wrap: wrap;
+    }
+
+    .topbar-right {
+      display: flex;
       justify-content: flex-end;
     }
 
-    .topbar-link {
+    .contact-link {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      color: #0f172a;
-      text-decoration: none;
-      font-size: 0.84rem;
-      font-weight: 700;
-      padding: 9px 14px;
+      justify-content: center;
+      padding: 10px 16px;
       border-radius: 999px;
-      border: 1px solid #dbe4ee;
-      background: #ffffff;
-      transition: 0.2s ease;
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 700;
+      border: 1px solid var(--panel-border);
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
     }
 
-    .topbar-link:hover {
-      border-color: #38bdf8;
-      color: #0369a1;
+    .contact-link:hover {
       transform: translateY(-1px);
+      border-color: rgba(14, 165, 233, 0.45);
     }
 
-    .topbar-link.accent {
-      background: var(--accent-soft);
-      border-color: #bae6fd;
-      color: #0369a1;
+    .contact-link.primary {
+      border-color: rgba(14, 165, 233, 0.35);
+      background: linear-gradient(180deg, #eef9ff 0%, #dff4ff 100%);
+      color: var(--accent-strong);
     }
 
-    .topbar-link.accent:hover {
-      border-color: #38bdf8;
-      background: #dbeafe;
-      color: #075985;
+    .contact-link.secondary {
+      color: var(--muted);
     }
 
     .content {
-      padding: 28px;
+      padding: 30px 28px 34px;
       display: flex;
       flex-direction: column;
-      gap: 22px;
+      gap: 24px;
+    }
+
+    .hero,
+    .section-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      border: 1px solid var(--panel-border);
+      background: var(--panel);
+      box-shadow: var(--shadow);
     }
 
     .hero {
-      background: linear-gradient(135deg, #ffffff 0%, #f8fbff 55%, #eef6ff 100%);
-      border: 1px solid var(--card-border);
-      border-radius: 22px;
-      padding: 28px;
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+      padding: 30px;
+      background:
+        radial-gradient(circle at top right, rgba(14, 165, 233, 0.12), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.12), transparent 24%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.96) 0%, rgba(244, 249, 255, 0.95) 100%);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -120px auto;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(14, 165, 233, 0.2), transparent 68%);
+      pointer-events: none;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: var(--accent-soft);
-      border: 1px solid #bae6fd;
-      color: #0369a1;
+      padding: 8px 12px;
       border-radius: 999px;
-      padding: 7px 12px;
-      font-size: 0.76rem;
+      border: 1px solid rgba(14, 165, 233, 0.22);
+      background: rgba(224, 242, 254, 0.82);
+      color: var(--accent-strong);
+      font-size: 0.78rem;
       font-weight: 700;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
     }
 
     .hero h3 {
       margin-top: 18px;
-      font-size: clamp(2rem, 4vw, 3rem);
-      line-height: 1.05;
-      letter-spacing: -0.04em;
-      max-width: 900px;
+      max-width: 960px;
+      font-family: "Space Grotesk", "Segoe UI", sans-serif;
+      font-size: clamp(2.2rem, 4vw, 3.6rem);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
     }
 
     .hero p.lead {
-      margin-top: 16px;
-      max-width: 880px;
+      margin-top: 18px;
+      max-width: 900px;
+      font-size: 1.04rem;
+      line-height: 1.75;
       color: var(--muted);
-      font-size: 1rem;
-      line-height: 1.7;
     }
 
-    .hero-grid {
+    .hero-grid,
+    .dual-grid,
+    .grid-3,
+    .roadmap-grid,
+    .showcase-grid {
       display: grid;
-      grid-template-columns: 1.35fr 1fr;
       gap: 18px;
       margin-top: 24px;
     }
 
-    .summary-panel,
-    .signal-panel {
-      background: rgba(255, 255, 255, 0.88);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 18px;
+    .hero-grid,
+    .dual-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .showcase-grid {
+      grid-template-columns: minmax(0, 0.98fr) minmax(0, 1.02fr);
+      align-items: start;
+    }
+
+    .roadmap-grid {
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    }
+
+    .panel,
+    .mini-card,
+    .status-card,
+    .layer-card,
+    .flow-card,
+    .roadmap-card {
+      border-radius: 22px;
+      border: 1px solid var(--panel-border);
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    .panel,
+    .mini-card,
+    .status-card,
+    .roadmap-card {
+      padding: 20px;
+    }
+
+    .panel-title,
+    .section-title,
+    .mini-card h5,
+    .layer-card h5,
+    .flow-card h5,
+    .roadmap-card h5 {
+      font-family: "Space Grotesk", "Segoe UI", sans-serif;
+      letter-spacing: -0.02em;
+      color: var(--ink);
     }
 
     .panel-title {
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #64748b;
+      color: var(--accent-strong);
       margin-bottom: 12px;
     }
 
@@ -299,13 +419,13 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      list-style: none;
       color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.6;
+      line-height: 1.7;
+      font-size: 0.94rem;
     }
 
     .bullet-list li {
-      list-style: none;
       position: relative;
       padding-left: 16px;
     }
@@ -314,7 +434,7 @@
       content: "";
       position: absolute;
       left: 0;
-      top: 0.65em;
+      top: 0.72em;
       width: 7px;
       height: 7px;
       border-radius: 50%;
@@ -322,240 +442,102 @@
     }
 
     .section-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 22px;
-      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.05);
+      padding: 24px;
     }
 
     .section-card h4 {
-      font-size: 1.2rem;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
+      font-family: "Space Grotesk", "Segoe UI", sans-serif;
+      font-size: 1.55rem;
+      line-height: 1.08;
+      letter-spacing: -0.04em;
     }
 
-    .section-card p {
-      margin-top: 12px;
+    .section-card > p {
+      margin-top: 14px;
+      max-width: 980px;
       color: var(--muted);
-      line-height: 1.72;
-      font-size: 0.95rem;
+      line-height: 1.78;
+      font-size: 0.98rem;
     }
 
-    .grid-2,
-    .grid-3 {
-      display: grid;
-      gap: 16px;
-      margin-top: 18px;
-    }
-
-    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-
-    .mini-card {
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 16px;
-      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-    }
-
-    .mini-card h5 {
-      font-size: 0.96rem;
-      line-height: 1.35;
-      margin-bottom: 10px;
-    }
-
-    .mini-card p,
-    .mini-card ul {
-      margin-top: 0;
-      font-size: 0.88rem;
-      color: var(--muted);
-      line-height: 1.65;
-    }
-
-    .mini-card ul {
-      padding-left: 18px;
-    }
-
-    .mini-card li + li {
-      margin-top: 6px;
-    }
-
-    .architecture-flow {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .flow-step {
-      border: 1px solid var(--card-border);
-      background: #f8fbff;
-      border-radius: 14px;
-      padding: 14px;
-      min-height: 142px;
-    }
-
-    .flow-step span {
-      display: inline-flex;
-      width: 28px;
-      height: 28px;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: #0f172a;
-      color: var(--accent);
-      font-size: 0.82rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    .flow-step h5 {
-      font-size: 0.9rem;
-      margin-bottom: 8px;
-    }
-
-    .flow-step p {
-      font-size: 0.83rem;
-      margin-top: 0;
-    }
-
-    .precedence {
-      margin-top: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .precedence .level {
-      flex: 1 1 180px;
-      border-radius: 14px;
-      border: 1px solid var(--card-border);
-      padding: 14px 15px;
-      background: #f8fbff;
-    }
-
-    .level strong {
-      display: block;
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #0369a1;
-      margin-bottom: 8px;
-    }
-
-    .level div {
-      font-size: 0.9rem;
-      color: var(--text);
-      line-height: 1.45;
-    }
-
-    .walkthrough {
-      margin-top: 18px;
-      display: grid;
-      gap: 14px;
-    }
-
-    .walk-step {
-      border-left: 4px solid var(--accent);
-      background: #f8fbff;
-      border-radius: 0 14px 14px 0;
-      padding: 16px 18px;
-    }
-
-    .walk-step h5 {
-      font-size: 0.94rem;
-      margin-bottom: 8px;
-    }
-
-    .walk-step p {
-      margin-top: 0;
-      font-size: 0.88rem;
-    }
-
-    .signal-table {
-      margin-top: 18px;
-      overflow-x: auto;
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      background: #ffffff;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 760px;
-    }
-
-    th, td {
-      text-align: left;
-      padding: 14px 16px;
-      border-bottom: 1px solid #e5edf5;
-      vertical-align: top;
-      font-size: 0.88rem;
-      line-height: 1.55;
-    }
-
-    th {
-      background: #f8fbff;
-      color: #475569;
-      font-size: 0.76rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    .output-strip {
-      margin-top: 18px;
+    .kpi-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 12px;
+      margin-top: 24px;
     }
 
-    .output-card {
-      border-radius: 16px;
+    .kpi {
       padding: 16px;
-      border: 1px solid var(--card-border);
-      background: #f8fbff;
+      border-radius: 20px;
+      border: 1px solid rgba(14, 165, 233, 0.16);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(242, 248, 255, 0.94) 100%);
     }
 
-    .output-card strong {
+    .kpi span {
       display: block;
-      font-size: 0.76rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #64748b;
-      margin-bottom: 8px;
-    }
-
-    .output-card div {
-      font-size: 1rem;
+      font-size: 0.78rem;
       font-weight: 700;
-      line-height: 1.35;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-strong);
     }
 
-    .showcase-copy {
-      max-width: 880px;
+    .kpi strong {
+      display: block;
+      margin-top: 10px;
+      font-family: "Space Grotesk", "Segoe UI", sans-serif;
+      font-size: 1.48rem;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      color: var(--ink);
     }
 
-    .showcase-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-      gap: 18px;
-      margin-top: 18px;
-      align-items: start;
+    .kpi p {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.6;
+    }
+
+    .mini-card h5,
+    .status-card h5,
+    .roadmap-card h5 {
+      font-size: 1.02rem;
+      line-height: 1.25;
+    }
+
+    .mini-card p,
+    .status-card p,
+    .roadmap-card p {
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.72;
+      font-size: 0.92rem;
+    }
+
+    .mini-card ul,
+    .roadmap-card ul {
+      margin-top: 12px;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.9rem;
+    }
+
+    .mini-card li + li,
+    .roadmap-card li + li {
+      margin-top: 6px;
     }
 
     .showcase-frame {
       display: block;
-      border-radius: 18px;
       overflow: hidden;
-      border: 1px solid var(--card-border);
-      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+      border-radius: 24px;
+      border: 1px solid var(--panel-border);
+      background: var(--panel-strong);
+      box-shadow: 0 16px 38px rgba(15, 23, 42, 0.1);
+      text-decoration: none;
     }
 
     .showcase-frame img {
@@ -567,37 +549,177 @@
     .showcase-caption {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       gap: 12px;
-      padding: 12px 14px;
+      padding: 14px 16px;
       border-top: 1px solid #e5edf5;
       color: var(--muted);
-      font-size: 0.82rem;
-      line-height: 1.5;
+      font-size: 0.84rem;
+    }
+
+    .layer-grid,
+    .flow-grid {
+      display: grid;
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .layer-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .flow-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .layer-card {
+      padding: 18px;
+    }
+
+    .layer-card span,
+    .flow-card span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 34px;
+      height: 34px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(14, 165, 233, 0.12);
+      color: var(--accent-strong);
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .layer-card p,
+    .flow-card p {
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.68;
+      font-size: 0.9rem;
+    }
+
+    .flow-card {
+      padding: 16px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(240, 247, 255, 0.98) 100%);
+    }
+
+    .callout {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(224, 242, 254, 0.82), rgba(255, 248, 235, 0.82));
+      border: 1px solid rgba(14, 165, 233, 0.18);
+      color: var(--ink);
+    }
+
+    .callout strong {
+      font-family: "Space Grotesk", "Segoe UI", sans-serif;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .callout p {
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.72;
+      font-size: 0.92rem;
+    }
+
+    .comparison-table,
+    .status-table {
+      margin-top: 20px;
+      border: 1px solid var(--panel-border);
+      border-radius: 22px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 15px 16px;
+      border-bottom: 1px solid #e4edf6;
+      vertical-align: top;
+      font-size: 0.9rem;
+      line-height: 1.62;
+    }
+
+    th {
+      background: #f4f9ff;
+      color: var(--accent-strong);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 88px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .status-badge.active {
+      background: rgba(34, 197, 94, 0.14);
+      color: #15803d;
+    }
+
+    .status-badge.partial {
+      background: rgba(245, 158, 11, 0.16);
+      color: #b45309;
+    }
+
+    .status-badge.pending {
+      background: rgba(148, 163, 184, 0.18);
+      color: #475569;
     }
 
     .footer {
-      padding: 0 28px 28px;
-      color: #64748b;
-      font-size: 0.82rem;
-      line-height: 1.65;
+      padding: 0 28px 30px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
     }
 
-    @media (max-width: 1180px) {
-      .hero-grid,
-      .showcase-grid,
+    .footer-card {
+      padding: 18px 20px;
+      border-radius: 22px;
+      border: 1px solid var(--panel-border);
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .footer-card strong {
+      color: var(--ink);
+    }
+
+    @media (max-width: 1260px) {
+      .layer-grid,
       .grid-3,
-      .architecture-flow,
-      .output-strip {
+      .kpi-grid,
+      .flow-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-
-      .grid-2 {
-        grid-template-columns: 1fr;
-      }
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 1040px) {
       .shell {
         flex-direction: column;
       }
@@ -610,30 +732,47 @@
 
       .topbar {
         position: relative;
-        padding: 14px 18px;
-        flex-wrap: wrap;
-      }
-
-      .content {
-        padding: 18px;
-      }
-
-      .hero {
-        padding: 22px;
-      }
-
-      .hero-grid,
-      .showcase-grid,
-      .grid-3,
-      .architecture-flow,
-      .output-strip {
         grid-template-columns: 1fr;
       }
 
-      .topbar-actions {
-        margin-left: 0;
-        width: 100%;
-        justify-content: flex-start;
+      .topbar-right,
+      .topbar-left,
+      .topbar-center {
+        justify-content: center;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .content,
+      .footer {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .topbar {
+        padding: 16px 18px;
+      }
+
+      .hero,
+      .section-card {
+        padding: 20px;
+        border-radius: 24px;
+      }
+
+      .hero-grid,
+      .dual-grid,
+      .showcase-grid,
+      .roadmap-grid,
+      .grid-3,
+      .layer-grid,
+      .kpi-grid,
+      .flow-grid {
+        grid-template-columns: 1fr;
+      }
+
+      table {
+        min-width: 640px;
       }
     }
   </style>
@@ -642,447 +781,615 @@
   <div class="shell">
     <aside class="sidebar">
       <div class="brand">
-        <h1>RDK-B Broadband Validation</h1>
-        <p>AI-powered RDK-B broadband validation platform for logs, telemetry, standards-grounded reasoning, and cross-system root-cause analysis.</p>
+        <div class="brand-label">April 2026 project report</div>
+        <h1>RDK-B Broadband Intelligence Platform</h1>
+        <p>
+          Portfolio case study for a deterministic, citation-first broadband diagnostics system built for
+          crash forensics, frontend-led validation, and fleet-scale operational intelligence.
+        </p>
       </div>
 
-      <div>
+      <div class="sidebar-block">
         <div class="section-label">Navigate</div>
         <nav class="nav-list">
           <a href="#overview">Executive Summary</a>
-          <a href="#frontend-ui">Frontend UI</a>
-          <a href="#problem">Problem Statement</a>
+          <a href="#workspace">Frontend Workspace</a>
           <a href="#architecture">Architecture</a>
-          <a href="#signals">Data Sources</a>
-          <a href="#intelligence">AI and Validation</a>
-          <a href="#standards">Standards and Compliance</a>
-          <a href="#use-cases">Use Cases</a>
-          <a href="#walkthrough">Example Walkthrough</a>
-          <a href="#roadmap">Roadmap</a>
+          <a href="#intelligence">Deterministic AI</a>
+          <a href="#readiness">Testing and Readiness</a>
+          <a href="#security">Security and Mapping</a>
+          <a href="#roadmap">Limitations and Roadmap</a>
         </nav>
       </div>
 
-      <div class="sidebar-card">
+      <div class="sidebar-block">
         <div class="section-label">Project Snapshot</div>
         <div class="stats">
-          <div class="stat-row"><span>Target domain</span><strong>RDK-B</strong></div>
-          <div class="stat-row"><span>Core signals</span><strong>Logs + APIs</strong></div>
-          <div class="stat-row"><span>Reasoning model</span><strong>Hybrid</strong></div>
-          <div class="stat-row"><span>Primary output</span><strong>Root cause</strong></div>
+          <div class="stat-row"><span>Phases</span><strong>7 complete</strong></div>
+          <div class="stat-row"><span>Source modules</span><strong>36</strong></div>
+          <div class="stat-row"><span>Typed files</span><strong>69</strong></div>
+          <div class="stat-row"><span>Passing tests</span><strong>695</strong></div>
+          <div class="stat-row"><span>Rule engine</span><strong>50+</strong></div>
+          <div class="stat-row"><span>Feature vector</span><strong>140 signals</strong></div>
         </div>
       </div>
 
-      <div class="sidebar-card">
+      <div class="sidebar-block">
         <div class="section-label">Evidence Inputs</div>
         <div class="pill-list">
-          <span class="pill">WiFilog.txt</span>
           <span class="pill">hostapd</span>
           <span class="pill">dnsmasq</span>
-          <span class="pill">SelfHeal</span>
-          <span class="pill">Harvester</span>
-          <span class="pill">WebPA</span>
-          <span class="pill">TR-181</span>
+          <span class="pill">harvester</span>
+          <span class="pill">ccspwifi</span>
+          <span class="pill">selfheal</span>
+          <span class="pill">PCAP / PCAPNG</span>
+          <span class="pill">TR-069</span>
           <span class="pill">SNMP</span>
+          <span class="pill">Telemetry 2.0</span>
         </div>
       </div>
 
-      <div class="sidebar-card">
-        <div class="section-label">Validation Priorities</div>
+      <div class="sidebar-block">
+        <div class="section-label">Open Production Gates</div>
+        <div class="gate-list">
+          <div class="gate-item">Real NOC label sessions to replace seed-only validation rows.</div>
+          <div class="gate-item">Live Kafka load validation against a provisioned cluster.</div>
+          <div class="gate-item">Docker production stack smoke testing in a real deployment target.</div>
+        </div>
         <p class="sidebar-note">
-          Detect steering loops, disconnect and reconnect churn, DHCP instability, poor Wi-Fi quality, Ethernet flaps, and cross-interface mismatches before they become release or field issues.
+          The April 2026 report classifies these as operational gates rather than engineering gaps.
         </p>
       </div>
     </aside>
 
     <main class="main">
       <header class="topbar">
-        <div class="topbar-dot"></div>
-        <h2>RDK-B Platform Overview</h2>
-        <a class="topbar-link accent" style="margin-left: auto;" href="#frontend-ui">
-          <span>Frontend UI</span>
-        </a>
-        <a class="topbar-link" href="https://manish-portfolio-fawn.vercel.app/">
-          <span aria-hidden="true">←</span>
-          <span>Manish Kumar Portfolio</span>
-        </a>
+        <div class="topbar-left">
+          <span>Prepared by Manish Kumar</span>
+          <h2>Principal Engineer | AI Architect | MLOps Engineer</h2>
+        </div>
+
+        <div class="topbar-center">
+          <a
+            class="contact-link primary"
+            href="https://www.linkedin.com/in/manish-kumar-8652871/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LinkedIn Profile
+          </a>
+          <a class="contact-link secondary" href="mailto:manish.kumar75@gmail.com">
+            manish.kumar75@gmail.com
+          </a>
+        </div>
+
+        <div class="topbar-right">
+          <a class="contact-link secondary" href="https://manish-portfolio-fawn.vercel.app/">
+            Back to Portfolio
+          </a>
+        </div>
       </header>
 
       <div class="content">
         <section class="hero" id="overview">
-          <div class="eyebrow">RDK-B validation and diagnostics platform</div>
-          <h3>Built to turn scattered broadband evidence into standards-grounded root-cause decisions.</h3>
+          <div class="eyebrow">Executive Summary</div>
+          <h3>Deterministic, evidence-grounded diagnosis for RDK-B broadband fleets.</h3>
           <p class="lead">
-            This platform ingests Wi-Fi, network, self-heal, telemetry, and management-plane data, correlates signals across RDK-B subsystems, and produces actionable findings with confidence, evidence lineage, and recommended fixes. It is designed for engineering validation, release certification, field triage, and cross-team operational review.
+            The RDK-B Broadband Intelligence Platform is a production-grade, seven-phase system built to
+            turn multi-source gateway telemetry into IEEE 802.11-grounded root-cause reports. The April
+            2026 project report positions it as a deterministic-first platform for WiFi fault diagnosis,
+            crash forensics, and frontend-driven validation across customer premises equipment at fleet
+            scale, with AI used for explanation and advisory support rather than for unsupported reasoning.
           </p>
 
           <div class="hero-grid">
-            <div class="summary-panel">
-              <div class="panel-title">What the system does</div>
+            <div class="panel">
+              <div class="panel-title">What is implemented</div>
               <ul class="bullet-list">
-                <li>Analyzes RDK-B logs including Wi-Fi, hostapd, dnsmasq, SelfHeal, and telemetry streams.</li>
-                <li>Correlates those signals with WebPA, SNMP, and TR-181 state rather than diagnosing each interface in isolation.</li>
-                <li>Detects steering loops, reconnect churn, DHCP instability, poor client experience, and wired link problems.</li>
-                <li>Produces root cause, validation state, confidence, and a concrete remediation path for each incident window.</li>
+                <li>Multi-source ingestion for PCAP, log archives, fixture payloads, and RDK-B log streams.</li>
+                <li>Timeline correlation and 140-feature extraction across PHY, MAC, security, network, and telemetry signals.</li>
+                <li>Deterministic rule evaluation with IEEE citations, evidence traceability, and wiki-grounded output.</li>
+                <li>Optional ML and LLM layers that explain or reinforce findings without overriding the core engine.</li>
               </ul>
             </div>
 
-            <div class="signal-panel">
-              <div class="panel-title">Why it matters</div>
+            <div class="panel">
+              <div class="panel-title">Why the report matters</div>
               <ul class="bullet-list">
-                <li>Manual debugging across broadband subsystems is slow and error-prone.</li>
-                <li>Pure rule engines overfire on symptoms and miss cross-layer causes.</li>
-                <li>Field and lab teams need findings they can trace back to logs and standards.</li>
-                <li>Product leaders need faster release confidence with fewer hidden regressions.</li>
+                <li>Manual broadband triage does not scale when a single incident spans 25 or more log streams.</li>
+                <li>Cross-layer failures often mix PHY issues, security negotiation, and DHCP or DNS symptoms.</li>
+                <li>Enterprise reviewers need reproducible results with a direct path from raw evidence to conclusion.</li>
+                <li>The report documents a deployment-ready platform with clear operational gates and a credible roadmap.</li>
               </ul>
+            </div>
+          </div>
+
+          <div class="kpi-grid">
+            <div class="kpi">
+              <span>Automated tests</span>
+              <strong>695 passing</strong>
+              <p>Validated across unit, integration, regression, and release-gate suites.</p>
+            </div>
+            <div class="kpi">
+              <span>Deterministic rules</span>
+              <strong>50+</strong>
+              <p>Rule families cover PHY, MAC, security, roaming, network, and AP-capacity failures.</p>
+            </div>
+            <div class="kpi">
+              <span>Feature vector</span>
+              <strong>140 signals</strong>
+              <p>Extracted from correlated events, radiotap headers, counters, and device telemetry.</p>
+            </div>
+            <div class="kpi">
+              <span>Label foundation</span>
+              <strong>108 rows</strong>
+              <p>Seeded confirmed labels spanning nine root-cause categories for ML advisory training.</p>
+            </div>
+            <div class="kpi">
+              <span>Input coverage</span>
+              <strong>25+ logs</strong>
+              <p>Parser framework normalizes major RDK-B log surfaces into typed events.</p>
+            </div>
+            <div class="kpi">
+              <span>Typical core latency</span>
+              <strong>&lt; 500 ms</strong>
+              <p>Phases 1 through 4 complete on a representative six-file, 1-2 MB investigation set.</p>
+            </div>
+            <div class="kpi">
+              <span>Streaming goal</span>
+              <strong>1,000 msg/s</strong>
+              <p>Load targets specify P95 latency at or below 2,000 ms once live Kafka validation runs.</p>
+            </div>
+            <div class="kpi">
+              <span>Deployment posture</span>
+              <strong>Ready, pending gates</strong>
+              <p>Phase 7 code is complete, with remaining work focused on operational prove-out.</p>
             </div>
           </div>
         </section>
 
-        <section class="section-card" id="frontend-ui">
-          <h4>Frontend UI</h4>
-          <p class="showcase-copy">
-            This screenshot captures the diagnostics workflow that sits on top of the RDK-B validation engine: multi-log upload, typed source selection, defect rollup, client-level observations, correlated event timeline, root-cause summary, and operator export actions. It shows how the platform turns raw broadband evidence into a review-ready RCA surface for engineering and NOC teams.
+        <section class="section-card" id="workspace">
+          <h4>Frontend Investigation Workspace</h4>
+          <p>
+            The project report describes the frontend as a light-theme, mobile-responsive investigation
+            workspace that runs directly in the browser. It is designed for drag-and-drop intake of PCAP
+            captures, individual RDK-B logs, compressed archives, and fixture payloads, then renders
+            structured diagnosis without forcing the user to leave the page.
           </p>
+
           <div class="showcase-grid">
-            <div class="grid-2" style="margin-top: 0;">
+            <div class="grid-3" style="margin-top: 0;">
               <div class="mini-card">
-                <h5>What the UI surfaces</h5>
-                <ul>
-                  <li>Uploaded RDK-B logs with explicit source typing for hostapd, dnsmasq, SelfHeal, telemetry, and Wi-Fi traces</li>
-                  <li>Incident KPIs such as disconnect count, RSSI, steering failure rate, retry behavior, and client experience state</li>
-                  <li>Correlated error tables, timeline sequencing, root-cause rollup, and action-oriented remediation output</li>
-                </ul>
+                <h5>Three investigation modes</h5>
+                <p>
+                  The UI supports PCAP plus logs, ZIP archive upload, and fixture or paste mode so teams
+                  can move from controlled demos to full incident investigation with the same workflow.
+                </p>
+              </div>
+              <div class="mini-card">
+                <h5>What the report renders</h5>
+                <p>
+                  Critical issues, client observations, timeline sequencing, ranked root causes, IEEE
+                  citations, and remediation actions are all surfaced in one browser-native report.
+                </p>
               </div>
               <div class="mini-card">
                 <h5>Why it matters</h5>
-                <ul>
-                  <li>Lets reviewers see the same grounded evidence chain the engine used for diagnosis</li>
-                  <li>Bridges low-level logs and operator-readable incident summaries in one workflow</li>
-                  <li>Supports engineering triage, validation sign-off, and customer-impact review without leaving the page</li>
-                </ul>
+                <p>
+                  This frontend-led design gives NOC teams, validation engineers, and architects a shared
+                  evidence view instead of making each audience interpret raw logs on its own.
+                </p>
               </div>
             </div>
-            <a class="showcase-frame" href="./frontend-ui.png" target="_blank" rel="noreferrer">
-              <img src="./frontend-ui.png" alt="Frontend UI screenshot for the RDK-B Broadband Validation Platform" />
+
+            <a class="showcase-frame" href="./frontend-ui.png" target="_blank" rel="noopener noreferrer">
+              <img src="./frontend-ui.png" alt="Frontend investigation workspace for the RDK-B Broadband Intelligence Platform" />
               <div class="showcase-caption">
-                <span>Open the full-size diagnostics screenshot</span>
+                <span>Open the full-size diagnostics workspace capture</span>
                 <span>PNG</span>
               </div>
             </a>
           </div>
         </section>
 
-        <section class="section-card" id="problem">
-          <h4>Problem Statement</h4>
-          <p>
-            RDK-B validation rarely fails cleanly in one place. A customer experience issue might start as unstable RSSI, surface as repeated disassociation in hostapd, later appear as DHCP churn in dnsmasq, and finally trigger recovery behavior in SelfHeal. Teams that review only one subsystem often fix the symptom, not the cause. The platform addresses this by grounding every diagnosis in correlated evidence across logs, telemetry, and device-management views.
-          </p>
-          <div class="grid-3">
-            <div class="mini-card">
-              <h5>Manual validation gaps</h5>
-              <ul>
-                <li>Time spent stitching timestamps and device states by hand</li>
-                <li>Inconsistent interpretation across test teams</li>
-                <li>No durable evidence chain for leadership review</li>
-              </ul>
-            </div>
-            <div class="mini-card">
-              <h5>Rule-only limitations</h5>
-              <ul>
-                <li>Threshold alerts that do not explain sequence or causality</li>
-                <li>Poor handling of silent or partial failures</li>
-                <li>Weak cross-interface reasoning across TR-181, WebPA, and logs</li>
-              </ul>
-            </div>
-            <div class="mini-card">
-              <h5>Platform objective</h5>
-              <ul>
-                <li>Surface the highest-confidence root cause first</li>
-                <li>Preserve source attribution and standards grounding</li>
-                <li>Turn validation output into action, not just alert volume</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
         <section class="section-card" id="architecture">
-          <h4>System Overview and Detailed Architecture</h4>
+          <h4>Architecture and Data Flow</h4>
           <p>
-            The platform follows a layered architecture so that evidence collection, feature derivation, deterministic validation, and AI reasoning stay independently auditable. This keeps the system explainable and helps ensure that generated narrative never outranks actual device evidence.
+            The report frames the platform as a layered system with typed contracts at every handoff.
+            Inputs move from ingestion through deterministic processing before they ever reach advisory ML
+            or LLM components, which is how the platform preserves reproducibility and evidence integrity.
           </p>
-          <div class="architecture-flow">
-            <div class="flow-step">
-              <span>1</span>
-              <h5>Ingest</h5>
-              <p>Collect Wi-Fi, hostapd, dnsmasq, SelfHeal, telemetry, WebPA, TR-181, and SNMP inputs for the test window.</p>
+
+          <div class="layer-grid">
+            <div class="layer-card">
+              <span>01</span>
+              <h5>UX and API boundary</h5>
+              <p>Frontend upload workflow, report rendering, and API stubs sit at the system boundary for intake and output.</p>
             </div>
-            <div class="flow-step">
-              <span>2</span>
-              <h5>Normalize</h5>
-              <p>Standardize timestamps, device identifiers, client MAC references, and subsystem event structure.</p>
+            <div class="layer-card">
+              <span>02</span>
+              <h5>Orchestration layer</h5>
+              <p>Phase sequencing, gate enforcement, pipeline assembly, and typed schema checks coordinate every run.</p>
             </div>
-            <div class="flow-step">
-              <span>3</span>
-              <h5>Correlate</h5>
-              <p>Group related events into incident windows and link management-plane state with runtime evidence.</p>
+            <div class="layer-card">
+              <span>03</span>
+              <h5>AI and model advisory</h5>
+              <p>Rule engine, XGBoost classifier, anomaly detection, and LLM explanation stay isolated by clearly defined contracts.</p>
             </div>
-            <div class="flow-step">
-              <span>4</span>
-              <h5>Validate</h5>
-              <p>Apply deterministic checks for known failure patterns, standards alignment, and cross-source consistency.</p>
+            <div class="layer-card">
+              <span>04</span>
+              <h5>Data and knowledge</h5>
+              <p>Feature persistence, wiki retrieval, and training datasets provide the grounding surface for every conclusion.</p>
             </div>
-            <div class="flow-step">
-              <span>5</span>
-              <h5>Explain</h5>
-              <p>Generate grounded diagnosis, confidence, and remediation only from the validated evidence set.</p>
+            <div class="layer-card">
+              <span>05</span>
+              <h5>Observability</h5>
+              <p>Structured logs, metrics collection, and tracing support release gates, debugging, and production operations.</p>
+            </div>
+            <div class="layer-card">
+              <span>06</span>
+              <h5>Security and governance</h5>
+              <p>Bearer auth, credential validation, input sanitization, and feedback-driven governance guard the platform boundary.</p>
             </div>
           </div>
 
-          <div class="grid-3">
-            <div class="mini-card">
-              <h5>Data layer</h5>
-              <p>Responsible for ingestion, parsing, normalization, time alignment, and structured feature staging across RDK-B, telemetry, and control-plane sources.</p>
+          <div class="flow-grid">
+            <div class="flow-card">
+              <span>1</span>
+              <h5>Upload</h5>
+              <p>Accept PCAP, logs, archives, and fixtures from the investigation workspace.</p>
             </div>
-            <div class="mini-card">
-              <h5>Intelligence layer</h5>
-              <p>Handles correlation, event sequencing, deterministic rules, evidence ranking, and grounded AI reasoning over the validated incident context.</p>
+            <div class="flow-card">
+              <span>2</span>
+              <h5>Ingest</h5>
+              <p>Decode binary captures and archive members into raw bytes and text streams.</p>
             </div>
-            <div class="mini-card">
-              <h5>Validation layer</h5>
-              <p>Produces PASS, FAIL, or PARTIAL state, root-cause narrative, citations, confidence, and recommended next actions for lab and field workflows.</p>
+            <div class="flow-card">
+              <span>3</span>
+              <h5>Parse</h5>
+              <p>Convert raw data into typed NormalizedEvent records across 25 or more log types.</p>
             </div>
+            <div class="flow-card">
+              <span>4</span>
+              <h5>Correlate</h5>
+              <p>Merge signals onto a unified timeline keyed by MAC address and timestamp.</p>
+            </div>
+            <div class="flow-card">
+              <span>5</span>
+              <h5>Feature extract</h5>
+              <p>Build the 140-feature vector with RSSI, retries, DHCP, DFS, and telemetry state.</p>
+            </div>
+            <div class="flow-card">
+              <span>6</span>
+              <h5>Rule evaluate</h5>
+              <p>Run deterministic IEEE-grounded rules and attach mandatory evidence for every fired condition.</p>
+            </div>
+            <div class="flow-card">
+              <span>7</span>
+              <h5>ML advise</h5>
+              <p>Use XGBoost and Isolation Forest to reinforce or challenge conclusions without replacing the rule engine.</p>
+            </div>
+            <div class="flow-card">
+              <span>8</span>
+              <h5>Wiki ground</h5>
+              <p>Retrieve playbooks and standards context through the platform knowledge base.</p>
+            </div>
+            <div class="flow-card">
+              <span>9</span>
+              <h5>LLM explain</h5>
+              <p>Generate narrative only after the deterministic result is complete and evidence-bounded.</p>
+            </div>
+            <div class="flow-card">
+              <span>10</span>
+              <h5>Render</h5>
+              <p>Deliver a diagnostic report with ranked causes, citations, and recommended next actions.</p>
+            </div>
+          </div>
+
+          <div class="callout">
+            <strong>Typed contracts are a design choice, not a detail.</strong>
+            <p>
+              The report emphasizes hard failures on missing mandatory evidence rather than silent
+              degradation. That choice keeps the platform auditable and makes unsupported conclusions fail
+              fast instead of leaking into operator-facing output.
+            </p>
           </div>
         </section>
 
-        <section class="section-card" id="signals">
-          <h4>Data Sources and Correlation Surfaces</h4>
+        <section class="section-card" id="intelligence">
+          <h4>Deterministic AI, ML, and LLM Design</h4>
           <p>
-            Each source contributes a distinct view of device behavior. The platform is designed so that no single log becomes the source of truth for all broadband failures. Instead, it builds confidence through corroboration.
+            The report is explicit about the AI architecture: deterministic rules are the irreducible
+            diagnostic core, while ML and LLM components remain secondary and advisory. That separation
+            reduces hallucination risk, keeps identical inputs reproducible, and makes the system suitable
+            for enterprise review.
           </p>
 
-          <div class="signal-table">
+          <div class="comparison-table">
             <table>
               <thead>
                 <tr>
-                  <th>Source</th>
-                  <th>Primary value</th>
-                  <th>Failure classes supported</th>
+                  <th>Dimension</th>
+                  <th>Deterministic core</th>
+                  <th>LLM layer</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td><strong>/rdklogs/logs/WiFilog.txt</strong></td>
-                  <td>Client activity, RSSI trends, retries, steering behavior, radio state</td>
-                  <td>Steering loops, poor signal, reconnect churn, interference, roaming quality</td>
+                  <td>Invocation</td>
+                  <td>Always runs and produces the required diagnostic result.</td>
+                  <td>Optional explanation stage when model access and context are available.</td>
                 </tr>
                 <tr>
-                  <td><strong>hostapd logs</strong></td>
-                  <td>Association, deauthentication, authentication failures, BSS transition behavior</td>
-                  <td>Security mismatch, roaming rejection, sticky client behavior, band steering issues</td>
+                  <td>Primary input</td>
+                  <td>Typed feature vectors, parsed events, radiotap fields, and grounded rules.</td>
+                  <td>Pre-assembled evidence package, feature values, rule results, and wiki citations.</td>
                 </tr>
                 <tr>
-                  <td><strong>dnsmasq logs</strong></td>
-                  <td>DHCP and DNS exchanges, client address churn, lease instability</td>
-                  <td>DHCP failure, IP churn, network symptoms that follow Wi-Fi instability</td>
+                  <td>Output style</td>
+                  <td>Structured RuleResult and DiagnosticReport artifacts with IEEE references.</td>
+                  <td>Human-readable explanation constrained to the supplied evidence package.</td>
                 </tr>
                 <tr>
-                  <td><strong>SelfHeal.txt</strong></td>
-                  <td>Recovery actions, Wi-Fi restarts, connectivity remediation triggers</td>
-                  <td>Silent failures, automated recovery cycles, persistent service degradation</td>
+                  <td>Failure mode</td>
+                  <td>Hard fail or structured error when mandatory evidence is missing.</td>
+                  <td>Graceful skip or fallback to deterministic report when generation fails.</td>
                 </tr>
                 <tr>
-                  <td><strong>Harvesterlog.txt</strong></td>
-                  <td>Telemetry counters, experience indicators, performance aggregates</td>
-                  <td>QoE degradation, repeated disconnects, trend-based validation gaps</td>
+                  <td>Operational role</td>
+                  <td>Authoritative root-cause engine.</td>
+                  <td>Explanation, drift narrative, and rule-proposal support.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="grid-3">
+            <div class="mini-card">
+              <h5>ML advisory layer</h5>
+              <p>
+                The platform trains an XGBoost classifier and Isolation Forest anomaly detector on 108 seed
+                examples across nine root-cause categories. The report positions these models as confidence
+                and anomaly advisors, not as overrides to deterministic output.
+              </p>
+            </div>
+            <div class="mini-card">
+              <h5>No fine-tuning claims</h5>
+              <p>
+                The report is technically honest about model development: no LLM fine-tuning or weight
+                modification has been performed. Improvement happens through prompt engineering, structured
+                output contracts, evaluation loops, and human review.
+              </p>
+            </div>
+            <div class="mini-card">
+              <h5>Token discipline</h5>
+              <p>
+                Instead of shipping raw logs to the model, the system trims context down to the evidence
+                package that matters. The report estimates 40 to 60 percent fewer LLM calls than an
+                AI-first diagnostic flow.
+              </p>
+            </div>
+          </div>
+
+          <div class="dual-grid">
+            <div class="status-card">
+              <h5>Hallucination control and governance</h5>
+              <p>
+                The report describes strict context bounding, structured JSON output contracts, and fallback
+                logic that rejects unsupported claims. If evidence is insufficient, the system is designed
+                to return structured uncertainty rather than a speculative answer.
+              </p>
+            </div>
+            <div class="status-card">
+              <h5>Continuous self-improvement without retraining the LLM</h5>
+              <p>
+                Closed-loop evaluation drives rule improvement: false positives and false negatives feed a
+                rule proposal workflow, human label sessions update confirmed labels, and retraining keeps
+                the advisory models aligned with real investigation outcomes.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card" id="readiness">
+          <h4>Testing, Performance, and Demo Readiness</h4>
+          <p>
+            The report backs the platform with a strong validation story. It calls out 695 passing tests
+            across 53 test files, zero failures, release-gate automation, and a demo workflow that can be
+            run either from the browser workspace or from backend orchestration scripts.
+          </p>
+
+          <div class="kpi-grid">
+            <div class="kpi">
+              <span>Test footprint</span>
+              <strong>53 files</strong>
+              <p>Unit, integration, domain regression, infrastructure, and release-check coverage.</p>
+            </div>
+            <div class="kpi">
+              <span>ML overhead</span>
+              <strong>&lt; 10 ms</strong>
+              <p>XGBoost and Isolation Forest inference add minimal latency on top of deterministic analysis.</p>
+            </div>
+            <div class="kpi">
+              <span>LLM narrative time</span>
+              <strong>2 - 8 sec</strong>
+              <p>Explanation latency depends on upstream provider response time, not on the diagnostic core.</p>
+            </div>
+            <div class="kpi">
+              <span>Demo posture</span>
+              <strong>Ready now</strong>
+              <p>Fixture-backed scenarios support live demos without requiring real customer artifacts.</p>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="mini-card">
+              <h5>Testing strategy</h5>
+              <ul>
+                <li>Module-level tests verify parsing, rule firing, precedence, and error handling.</li>
+                <li>Integration suites validate multi-module flows such as correlation and report assembly.</li>
+                <li>Release checks gate deployment on metrics, health checks, and expected structured outputs.</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h5>Representative E2E coverage</h5>
+              <ul>
+                <li>Security mismatch scenarios with 4-way handshake failure evidence.</li>
+                <li>MAC contention and multi-cause incidents spanning logs, PCAP, and DHCP signals.</li>
+                <li>Archive extraction, fixture-paste mode, and full report rendering validation.</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h5>Readiness signal</h5>
+              <ul>
+                <li>Phase 8.1 hardening completed input validation, pipeline errors, and operational gate checks.</li>
+                <li>Frontend demos work today while backend integration remains a scoped follow-on milestone.</li>
+                <li>Remaining blockers are operational environments, not missing core engineering.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card" id="security">
+          <h4>Security, Evidence Integrity, and Enterprise Mapping</h4>
+          <p>
+            Security hardening is spread across the ingestion, API, credential, and observability layers.
+            The report also maps the platform to a broader enterprise AI taxonomy, making it clear which
+            capabilities are active, partial, planned, or waiting on operational rollout.
+          </p>
+
+          <div class="dual-grid">
+            <div class="status-card">
+              <h5>Security and hardening highlights</h5>
+              <p>
+                Input sanitization blocks path traversal, malformed OIDs, and oversized payloads before they
+                hit parsing. Bearer authentication, credential validation, rate limiting, and structured-log
+                redaction protect the operational boundary. Evidence exports use structured excerpts instead
+                of full raw logs to reduce accidental data exposure.
+              </p>
+            </div>
+            <div class="status-card">
+              <h5>Evidence integrity</h5>
+              <p>
+                Every diagnostic conclusion must trace back to a source artifact, an extracted feature or
+                line-level trigger, and a supporting rule or standards reference. Unsupported claims are
+                explicitly disallowed by the output contract.
+              </p>
+            </div>
+          </div>
+
+          <div class="status-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Architecture component</th>
+                  <th>Status</th>
+                  <th>Report-backed implementation note</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>LLM runtime</td>
+                  <td><span class="status-badge active">Active</span></td>
+                  <td>Anthropic Claude supports explanation and governance flows; GPT-4o-mini powers the current frontend-only path.</td>
                 </tr>
                 <tr>
-                  <td><strong>WebPA / TR-181 / SNMP</strong></td>
-                  <td>Configuration truth, management-plane state, counters, control-plane validation</td>
-                  <td>Cross-interface mismatch, misconfiguration, feature enablement drift</td>
+                  <td>RAG grounding</td>
+                  <td><span class="status-badge partial">Partial</span></td>
+                  <td>Karpathy-style deterministic wiki retrieval is active; semantic retrieval remains a planned enhancement.</td>
+                </tr>
+                <tr>
+                  <td>Vector database</td>
+                  <td><span class="status-badge pending">Planned</span></td>
+                  <td>Pinecone, Weaviate, and FAISS are named as roadmap candidates for hybrid retrieval.</td>
+                </tr>
+                <tr>
+                  <td>Streaming and Kafka</td>
+                  <td><span class="status-badge partial">Implemented</span></td>
+                  <td>Code and load suites are ready, with live cluster validation still pending.</td>
+                </tr>
+                <tr>
+                  <td>Feedback loop</td>
+                  <td><span class="status-badge active">Active</span></td>
+                  <td>Human review, retraining triggers, and eval-driven rule evolution are already part of the design.</td>
+                </tr>
+                <tr>
+                  <td>Container deployment</td>
+                  <td><span class="status-badge partial">Ready</span></td>
+                  <td>Docker assets exist, but smoke testing in the production stack remains one of the open gates.</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </section>
 
-        <section class="section-card" id="intelligence">
-          <h4>AI and Validation Approach</h4>
-          <p>
-            The platform is intentionally hybrid. Deterministic checks establish whether a known failure signature exists. AI reasoning then explains what happened, why the evidence points to that conclusion, and what should be done next. This preserves explainability while still giving teams natural-language insight and cross-system summarization.
-          </p>
-          <div class="grid-2">
-            <div class="mini-card">
-              <h5>Deterministic validation first</h5>
-              <ul>
-                <li>Rules identify explicit failure signatures such as RSSI steering loops, repeated deauth, DHCP churn, and Ethernet flaps.</li>
-                <li>Cross-source checks decide whether a symptom is primary or downstream of another event chain.</li>
-                <li>Evidence from logs and management state forms the gating input to reasoning.</li>
-              </ul>
-            </div>
-            <div class="mini-card">
-              <h5>Grounded AI reasoning second</h5>
-              <ul>
-                <li>Explains findings in engineer-readable language without inventing unsupported causes.</li>
-                <li>Uses prompt engineering to rank evidence, preserve uncertainty, and keep standards citations visible.</li>
-                <li>Supports zero-shot reasoning for explanation and few-shot shaping only where response structure needs consistency.</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="grid-3">
-            <div class="mini-card">
-              <h5>Training in this system</h5>
-              <p>Training means prompt tuning, domain knowledge injection, labeled failure pattern refinement, and ongoing pattern library expansion rather than unconstrained model guessing.</p>
-            </div>
-            <div class="mini-card">
-              <h5>No-hallucination posture</h5>
-              <p>Missing evidence stays missing. Confidence drops when corroboration is weak. The narrative must point back to actual logs, telemetry, or standards references.</p>
-            </div>
-            <div class="mini-card">
-              <h5>Failure detection intelligence</h5>
-              <p>The engine explicitly looks for silent failures, partial failures, and configuration-state mismatches that do not show up as a single hard outage.</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="section-card" id="standards">
-          <h4>Standards and Compliance Alignment</h4>
-          <p>
-            The validation model is tied to broadband and device-management standards so that test verdicts and recommended fixes remain defensible across engineering, certification, and partner review.
-          </p>
-
-          <div class="precedence">
-            <div class="level">
-              <strong>Precedence 1</strong>
-              <div>IEEE standards for Wi-Fi, Ethernet, PHY, MAC, and radio behavior.</div>
-            </div>
-            <div class="level">
-              <strong>Precedence 2</strong>
-              <div>RDK-B specifications, component behavior, log semantics, and platform implementation rules.</div>
-            </div>
-            <div class="level">
-              <strong>Precedence 3</strong>
-              <div>TR-181, TR-069, TR-369, SNMP RFC guidance, DOCSIS context, and established industry best practices.</div>
-            </div>
-          </div>
-
-          <div class="grid-3">
-            <div class="mini-card">
-              <h5>Wi-Fi and Ethernet</h5>
-              <p>IEEE 802.11 and Ethernet standards anchor PHY, MAC, steering, roaming, link quality, and wired fault interpretation.</p>
-            </div>
-            <div class="mini-card">
-              <h5>Device management</h5>
-              <p>TR-181 and TR-069 or TR-369 guide object-level truth, remote configuration, and control-plane state comparison.</p>
-            </div>
-            <div class="mini-card">
-              <h5>Operational validation</h5>
-              <p>SNMP and DOCSIS references help correlate counters, WAN behavior, and fleet-facing operations with device logs.</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="section-card" id="use-cases">
-          <h4>Key Use Cases</h4>
-          <p>
-            The platform is built for validation teams, broadband architects, and support operations that need more than an alarm list. It prioritizes repeatable scenarios that directly affect customer experience and release confidence.
-          </p>
-
-          <div class="grid-3">
-            <div class="mini-card">
-              <h5>Wi-Fi steering and roaming</h5>
-              <p>Diagnose RSSI-triggered steering loops, sticky-client behavior, failed BSS transitions, and client roaming degradation.</p>
-            </div>
-            <div class="mini-card">
-              <h5>Service instability</h5>
-              <p>Separate DHCP and DNS symptoms from upstream Wi-Fi or management-plane causes before they become misclassified defects.</p>
-            </div>
-            <div class="mini-card">
-              <h5>Performance and release validation</h5>
-              <p>Use telemetry and logs together to validate firmware behavior, QoE trends, security posture, and operational regressions.</p>
-            </div>
-          </div>
-        </section>
-        <section class="section-card" id="walkthrough">
-          <h4>Representative Incident Walkthrough</h4>
-          <p>
-            A typical scenario starts with poor signal and unstable steering behavior, then expands into reconnect churn and DHCP noise. The system treats those events as a chain, not as unrelated alerts.
-          </p>
-
-          <div class="walkthrough">
-            <div class="walk-step">
-              <h5>Detection</h5>
-              <p>Wi-Fi logs show repeated low-RSSI steering decisions and elevated retry behavior for the same client device.</p>
-            </div>
-            <div class="walk-step">
-              <h5>Correlation</h5>
-              <p>hostapd shows repeated association or deauthentication churn, while telemetry records rising disconnect count in the same incident window.</p>
-            </div>
-            <div class="walk-step">
-              <h5>Cross-system validation</h5>
-              <p>dnsmasq records address renegotiation attempts, but management-plane checks confirm the DHCP subsystem itself is configured and reachable.</p>
-            </div>
-            <div class="walk-step">
-              <h5>Root cause decision</h5>
-              <p>The platform ranks Wi-Fi instability as the primary cause and DHCP churn as the downstream symptom, then recommends steering threshold and channel policy review.</p>
-            </div>
-          </div>
-
-          <div class="output-strip">
-            <div class="output-card">
-              <strong>Verdict</strong>
-              <div>FAIL or PARTIAL based on evidence continuity</div>
-            </div>
-            <div class="output-card">
-              <strong>Root cause</strong>
-              <div>RSSI-based instability or steering loop</div>
-            </div>
-            <div class="output-card">
-              <strong>Fix output</strong>
-              <div>Actionable tuning and validation steps</div>
-            </div>
-            <div class="output-card">
-              <strong>Confidence</strong>
-              <div>Evidence-backed score with source traceability</div>
-            </div>
-          </div>
-        </section>
-
         <section class="section-card" id="roadmap">
-          <h4>Advantages, Limitations, and Forward Roadmap</h4>
+          <h4>Limitations and Forward Roadmap</h4>
           <p>
-            Compared with manual debugging, the system cuts triage time and preserves evidence lineage. Compared with threshold-only rule engines, it provides cross-layer diagnosis and grounded narrative. Its current limitation is simple: it can only be as strong as the evidence available. Missing logs, time skew, vendor-specific format drift, or weak control-plane visibility reduce confidence and must remain explicit in the output.
+            The report closes with a balanced assessment: the platform is engineering-complete and
+            demo-ready, but it is candid about current limitations and the work needed to fully operationalize
+            the architecture at scale.
           </p>
 
-          <div class="grid-3">
-            <div class="mini-card">
-              <h5>Why it is better</h5>
-              <ul>
-                <li>Faster root-cause isolation</li>
-                <li>Cross-source validation</li>
-                <li>Engineer-readable findings tied to standards</li>
-              </ul>
-            </div>
-            <div class="mini-card">
+          <div class="roadmap-grid">
+            <div class="roadmap-card">
               <h5>Current limitations</h5>
               <ul>
-                <li>Dependent on source coverage and timestamp quality</li>
-                <li>Needs continued expansion for new vendor log variants</li>
-                <li>Confidence must drop when evidence is incomplete</li>
+                <li>LLM output remains explanatory and may still misstate severity when evidence is sparse.</li>
+                <li>Deep packet inspection, TCP reassembly, and encrypted payload inspection are out of scope.</li>
+                <li>The deterministic rule catalog cannot cover novel firmware or topology failures until new rules are reviewed and added.</li>
+                <li>High-concurrency, multi-tenant backend service behavior depends on completing the FastAPI integration and shared backing services.</li>
+                <li>Training data scale is intentionally modest, which is why ML stays advisory instead of authoritative.</li>
               </ul>
             </div>
-            <div class="mini-card">
-              <h5>Future enhancements</h5>
-              <ul>
-                <li>Autonomous remediation with approval gates</li>
-                <li>Closed-loop revalidation after corrective actions</li>
-                <li>ML-based anomaly detection for emerging patterns</li>
-              </ul>
+
+            <div class="grid-3" style="margin-top: 0;">
+              <div class="roadmap-card">
+                <h5>Near-term</h5>
+                <p>
+                  Close the live label, Kafka, and Docker gates while replacing frontend-direct model calls
+                  with backend-enforced context bounding, rate limiting, and audit logging.
+                </p>
+              </div>
+              <div class="roadmap-card">
+                <h5>Medium-term</h5>
+                <p>
+                  Add hybrid retrieval, expand the training set through active learning, and explore richer
+                  model options for interdependent multi-cause investigations.
+                </p>
+              </div>
+              <div class="roadmap-card">
+                <h5>Long-term</h5>
+                <p>
+                  Push toward autonomous fleet intelligence with real-time cohort monitoring, ticketing
+                  integrations, SLA-aware alert routing, and closed-loop adaptation to new failure modes.
+                </p>
+              </div>
             </div>
+          </div>
+
+          <div class="callout">
+            <strong>Final assessment from the report</strong>
+            <p>
+              The project is presented as a complete, production-grade deterministic diagnostic foundation
+              whose remaining steps are mostly operational enablement. The biggest unfinished engineering
+              item is the final backend integration that moves frontend-direct LLM usage behind the platform's
+              governance and audit boundary.
+            </p>
           </div>
         </section>
       </div>
 
+      <footer class="footer">
+        <div class="footer-card">
+          <strong>Source basis:</strong> This page is a portfolio adaptation of the
+          <strong>RDKB Broadband Intelligence Platform</strong> project report dated
+          <strong>April 2026</strong>. For collaboration or follow-up, connect through
+          <a href="https://www.linkedin.com/in/manish-kumar-8652871/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          or email
+          <a href="mailto:manish.kumar75@gmail.com">manish.kumar75@gmail.com</a>.
+        </div>
+      </footer>
     </main>
   </div>
 </body>
