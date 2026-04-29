@@ -6,7 +6,7 @@
   <title>RDK-B Broadband Intelligence Platform</title>
   <meta
     name="description"
-    content="Portfolio case study for the April 2026 RDK-B Broadband Intelligence Platform report, covering deterministic diagnostics, AI-assisted explanation, enterprise hardening, and frontend-led validation."
+    content="Portfolio summary of the implemented RDK-B broadband diagnostics workspace, FastAPI triage routes, evidence-backed analysis flow, and browser-side reference dashboards."
   />
   <style>
     @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap");
@@ -781,11 +781,11 @@
   <div class="shell">
     <aside class="sidebar">
       <div class="brand">
-        <div class="brand-label">April 2026 project report</div>
+        <div class="brand-label">Current implementation snapshot</div>
         <h1>RDK-B Broadband Intelligence Platform</h1>
         <p>
-          Portfolio case study for a deterministic, citation-first broadband diagnostics system built for
-          crash forensics, frontend-led validation, and fleet-scale operational intelligence.
+          Portfolio summary of the implemented broadband diagnostics workspace, FastAPI triage services,
+          and browser-side reference dashboards currently present in the local codebase.
         </p>
       </div>
 
@@ -805,12 +805,12 @@
       <div class="sidebar-block">
         <div class="section-label">Project Snapshot</div>
         <div class="stats">
-          <div class="stat-row"><span>Phases</span><strong>7 complete</strong></div>
-          <div class="stat-row"><span>Source modules</span><strong>36</strong></div>
-          <div class="stat-row"><span>Typed files</span><strong>69</strong></div>
-          <div class="stat-row"><span>Passing tests</span><strong>695</strong></div>
-          <div class="stat-row"><span>Rule engine</span><strong>50+</strong></div>
-          <div class="stat-row"><span>Feature vector</span><strong>140 signals</strong></div>
+          <div class="stat-row"><span>Investigation modes</span><strong>3</strong></div>
+          <div class="stat-row"><span>Export actions</span><strong>2</strong></div>
+          <div class="stat-row"><span>Feature dashboards</span><strong>5</strong></div>
+          <div class="stat-row"><span>API route groups</span><strong>7</strong></div>
+          <div class="stat-row"><span>Backend test files</span><strong>57</strong></div>
+          <div class="stat-row"><span>Frontend test suites</span><strong>24</strong></div>
         </div>
       </div>
 
@@ -820,24 +820,24 @@
           <span class="pill">hostapd</span>
           <span class="pill">dnsmasq</span>
           <span class="pill">harvester</span>
-          <span class="pill">ccspwifi</span>
           <span class="pill">selfheal</span>
           <span class="pill">PCAP / PCAPNG</span>
-          <span class="pill">TR-069</span>
-          <span class="pill">SNMP</span>
-          <span class="pill">Telemetry 2.0</span>
+          <span class="pill">WAN / console</span>
+          <span class="pill">ZIP / TAR.GZ</span>
+          <span class="pill">XML / TR-069</span>
+          <span class="pill">Telemetry logs</span>
         </div>
       </div>
 
       <div class="sidebar-block">
-        <div class="section-label">Open Production Gates</div>
+        <div class="section-label">Implementation Boundaries</div>
         <div class="gate-list">
-          <div class="gate-item">Real NOC label sessions to replace seed-only validation rows.</div>
-          <div class="gate-item">Live Kafka load validation against a provisioned cluster.</div>
-          <div class="gate-item">Docker production stack smoke testing in a real deployment target.</div>
+          <div class="gate-item">DOCSIS, RDK-B docs, Wi-Fi 8, and standards dashboards include browser-side reference or simulation content alongside live triage panels.</div>
+          <div class="gate-item">Optional AI narrative appears only when backend or fixture data provides <code>llm_explanation</code> or attributed analysis fields.</div>
+          <div class="gate-item">This page mirrors the local codebase and deployed asset; it does not claim separate production rollout proof.</div>
         </div>
         <p class="sidebar-note">
-          The April 2026 report classifies these as operational gates rather than engineering gaps.
+          All copy on this page is scoped to the audited implementation rather than the earlier reference page.
         </p>
       </div>
     </aside>
@@ -873,80 +873,80 @@
       <div class="content">
         <section class="hero" id="overview">
           <div class="eyebrow">Executive Summary</div>
-          <h3>Deterministic, evidence-grounded diagnosis for RDK-B broadband fleets.</h3>
+          <h3>Current implemented workflow: stage artifacts, run triage, review grounded evidence.</h3>
           <p class="lead">
-            The RDK-B Broadband Intelligence Platform is a production-grade, seven-phase system engineered
-            to transform multi-source gateway telemetry into root-cause reports grounded in IEEE 802.11
-            standards. It operates as a deterministic-first platform designed for: WiFi Fault Diagnosis:
-            identifying specific connectivity and performance issues. Crash Forensics: analyzing system
-            failures to prevent recurrence. Frontend-Driven Validation: ensuring quality across customer
-            premises equipment (CPE) at a massive fleet scale. The platform utilizes AI specifically for
-            explanation and advisory support, prioritizing verifiable data over black-box reasoning to
-            ensure all diagnostic insights remain grounded and actionable.
+            The current codebase combines a React investigation workspace in
+            <code>frontend/BroadbandDiagnostics.jsx</code> with FastAPI investigation and triage routes in
+            <code>backend/api/routes</code>. Operators can create an investigation, upload PCAPs, logs,
+            archives, or fixtures, trigger analysis, review a primary issue and secondary issues, inspect
+            grouped evidence, and export JSON or Markdown. The same frontend also lazy-loads browser-side
+            DOCSIS 4.0, RDK-B broadband docs, RDK logger, Wi-Fi 8, and IEEE 802.11 reference modules.
+            Advisory ML and LLM code exists in the repository, but the operator screen is centered on
+            deterministic backend results and explicit evidence linkage.
           </p>
 
           <div class="hero-grid">
             <div class="panel">
               <div class="panel-title">What is implemented</div>
               <ul class="bullet-list">
-                <li>Multi-source ingestion for PCAP, log archives, fixture payloads, and RDK-B log streams.</li>
-                <li>Timeline correlation and 140-feature extraction across PHY, MAC, security, network, and telemetry signals.</li>
-                <li>Deterministic rule evaluation with IEEE citations, evidence traceability, and wiki-grounded output.</li>
-                <li>Optional ML and LLM layers that explain or reinforce findings without overriding the core engine.</li>
+                <li>Investigation create, artifact upload, triage analyze, rerun, reset, and JSON or Markdown export flows in the browser workspace.</li>
+                <li>Grouped evidence by file, ranked root causes, collapsed secondary issues, and a collapsed full-analysis area after backend analysis completes.</li>
+                <li>Artifact classification and parsing for logs, archives, PCAP or PCAPNG, XML, and unknown-file fallback paths.</li>
+                <li>Lazy-loaded browser modules for DOCSIS 4.0, RDK-B docs, RDK logger, Wi-Fi 8, and IEEE 802.11 reference views.</li>
               </ul>
             </div>
 
             <div class="panel">
-              <div class="panel-title">Why the report matters</div>
+              <div class="panel-title">What the audited code demonstrates</div>
               <ul class="bullet-list">
-                <li>Manual broadband triage does not scale when a single incident spans 25 or more log streams.</li>
-                <li>Cross-layer failures often mix PHY issues, security negotiation, and DHCP or DNS symptoms.</li>
-                <li>Enterprise reviewers need reproducible results with a direct path from raw evidence to conclusion.</li>
-                <li>The report documents a deployment-ready platform with clear operational gates and a credible roadmap.</li>
+                <li>The local implementation already supports an end-to-end operator flow without switching between separate tools.</li>
+                <li>Upload handling accepts captures, archives, text logs, and XML while ignoring junk files and preserving fallback parsing for unknown inputs.</li>
+                <li>Deterministic triage can return insufficient-data states instead of inventing a stronger diagnosis when proof is thin.</li>
+                <li>Browser-side reference and simulator panels are present, but they should be read as implementation modules rather than live fleet validation claims.</li>
               </ul>
             </div>
           </div>
 
           <div class="kpi-grid">
             <div class="kpi">
-              <span>Automated tests</span>
-              <strong>695 passing</strong>
-              <p>Validated across unit, integration, regression, and release-gate suites.</p>
+              <span>Investigation modes</span>
+              <strong>3</strong>
+              <p>PCAP plus logs, archive upload, and fixture or paste staging are all implemented in the workspace.</p>
             </div>
             <div class="kpi">
-              <span>Deterministic rules</span>
-              <strong>50+</strong>
-              <p>Rule families cover PHY, MAC, security, roaming, network, and AP-capacity failures.</p>
+              <span>Export actions</span>
+              <strong>2</strong>
+              <p>The operator flow can export JSON and Markdown directly from the analyzed investigation view.</p>
             </div>
             <div class="kpi">
-              <span>Feature vector</span>
-              <strong>140 signals</strong>
-              <p>Extracted from correlated events, radiotap headers, counters, and device telemetry.</p>
+              <span>Feature dashboards</span>
+              <strong>5</strong>
+              <p>DOCSIS, RDK-B docs, RDK logger, Wi-Fi 8, and IEEE 802.11 dashboards are lazy-loaded from the frontend feature tree.</p>
             </div>
             <div class="kpi">
-              <span>Label foundation</span>
-              <strong>108 rows</strong>
-              <p>Seeded confirmed labels spanning nine root-cause categories for ML advisory training.</p>
+              <span>API route groups</span>
+              <strong>7</strong>
+              <p>The backend exposes architecture, health, investigations, messaging, standards, triage, and WebPA route groups.</p>
             </div>
             <div class="kpi">
-              <span>Input coverage</span>
-              <strong>25+ logs</strong>
-              <p>Parser framework normalizes major RDK-B log surfaces into typed events.</p>
+              <span>Backend test files</span>
+              <strong>57</strong>
+              <p>The repository includes backend pytest coverage across parsing, triage, messaging, standards, ML, and streaming packages.</p>
             </div>
             <div class="kpi">
-              <span>Typical core latency</span>
-              <strong>&lt; 500 ms</strong>
-              <p>Phases 1 through 4 complete on a representative six-file, 1-2 MB investigation set.</p>
+              <span>Frontend test suites</span>
+              <strong>24</strong>
+              <p>Five feature tests and nineteen Playwright specs cover the local browser implementation.</p>
             </div>
             <div class="kpi">
-              <span>Streaming goal</span>
-              <strong>1,000 msg/s</strong>
-              <p>Load targets specify P95 latency at or below 2,000 ms once live Kafka validation runs.</p>
+              <span>Artifact parsers</span>
+              <strong>5</strong>
+              <p>The backend parser registry routes text logs, archives, packet captures, XML, and unknown inputs through explicit parser paths.</p>
             </div>
             <div class="kpi">
-              <span>Deployment posture</span>
-              <strong>Ready, pending gates</strong>
-              <p>Phase 7 code is complete, with remaining work focused on operational prove-out.</p>
+              <span>Frontend utilities</span>
+              <strong>4</strong>
+              <p>Shared utilities cover triage metrics, DOCSIS formatting, and recommendation or step deduplication.</p>
             </div>
           </div>
         </section>
@@ -954,10 +954,9 @@
         <section class="section-card" id="workspace">
           <h4>Frontend Investigation Workspace</h4>
           <p>
-            The project report describes the frontend as a light-theme, mobile-responsive investigation
-            workspace that runs directly in the browser. It is designed for drag-and-drop intake of PCAP
-            captures, individual RDK-B logs, compressed archives, and fixture payloads, then renders
-            structured diagnosis without forcing the user to leave the page.
+            The implemented frontend is a light-theme, browser-based investigation workspace. It accepts
+            staged artifacts, creates investigations, uploads files to the backend, reruns analysis, resets
+            the session, and keeps the analyzed triage view on the same page once results exist.
           </p>
 
           <div class="showcase-grid">
@@ -965,22 +964,23 @@
               <div class="mini-card">
                 <h5>Three investigation modes</h5>
                 <p>
-                  The UI supports PCAP plus logs, ZIP archive upload, and fixture or paste mode so teams
-                  can move from controlled demos to full incident investigation with the same workflow.
+                  The UI supports PCAP plus logs, ZIP or TAR.GZ archive upload, and fixture or paste mode
+                  so the same screen works for both controlled demos and multi-artifact incident review.
                 </p>
               </div>
               <div class="mini-card">
-                <h5>What the report renders</h5>
+                <h5>What the workspace renders</h5>
                 <p>
-                  Critical issues, client observations, timeline sequencing, ranked root causes, IEEE
-                  citations, and remediation actions are all surfaced in one browser-native report.
+                  Primary issue, quick resolution steps, secondary issues, timeline sequencing, grouped
+                  evidence, DOCSIS impact, and export actions all surface in one operator workflow.
                 </p>
               </div>
               <div class="mini-card">
-                <h5>Why it matters</h5>
+                <h5>Live flow versus reference modules</h5>
                 <p>
-                  This frontend-led design gives NOC teams, validation engineers, and architects a shared
-                  evidence view instead of making each audience interpret raw logs on its own.
+                  Upload, analyze, rerun, reset, and export are live workflow features. DOCSIS, RDK-B
+                  docs, Wi-Fi 8, and standards panels also include browser-side reference or simulation
+                  content that should be read as supporting tooling.
                 </p>
               </div>
             </div>
@@ -998,41 +998,41 @@
         <section class="section-card" id="architecture">
           <h4>Architecture and Data Flow</h4>
           <p>
-            The report frames the platform as a layered system with typed contracts at every handoff.
-            Inputs move from ingestion through deterministic processing before they ever reach advisory ML
-            or LLM components, which is how the platform preserves reproducibility and evidence integrity.
+            The implemented stack is split between a React operator console, FastAPI route groups, backend
+            ingestion and triage services, and optional advisory or reference modules. The deterministic
+            upload-to-triage path is the portion the operator workspace depends on every time.
           </p>
 
           <div class="layer-grid">
             <div class="layer-card">
               <span>01</span>
-              <h5>UX and API boundary</h5>
-              <p>Frontend upload workflow, report rendering, and API stubs sit at the system boundary for intake and output.</p>
+              <h5>Workspace shell</h5>
+              <p><code>BroadbandDiagnostics.jsx</code> owns upload staging, section navigation, exports, rerun, reset, and triage rendering.</p>
             </div>
             <div class="layer-card">
               <span>02</span>
-              <h5>Orchestration layer</h5>
-              <p>Phase sequencing, gate enforcement, pipeline assembly, and typed schema checks coordinate every run.</p>
+              <h5>Backend route layer</h5>
+              <p>Investigation, triage, standards, WebPA, messaging, architecture, and health routes provide the backend control surface.</p>
             </div>
             <div class="layer-card">
               <span>03</span>
-              <h5>AI and model advisory</h5>
-              <p>Rule engine, XGBoost classifier, anomaly detection, and LLM explanation stay isolated by clearly defined contracts.</p>
+              <h5>Deterministic triage</h5>
+              <p>Artifact classification, parser dispatch, evidence assembly, recommendation dedupe, and root-cause ranking drive the main operator verdict.</p>
             </div>
             <div class="layer-card">
               <span>04</span>
-              <h5>Data and knowledge</h5>
-              <p>Feature persistence, wiki retrieval, and training datasets provide the grounding surface for every conclusion.</p>
+              <h5>Reference dashboards</h5>
+              <p>DOCSIS, RDK-B docs, RDK logger, Wi-Fi 8, and IEEE 802.11 dashboards ship as browser-side feature modules.</p>
             </div>
             <div class="layer-card">
               <span>05</span>
-              <h5>Observability</h5>
-              <p>Structured logs, metrics collection, and tracing support release gates, debugging, and production operations.</p>
+              <h5>Advisory packages in repo</h5>
+              <p><code>src/ml</code>, <code>src/llm_chain.py</code>, and <code>src/streaming</code> show additional repository capabilities beyond the core UI path.</p>
             </div>
             <div class="layer-card">
               <span>06</span>
-              <h5>Security and governance</h5>
-              <p>Bearer auth, credential validation, input sanitization, and feedback-driven governance guard the platform boundary.</p>
+              <h5>Tests and packaging</h5>
+              <p>Pytest suites, frontend feature tests, Playwright specs, and Docker assets document how the implementation is exercised and packaged.</p>
             </div>
           </div>
 
@@ -1045,56 +1045,56 @@
             <div class="flow-card">
               <span>2</span>
               <h5>Ingest</h5>
-              <p>Decode binary captures and archive members into raw bytes and text streams.</p>
+              <p>Create an investigation and stage artifacts through the FastAPI upload endpoints.</p>
             </div>
             <div class="flow-card">
               <span>3</span>
               <h5>Parse</h5>
-              <p>Convert raw data into typed NormalizedEvent records across 25 or more log types.</p>
+              <p>Dispatch uploads through text-log, archive, PCAP, XML, or fallback parser paths.</p>
             </div>
             <div class="flow-card">
               <span>4</span>
               <h5>Correlate</h5>
-              <p>Merge signals onto a unified timeline keyed by MAC address and timestamp.</p>
+              <p>Build the analysis timeline and normalize parsed summaries for downstream triage.</p>
             </div>
             <div class="flow-card">
               <span>5</span>
               <h5>Feature extract</h5>
-              <p>Build the 140-feature vector with RSSI, retries, DHCP, DFS, and telemetry state.</p>
+              <p>Derive operator-facing metrics and inventory details from parsed artifacts and triage responses.</p>
             </div>
             <div class="flow-card">
               <span>6</span>
               <h5>Rule evaluate</h5>
-              <p>Run deterministic IEEE-grounded rules and attach mandatory evidence for every fired condition.</p>
+              <p>Produce deterministic root-cause candidates, recommendations, and evidence-backed summaries.</p>
             </div>
             <div class="flow-card">
               <span>7</span>
-              <h5>ML advise</h5>
-              <p>Use XGBoost and Isolation Forest to reinforce or challenge conclusions without replacing the rule engine.</p>
+              <h5>Evidence group</h5>
+              <p>Group excerpts by file and hydrate cause evidence so proof is readable without duplicating every line.</p>
             </div>
             <div class="flow-card">
               <span>8</span>
-              <h5>Wiki ground</h5>
-              <p>Retrieve playbooks and standards context through the platform knowledge base.</p>
+              <h5>Optional ML advise</h5>
+              <p>The repository contains classifier, anomaly, and training utilities that sit beside the deterministic operator path.</p>
             </div>
             <div class="flow-card">
               <span>9</span>
               <h5>LLM explain</h5>
-              <p>Generate narrative only after the deterministic result is complete and evidence-bounded.</p>
+              <p>Render <code>llm_explanation</code> or attributed narrative only when the backend or fixture payload provides it.</p>
             </div>
             <div class="flow-card">
               <span>10</span>
               <h5>Render</h5>
-              <p>Deliver a diagnostic report with ranked causes, citations, and recommended next actions.</p>
+              <p>Deliver the primary issue, secondary issues, grouped evidence, full analysis, and export actions in the browser.</p>
             </div>
           </div>
 
           <div class="callout">
-            <strong>Typed contracts are a design choice, not a detail.</strong>
+            <strong>The operator path is deterministic first.</strong>
             <p>
-              The report emphasizes hard failures on missing mandatory evidence rather than silent
-              degradation. That choice keeps the platform auditable and makes unsupported conclusions fail
-              fast instead of leaking into operator-facing output.
+              The current implementation already distinguishes mandatory operator output from optional
+              narrative. When evidence is thin, the backend and frontend show insufficient-data or
+              missing-evidence states instead of promoting an unsupported root cause.
             </p>
           </div>
         </section>
@@ -1102,10 +1102,9 @@
         <section class="section-card" id="intelligence">
           <h4>Deterministic AI, ML, and LLM Design</h4>
           <p>
-            The report is explicit about the AI architecture: deterministic rules are the irreducible
-            diagnostic core, while ML and LLM components remain secondary and advisory. That separation
-            reduces hallucination risk, keeps identical inputs reproducible, and makes the system suitable
-            for enterprise review.
+            The repository contains deterministic triage, optional ML advisory code, and optional
+            explanation fields. The implemented UI uses them at different levels of certainty rather than
+            collapsing them into one opaque answer.
           </p>
 
           <div class="comparison-table">
@@ -1120,28 +1119,28 @@
               <tbody>
                 <tr>
                   <td>Invocation</td>
-                  <td>Always runs and produces the required diagnostic result.</td>
-                  <td>Optional explanation stage when model access and context are available.</td>
+                  <td>Runs on the backend analysis path that feeds the operator workspace.</td>
+                  <td>Only appears when explanation content is returned in the analyzed payload.</td>
                 </tr>
                 <tr>
                   <td>Primary input</td>
-                  <td>Typed feature vectors, parsed events, radiotap fields, and grounded rules.</td>
-                  <td>Pre-assembled evidence package, feature values, rule results, and wiki citations.</td>
+                  <td>Uploaded artifacts, parsed summaries, ranked causes, and evidence items.</td>
+                  <td>Normalized evidence package or attributed narrative fields from backend or fixtures.</td>
                 </tr>
                 <tr>
                   <td>Output style</td>
-                  <td>Structured RuleResult and DiagnosticReport artifacts with IEEE references.</td>
-                  <td>Human-readable explanation constrained to the supplied evidence package.</td>
+                  <td>Structured triage response with primary issue, causes, recommendations, and grouped evidence.</td>
+                  <td>Human-readable explanation block when available.</td>
                 </tr>
                 <tr>
                   <td>Failure mode</td>
-                  <td>Hard fail or structured error when mandatory evidence is missing.</td>
-                  <td>Graceful skip or fallback to deterministic report when generation fails.</td>
+                  <td>Structured insufficient-data or grounded backend response.</td>
+                  <td>Omitted explanation or fallback copy while the deterministic sections still render.</td>
                 </tr>
                 <tr>
                   <td>Operational role</td>
-                  <td>Authoritative root-cause engine.</td>
-                  <td>Explanation, drift narrative, and rule-proposal support.</td>
+                  <td>Authoritative operator verdict.</td>
+                  <td>Advisory explanation layered after the main triage result.</td>
                 </tr>
               </tbody>
             </table>
@@ -1149,46 +1148,47 @@
 
           <div class="grid-3">
             <div class="mini-card">
-              <h5>ML advisory layer</h5>
+              <h5>Advisory modules present in the repo</h5>
               <p>
-                The platform trains an XGBoost classifier and Isolation Forest anomaly detector on 108 seed
-                examples across nine root-cause categories. The report positions these models as confidence
-                and anomaly advisors, not as overrides to deterministic output.
+                <code>src/ml/</code> contains <code>classifier.py</code>, <code>anomaly_detector.py</code>,
+                <code>label_generator.py</code>, <code>model_registry.py</code>, and
+                <code>pipeline.py</code>. These modules are implemented in the repository, but the primary
+                workspace summary still comes from deterministic backend analysis.
               </p>
             </div>
             <div class="mini-card">
-              <h5>No fine-tuning claims</h5>
+              <h5>No fine-tuning path in current code</h5>
               <p>
-                The report is technically honest about model development: no LLM fine-tuning or weight
-                modification has been performed. Improvement happens through prompt engineering, structured
-                output contracts, evaluation loops, and human review.
+                The audited implementation does not expose LLM fine-tuning or model-weight modification.
+                Improvement work is represented through rules, prompts, seeded data, tests, and review
+                utilities instead of a fine-tuning pipeline.
               </p>
             </div>
             <div class="mini-card">
-              <h5>Token discipline</h5>
+              <h5>Explanation stays bounded by available data</h5>
               <p>
-                Instead of shipping raw logs to the model, the system trims context down to the evidence
-                package that matters. The report estimates 40 to 60 percent fewer LLM calls than an
-                AI-first diagnostic flow.
+                The frontend reads <code>llm_explanation</code> or attributed narrative when it is present.
+                If those fields are missing, the deterministic summary, evidence, and recommendations still
+                remain complete and usable.
               </p>
             </div>
           </div>
 
           <div class="dual-grid">
             <div class="status-card">
-              <h5>Hallucination control and governance</h5>
+              <h5>Evidence-first operator rendering</h5>
               <p>
-                The report describes strict context bounding, structured JSON output contracts, and fallback
-                logic that rejects unsupported claims. If evidence is insufficient, the system is designed
-                to return structured uncertainty rather than a speculative answer.
+                The operator UI is anchored to grouped evidence, ranked causes, and recommended actions
+                before any narrative block is shown. This keeps the human-readable explanation secondary to
+                the proof already present in the investigation view.
               </p>
             </div>
             <div class="status-card">
-              <h5>Continuous self-improvement without retraining the LLM</h5>
+              <h5>Repository depth beyond the core workspace</h5>
               <p>
-                Closed-loop evaluation drives rule improvement: false positives and false negatives feed a
-                rule proposal workflow, human label sessions update confirmed labels, and retraining keeps
-                the advisory models aligned with real investigation outcomes.
+                Training seed data, review queue, retraining trigger, and streaming helpers are present in
+                the repository. This page treats them as implemented code paths rather than claiming they
+                have all been independently validated in live production.
               </p>
             </div>
           </div>
@@ -1197,31 +1197,30 @@
         <section class="section-card" id="readiness">
           <h4>Testing, Performance, and Demo Readiness</h4>
           <p>
-            The report backs the platform with a strong validation story. It calls out 695 passing tests
-            across 53 test files, zero failures, release-gate automation, and a demo workflow that can be
-            run either from the browser workspace or from backend orchestration scripts.
+            The local codebase already includes an implemented workspace, backend route groups, and a large
+            automated test inventory. This page only claims what can be observed in the repository today.
           </p>
 
           <div class="kpi-grid">
             <div class="kpi">
-              <span>Test footprint</span>
-              <strong>53 files</strong>
-              <p>Unit, integration, domain regression, infrastructure, and release-check coverage.</p>
+              <span>Backend tests</span>
+              <strong>57 files</strong>
+              <p>Pytest coverage spans parsing, triage, messaging, standards, ML, streaming, and supporting services.</p>
             </div>
             <div class="kpi">
-              <span>ML overhead</span>
-              <strong>&lt; 10 ms</strong>
-              <p>XGBoost and Isolation Forest inference add minimal latency on top of deterministic analysis.</p>
+              <span>Frontend suites</span>
+              <strong>24 files</strong>
+              <p>Five feature tests and nineteen Playwright specs exercise the local browser implementation.</p>
             </div>
             <div class="kpi">
-              <span>LLM narrative time</span>
-              <strong>2 - 8 sec</strong>
-              <p>Explanation latency depends on upstream provider response time, not on the diagnostic core.</p>
+              <span>Portfolio asset</span>
+              <strong>Static public page</strong>
+              <p>This page is served from the Next.js public directory and summarizes the current audited implementation.</p>
             </div>
             <div class="kpi">
               <span>Demo posture</span>
-              <strong>Ready now</strong>
-              <p>Fixture-backed scenarios support live demos without requiring real customer artifacts.</p>
+              <strong>Implemented workspace</strong>
+              <p>The browser workflow is real; some adjacent dashboards are intentionally reference-driven or simulated.</p>
             </div>
           </div>
 
@@ -1229,25 +1228,25 @@
             <div class="mini-card">
               <h5>Testing strategy</h5>
               <ul>
-                <li>Module-level tests verify parsing, rule firing, precedence, and error handling.</li>
-                <li>Integration suites validate multi-module flows such as correlation and report assembly.</li>
-                <li>Release checks gate deployment on metrics, health checks, and expected structured outputs.</li>
+                <li>Backend pytest files cover parsing, rule firing, triage API behavior, messaging, standards, ML, and streaming modules.</li>
+                <li>Frontend feature tests cover the docsis, rdkBroadband, rdkLogger, standards80211, and wifi8 modules.</li>
+                <li>Playwright specs cover browser flows such as upload, analyze, export, reset, layout, archive, and standards interactions.</li>
               </ul>
             </div>
             <div class="mini-card">
               <h5>Representative E2E coverage</h5>
               <ul>
-                <li>Security mismatch scenarios with 4-way handshake failure evidence.</li>
-                <li>MAC contention and multi-cause incidents spanning logs, PCAP, and DHCP signals.</li>
-                <li>Archive extraction, fixture-paste mode, and full report rendering validation.</li>
+                <li>Upload and analyze, multi-artifact intake, archive or zip handling, and insufficient-data paths.</li>
+                <li>Export actions, reset and rerun workflows, layout-shell checks, and backend-failure handling.</li>
+                <li>Standards panels, DOCSIS page layout, and the portfolio page itself all have browser coverage in the repo.</li>
               </ul>
             </div>
             <div class="mini-card">
               <h5>Readiness signal</h5>
               <ul>
-                <li>Phase 8.1 hardening completed input validation, pipeline errors, and operational gate checks.</li>
-                <li>Frontend demos work today while backend integration remains a scoped follow-on milestone.</li>
-                <li>Remaining blockers are operational environments, not missing core engineering.</li>
+                <li>The upload, analyze, rerun, reset, and export actions are implemented in the current workspace.</li>
+                <li>DOCSIS signal simulator and knowledge panels are part of the shipped UI, but they are not all live telemetry views.</li>
+                <li>This page does not claim separate live-cluster or production-traffic validation beyond the audited code and deployed asset.</li>
               </ul>
             </div>
           </div>
@@ -1256,27 +1255,26 @@
         <section class="section-card" id="security">
           <h4>Security, Evidence Integrity, and Enterprise Mapping</h4>
           <p>
-            Security hardening is spread across the ingestion, API, credential, and observability layers.
-            The report also maps the platform to a broader enterprise AI taxonomy, making it clear which
-            capabilities are active, partial, planned, or waiting on operational rollout.
+            The audited implementation is strongest on evidence traceability and guarded parsing behavior.
+            Broader security or enterprise claims have been removed unless they are directly visible in the
+            repository.
           </p>
 
           <div class="dual-grid">
             <div class="status-card">
-              <h5>Security and hardening highlights</h5>
+              <h5>Input and operator safeguards visible in code</h5>
               <p>
-                Input sanitization blocks path traversal, malformed OIDs, and oversized payloads before they
-                hit parsing. Bearer authentication, credential validation, rate limiting, and structured-log
-                redaction protect the operational boundary. Evidence exports use structured excerpts instead
-                of full raw logs to reduce accidental data exposure.
+                Artifact classification explicitly ignores junk files, parser dispatch keeps logs, archives,
+                PCAP, XML, and unknown inputs on separate code paths, and the frontend masks API key values
+                before display. These are the input-handling behaviors directly visible in the audited code.
               </p>
             </div>
             <div class="status-card">
               <h5>Evidence integrity</h5>
               <p>
-                Every diagnostic conclusion must trace back to a source artifact, an extracted feature or
-                line-level trigger, and a supporting rule or standards reference. Unsupported claims are
-                explicitly disallowed by the output contract.
+                Evidence is grouped by file, preview lines stay compact until expanded, root-cause cards
+                avoid repeating the same proof multiple times, and insufficient-data states stay visible
+                when the backend cannot isolate a reliable cause.
               </p>
             </div>
           </div>
@@ -1287,39 +1285,39 @@
                 <tr>
                   <th>Architecture component</th>
                   <th>Status</th>
-                  <th>Report-backed implementation note</th>
+                  <th>Implementation note</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>LLM runtime</td>
+                  <td>Investigation workspace</td>
                   <td><span class="status-badge active">Active</span></td>
-                  <td>Anthropic Claude supports explanation and governance flows; GPT-4o-mini powers the current frontend-only path.</td>
+                  <td><code>BroadbandDiagnostics.jsx</code> implements upload, analyze, rerun, reset, export, evidence, and collapsed deep-dive panels.</td>
                 </tr>
                 <tr>
-                  <td>RAG grounding</td>
+                  <td>Deterministic triage routes</td>
+                  <td><span class="status-badge active">Active</span></td>
+                  <td>FastAPI route groups cover investigations, triage, standards, WebPA, messaging, architecture, and health.</td>
+                </tr>
+                <tr>
+                  <td>Knowledge and reference dashboards</td>
+                  <td><span class="status-badge active">Active</span></td>
+                  <td>Five lazy-loaded frontend dashboards render DOCSIS, RDK-B docs, RDK logger, Wi-Fi 8, and IEEE 802.11 content.</td>
+                </tr>
+                <tr>
+                  <td>Advisory ML modules</td>
+                  <td><span class="status-badge partial">Present in repo</span></td>
+                  <td><code>src/ml</code> contains classifier, anomaly detector, label generator, model registry, and pipeline modules.</td>
+                </tr>
+                <tr>
+                  <td>Optional explanation fields</td>
                   <td><span class="status-badge partial">Partial</span></td>
-                  <td>Karpathy-style deterministic wiki retrieval is active; semantic retrieval remains a planned enhancement.</td>
+                  <td>The UI renders <code>llm_explanation</code> or attributed analysis when present, but the deterministic triage view remains the core path.</td>
                 </tr>
                 <tr>
-                  <td>Vector database</td>
-                  <td><span class="status-badge pending">Planned</span></td>
-                  <td>Pinecone, Weaviate, and FAISS are named as roadmap candidates for hybrid retrieval.</td>
-                </tr>
-                <tr>
-                  <td>Streaming and Kafka</td>
-                  <td><span class="status-badge partial">Implemented</span></td>
-                  <td>Code and load suites are ready, with live cluster validation still pending.</td>
-                </tr>
-                <tr>
-                  <td>Feedback loop</td>
-                  <td><span class="status-badge active">Active</span></td>
-                  <td>Human review, retraining triggers, and eval-driven rule evolution are already part of the design.</td>
-                </tr>
-                <tr>
-                  <td>Container deployment</td>
-                  <td><span class="status-badge partial">Ready</span></td>
-                  <td>Docker assets exist, but smoke testing in the production stack remains one of the open gates.</td>
+                  <td>Streaming and deployment assets</td>
+                  <td><span class="status-badge partial">Present in repo</span></td>
+                  <td><code>src/streaming</code>, the Dockerfile, and <code>docker/</code> assets exist, but this page does not treat them as proof of live production rollout.</td>
                 </tr>
               </tbody>
             </table>
@@ -1329,20 +1327,20 @@
         <section class="section-card" id="roadmap">
           <h4>Limitations and Forward Roadmap</h4>
           <p>
-            The report closes with a balanced assessment: the platform is engineering-complete and
-            demo-ready, but it is candid about current limitations and the work needed to fully operationalize
-            the architecture at scale.
+            The current codebase is substantial, but this page is intentionally narrower than the earlier
+            reference page. The list below calls out what is already visible in code and what still reads
+            as follow-up work.
           </p>
 
           <div class="roadmap-grid">
             <div class="roadmap-card">
               <h5>Current limitations</h5>
               <ul>
-                <li>LLM output remains explanatory and may still misstate severity when evidence is sparse.</li>
-                <li>Deep packet inspection, TCP reassembly, and encrypted payload inspection are out of scope.</li>
-                <li>The deterministic rule catalog cannot cover novel firmware or topology failures until new rules are reviewed and added.</li>
-                <li>High-concurrency, multi-tenant backend service behavior depends on completing the FastAPI integration and shared backing services.</li>
-                <li>Training data scale is intentionally modest, which is why ML stays advisory instead of authoritative.</li>
+                <li>Several dashboard panels are static, reference-driven, or simulated rather than direct live modem telemetry views.</li>
+                <li>The root workspace still concentrates a large amount of behavior inside <code>BroadbandDiagnostics.jsx</code> even after recent modular splits.</li>
+                <li>ML, LLM, and streaming packages are present in the repository, but this page does not independently verify them as continuously running services.</li>
+                <li>Thin failure windows intentionally fall back to insufficient-data outcomes instead of forcing a stronger diagnosis.</li>
+                <li>The deployed portfolio page can mirror audited code and assets, but it cannot by itself prove production deployment health.</li>
               </ul>
             </div>
 
@@ -1350,34 +1348,33 @@
               <div class="roadmap-card">
                 <h5>Near-term</h5>
                 <p>
-                  Close the live label, Kafka, and Docker gates while replacing frontend-direct model calls
-                  with backend-enforced context bounding, rate limiting, and audit logging.
+                  Continue splitting the frontend workspace into smaller components while keeping the
+                  upload, analyze, export, rerun, and reset behavior stable.
                 </p>
               </div>
               <div class="roadmap-card">
                 <h5>Medium-term</h5>
                 <p>
-                  Add hybrid retrieval, expand the training set through active learning, and explore richer
-                  model options for interdependent multi-cause investigations.
+                  Connect more browser-side reference panels to live backend data wherever the existing APIs
+                  already expose enough structured information.
                 </p>
               </div>
               <div class="roadmap-card">
                 <h5>Long-term</h5>
                 <p>
-                  Push toward autonomous fleet intelligence with real-time cohort monitoring, ticketing
-                  integrations, SLA-aware alert routing, and closed-loop adaptation to new failure modes.
+                  Promote optional advisory and streaming paths into fully governed runtime services only
+                  after deployment validation is complete.
                 </p>
               </div>
             </div>
           </div>
 
           <div class="callout">
-            <strong>Final assessment from the report</strong>
+            <strong>Implementation-first assessment</strong>
             <p>
-              The project is presented as a complete, production-grade deterministic diagnostic foundation
-              whose remaining steps are mostly operational enablement. The biggest unfinished engineering
-              item is the final backend integration that moves frontend-direct LLM usage behind the platform's
-              governance and audit boundary.
+              This page now mirrors the current local codebase: real workspace flows, implemented route
+              groups, evidence-backed triage, and clearly labeled browser-side reference or simulation
+              panels. Unsupported narrative framing and unverified production claims have been removed.
             </p>
           </div>
         </section>
@@ -1385,9 +1382,9 @@
 
       <footer class="footer">
         <div class="footer-card">
-          <strong>Source basis:</strong> This page is a portfolio adaptation of the
-          <strong>RDKB Broadband Intelligence Platform</strong> project report dated
-          <strong>April 2026</strong>. For collaboration or follow-up, connect through
+          <strong>Source basis:</strong> This page summarizes the currently implemented
+          <strong>RDKB Broadband Intelligence Platform</strong> codebase under the local broadband
+          diagnostics project path. For collaboration or follow-up, connect through
           <a href="https://www.linkedin.com/in/manish-kumar-8652871/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           or email
           <a href="mailto:manish.kumar75@gmail.com">manish.kumar75@gmail.com</a>.
