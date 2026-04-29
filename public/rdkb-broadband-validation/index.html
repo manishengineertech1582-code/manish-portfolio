@@ -781,7 +781,6 @@
   <div class="shell">
     <aside class="sidebar">
       <div class="brand">
-        <div class="brand-label">Current implementation snapshot</div>
         <h1>RDK-B Broadband Intelligence Platform</h1>
         <p>
           Portfolio summary of the implemented broadband diagnostics workspace, FastAPI triage services,
@@ -799,18 +798,6 @@
           <a href="#readiness">Testing and Readiness</a>
           <a href="#security">Security and Mapping</a>
         </nav>
-      </div>
-
-      <div class="sidebar-block">
-        <div class="section-label">Project Snapshot</div>
-        <div class="stats">
-          <div class="stat-row"><span>Investigation modes</span><strong>3</strong></div>
-          <div class="stat-row"><span>Export actions</span><strong>2</strong></div>
-          <div class="stat-row"><span>Feature dashboards</span><strong>5</strong></div>
-          <div class="stat-row"><span>API route groups</span><strong>7</strong></div>
-          <div class="stat-row"><span>Backend test files</span><strong>57</strong></div>
-          <div class="stat-row"><span>Frontend test suites</span><strong>24</strong></div>
-        </div>
       </div>
 
       <div class="sidebar-block">
@@ -835,9 +822,6 @@
           <div class="gate-item">Optional AI narrative appears only when backend or fixture data provides <code>llm_explanation</code> or attributed analysis fields.</div>
           <div class="gate-item">This page mirrors the local codebase and deployed asset; it does not claim separate production rollout proof.</div>
         </div>
-        <p class="sidebar-note">
-          All copy on this page is scoped to the audited implementation rather than the earlier reference page.
-        </p>
       </div>
     </aside>
 
@@ -892,16 +876,6 @@
                 <li>Grouped evidence by file, ranked root causes, collapsed secondary issues, and a collapsed full-analysis area after backend analysis completes.</li>
                 <li>Artifact classification and parsing for logs, archives, PCAP or PCAPNG, XML, and unknown-file fallback paths.</li>
                 <li>Lazy-loaded browser modules for DOCSIS 4.0, RDK-B docs, RDK logger, Wi-Fi 8, and IEEE 802.11 reference views.</li>
-              </ul>
-            </div>
-
-            <div class="panel">
-              <div class="panel-title">What the audited code demonstrates</div>
-              <ul class="bullet-list">
-                <li>The local implementation already supports an end-to-end operator flow without switching between separate tools.</li>
-                <li>Upload handling accepts captures, archives, text logs, and XML while ignoring junk files and preserving fallback parsing for unknown inputs.</li>
-                <li>Deterministic triage can return insufficient-data states instead of inventing a stronger diagnosis when proof is thin.</li>
-                <li>Browser-side reference and simulator panels are present, but they should be read as implementation modules rather than live fleet validation claims.</li>
               </ul>
             </div>
           </div>
