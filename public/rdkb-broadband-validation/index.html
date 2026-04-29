@@ -880,10 +880,7 @@
             <code>frontend/BroadbandDiagnostics.jsx</code> with FastAPI investigation and triage routes in
             <code>backend/api/routes</code>. Operators can create an investigation, upload PCAPs, logs,
             archives, or fixtures, trigger analysis, review a primary issue and secondary issues, inspect
-            grouped evidence, and export JSON or Markdown. The same frontend also lazy-loads browser-side
-            DOCSIS 4.0, RDK-B broadband docs, RDK logger, Wi-Fi 8, and IEEE 802.11 reference modules.
-            Advisory ML and LLM code exists in the repository, but the operator screen is centered on
-            deterministic backend results and explicit evidence linkage.
+            grouped evidence, and export JSON or Markdown. The same frontend mounts browser-side DOCSIS 4.0, RDK-B broadband docs, Wi-Fi 8, and IEEE 802.11 reference modules. A separate RDK Logger dashboard exists in the source tree but is not currently wired into the main workspace navigation. Advisory ML and LLM code exists in the repository, but the operator screen is centered on deterministic backend results and explicit evidence linkage.
           </p>
 
           <div class="hero-grid">
@@ -893,7 +890,7 @@
                 <li>Investigation create, artifact upload, triage analyze, rerun, reset, and JSON or Markdown export flows in the browser workspace.</li>
                 <li>Grouped evidence by file, ranked root causes, collapsed secondary issues, and a collapsed full-analysis area after backend analysis completes.</li>
                 <li>Artifact classification and parsing for logs, archives, PCAP or PCAPNG, XML, and unknown-file fallback paths.</li>
-                <li>Lazy-loaded browser modules for DOCSIS 4.0, RDK-B docs, RDK logger, Wi-Fi 8, and IEEE 802.11 reference views.</li>
+                <li>Mounted browser modules for DOCSIS 4.0, RDK-B docs, Wi-Fi 8, and IEEE 802.11 reference views, plus an RDK Logger dashboard that currently exists in source but is not mounted in the main workspace.</li>
               </ul>
             </div>
           </div>
@@ -910,9 +907,9 @@
               <p>The operator flow can export JSON and Markdown directly from the analyzed investigation view.</p>
             </div>
             <div class="kpi">
-              <span>Feature dashboards</span>
+              <span>Feature dashboards in source</span>
               <strong>5</strong>
-              <p>DOCSIS, RDK-B docs, RDK logger, Wi-Fi 8, and IEEE 802.11 dashboards are lazy-loaded from the frontend feature tree.</p>
+              <p>Five dashboard modules exist under the frontend feature tree; four are mounted in the current workspace, and the RDK Logger dashboard remains source-only.</p>
             </div>
             <div class="kpi">
               <span>API route groups</span>
@@ -921,7 +918,7 @@
             </div>
             <div class="kpi">
               <span>Backend test files</span>
-              <strong>57</strong>
+              <strong>58</strong>
               <p>The repository includes backend pytest coverage across parsing, triage, messaging, standards, ML, and streaming packages.</p>
             </div>
             <div class="kpi">
@@ -1018,7 +1015,7 @@
             <div class="layer-card">
               <span>04</span>
               <h5>Reference dashboards</h5>
-              <p>DOCSIS, RDK-B docs, RDK logger, Wi-Fi 8, and IEEE 802.11 dashboards ship as browser-side feature modules.</p>
+              <p>Four mounted dashboards ship in the current workspace: DOCSIS, RDK-B docs, Wi-Fi 8, and IEEE 802.11. A separate RDK Logger dashboard exists in source but is not mounted in the current navigation.</p>
             </div>
             <div class="layer-card">
               <span>05</span>
@@ -1200,7 +1197,7 @@
           <div class="kpi-grid">
             <div class="kpi">
               <span>Backend tests</span>
-              <strong>57 files</strong>
+              <strong>58 files</strong>
               <p>Pytest coverage spans parsing, triage, messaging, standards, ML, streaming, and supporting services.</p>
             </div>
             <div class="kpi">
@@ -1251,18 +1248,14 @@
         <section class="section-card" id="security">
           <h4>Security, Evidence Integrity, and Enterprise Mapping</h4>
           <p>
-            The audited implementation is strongest on evidence traceability and guarded parsing behavior.
-            Broader security or enterprise claims have been removed unless they are directly visible in the
-            repository.
+            The audited implementation is strongest on evidence traceability and guarded parsing behavior. Repository-level security utilities exist, but this page only calls out protections that are directly visible in the current workflow or supporting source modules.
           </p>
 
           <div class="dual-grid">
             <div class="status-card">
               <h5>Input and operator safeguards visible in code</h5>
               <p>
-                Artifact classification explicitly ignores junk files, parser dispatch keeps logs, archives,
-                PCAP, XML, and unknown inputs on separate code paths, and the frontend masks API key values
-                before display. These are the input-handling behaviors directly visible in the audited code.
+                Artifact classification explicitly ignores junk files, parser dispatch keeps logs, archives, PCAP, XML, and unknown inputs on separate code paths, and insufficient-data handling stays visible when the backend cannot isolate a reliable cause. These are the input-handling behaviors directly visible in the audited code.
               </p>
             </div>
             <div class="status-card">
@@ -1298,7 +1291,7 @@
                 <tr>
                   <td>Knowledge and reference dashboards</td>
                   <td><span class="status-badge active">Active</span></td>
-                  <td>Five lazy-loaded frontend dashboards render DOCSIS, RDK-B docs, RDK logger, Wi-Fi 8, and IEEE 802.11 content.</td>
+                  <td>Four mounted frontend dashboards render DOCSIS, RDK-B docs, Wi-Fi 8, and IEEE 802.11 content. A separate RDK Logger dashboard exists in source but is not wired into the current workspace navigation.</td>
                 </tr>
                 <tr>
                   <td>Advisory ML modules</td>
